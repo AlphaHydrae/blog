@@ -1,18 +1,21 @@
 require "rubygems"
 require "bundler/setup"
 require "stringex"
+require "dotenv"
+
+Dotenv.load! File.expand_path('~/.env')
 
 ## -- Rsync Deploy config -- ##
 # Be sure your public key is listed in your server's ~/.ssh/authorized_keys file
-ssh_user       = "user@domain.com"
-ssh_port       = "22"
-document_root  = "~/website.com/"
-rsync_delete   = false
+ssh_user       = ENV['AH_BLOG_SSH']
+ssh_port       = ENV['AH_BLOG_PORT'].to_i
+document_root  = ENV['AH_BLOG_ROOT']
+rsync_delete   = true
 rsync_args     = ""  # Any extra arguments to pass to rsync
 deploy_default = "rsync"
 
 # This will be configured for you when you run config_deploy
-deploy_branch  = "gh-pages"
+deploy_branch  = "ah"
 
 ## -- Misc Configs -- ##
 

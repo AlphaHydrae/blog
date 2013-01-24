@@ -1,6 +1,7 @@
 source "http://rubygems.org"
 
 group :development do
+  gem 'dotenv', '~> 0.7.0'
   gem 'rake', '~> 0.9'
   gem 'jekyll', '~> 0.12'
   gem 'rdiscount', '~> 1.6.8'
