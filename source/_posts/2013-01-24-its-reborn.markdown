@@ -6,4 +6,4 @@ comments: true
 categories:
 ---
 
-My hacker ego has finally had enough of WordPress. Real men use a terminal and write their posts in Markdown. I'm hoping this [Octopress](http://octopress.org) blog engine will make me feel more at home.
+My hacker ego has finally had enough of WordPress. Real men use a terminal and write their posts in Markdown. I'm hoping this [Octopress](http://octopress.org) will make me feel more at home.
