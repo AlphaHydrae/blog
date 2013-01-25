@@ -2,7 +2,7 @@
 layout: post
 title: "It's Reborn"
 date: 2013-01-24 18:00
-comments: true
+comments: false
 categories:
 ---
 

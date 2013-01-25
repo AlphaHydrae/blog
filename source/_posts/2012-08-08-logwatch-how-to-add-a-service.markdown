@@ -2,7 +2,7 @@
 layout: post
 title: "Logwatch: how to add a service"
 date: 2012-08-08 18:19
-comments: true
+comments: false
 categories: 
 ---
 
