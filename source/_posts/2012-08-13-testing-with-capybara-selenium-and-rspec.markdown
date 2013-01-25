@@ -6,17 +6,21 @@ comments: false
 categories: [capybara, selenium, rspec, testing]
 ---
 
-[RSpec](https://www.relishapp.com/rspec/) is a behavior-driven development framework that I use to write tests in [Ruby](http://www.ruby-lang.org/). [Capybara](https://github.com/jnicklas/capybara/) is an acceptance test framework that simulates how a real user would interact with your web app. Finally, there's [Selenium](http://seleniumhq.org/) which has drivers to control Firefox and other browsers.
+This is a quick-and-dirty tutorial to set up automated browser tests with the following tools:
 
-Since browser tests are generally isolated from the rest of your project, the language of the web app is irrelevant. I wrote this tutorial after setting up a test suite for a Node.js web app.
+* [RSpec](https://www.relishapp.com/rspec/) is a Ruby behavior-driven development framework.
+* [Capybara](https://github.com/jnicklas/capybara/) is an acceptance test framework that simulates how a real user would interact with your web app.
+* [Selenium Webdriver](http://seleniumhq.org/) automates browsers like Firefox.
+
+Since browser tests are generally isolated from the rest of your project, the language of the web app is irrelevant. I wrote this guide after setting up a test suite for a Node.js web app.
 
 <!--more-->
 
 ## Installation
 
-I assume here that you have already installed and set up Ruby exactly the way you like it. I recommend the excellent [RVM](https://rvm.io/) for that. I used Ruby version 1.9.2 for this tutorial. You should also have a recent version of Firefox.
+I assume here that you have already installed and set up Ruby exactly the way you like it. I recommend the excellent [RVM](https://rvm.io/) for that. I used Ruby 1.9.2 for this tutorial. You should also have a recent version of Firefox.
 
-Now, let’s start by writing a Gemfile that lists everything we need.
+Let’s start by writing a Gemfile to install everything we need.
 
 {% codeblock lang:ruby %}
 # Location: Gemfile
@@ -67,9 +71,9 @@ end
 task :default => :spec
 {% endcodeblock %}
 
-This sets up RSpec so that you can run your tests with `bundle exec rake spec`. In fact, the last line specifies the spec task as default so you could even just run `bundle exec rake` if you’re lazy like me. (Note the `bundle exec` part which makes sure Rake is executed in the context of your installed gems, which will probably save you some trouble.)
+This sets up RSpec so that you can run your tests with `bundle exec rake spec` or `bundle exec rake` (default task). Note the `bundle exec` part which makes sure Rake is executed in the context of your installed gems, which will probably save you some trouble.
 
-As indicated in the Rakefile comments, you can customize RSpec settings by adding a `.rspec` file. I like activating the following options so I have a nicely formatted test output and colors. Run `bundle exec rspec --help` if you want to know what options you can tweak.
+As indicated in the Rakefile comments, you can customize RSpec settings by adding a `.rspec` file. I like activating the following options so I have a nicely formatted test output and colors. Run `bundle exec rspec --help` if you want to know what other options you can tweak.
 
 {% codeblock %}
 # Location: .rspec
@@ -102,9 +106,7 @@ Capybara.default_driver = :selenium
 
 ## Writing Specs
 
-I won’t explain here how to write specs with RSpec or Capybara. You’ll have to read their fine documentation ([RSpec](https://www.relishapp.com/rspec/rspec-core/docs), [Capybara](https://github.com/jnicklas/capybara/)).
-
-However, this is a bare-bones example you can use as a starting point:
+I won’t explain here how to write specs with RSpec or Capybara. You’ll have to read their fine documentation ([RSpec](https://www.relishapp.com/rspec/rspec-core/docs), [Capybara](https://github.com/jnicklas/capybara/)). However, this is a bare-bones example you can use as a starting point:
 
 {% codeblock lang:ruby %}
 # Location: spec/dummy_spec.rb

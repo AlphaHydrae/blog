@@ -6,23 +6,23 @@ comments: false
 categories: [git]
 ---
 
-In addition to GitHub, I like having a private copy of my repositories on one of my own servers. It serves both as a secondary backup, and also to play with pushed commits as I'll explain in a future post. The idea is to set up a server that we'll access with SSH in the same way as GitHub, with a remote that looks like `git@myserver.com:myrepo.git`, and with public key authentication.
+In addition to GitHub, I like having a private copy of my repositories on one of my own servers. It serves both as a secondary backup, and also to play with pushed commits as I'll explain in a future post. The idea is to set up a server that can be accessed through SSH in the same way as GitHub, with a remote that looks like `git@myserver.com:myrepo.git`, and with public key authentication.
 
 <!--more-->
 
 ## Setup
 
-{% codeblock lang:bash First, let's make sure Git is installed %}
+{% codeblock lang:bash Install Git %}
 # Fedora 17
-yum install git-all # ("-all" sounds like it has what we need)
+yum install git-all
  
 # Ubuntu 11
 apt-get install git
 {% endcodeblock %}
 
-Next, we need to set up a Git user. We want this user to be only usable for Git, so we'll restrict its shell. On Fedora 17, the shell we want is `/bin/git-shell`. Run `which git-shell` if you're not sure where it is.
+Next, we need a Git user. We want this user to only have access to Git, so we'll restrict his shell. On Fedora 17, the shell we want is `/bin/git-shell`. Run `which git-shell` if you're not sure where it is.
 
-{% codeblock lang:bash Create a Git user %}
+{% codeblock lang:bash %}
 # create the user (the -d option specifies the home directory)
 useradd -m -d /home/git git
  
@@ -45,7 +45,7 @@ And your Git user is ready. Everyone who needs access must have their public key
 
 ## Usage
 
-{% codeblock lang:bash How to add a repository %}
+{% codeblock lang:bash Add a repository on your server %}
 # create bare repo (as the git user)
 su -s /bin/bash git
     cd
@@ -53,7 +53,7 @@ su -s /bin/bash git
     git init --bare
 {% endcodeblock %}
 
-{% codeblock lang:bash How to configure the remote %}
+{% codeblock lang:bash Configure the remote on a repo %}
 # add the remote with the correct domain and repo
 git remote add myremote git@myserver.com:myrepo.git
 git push myremote master

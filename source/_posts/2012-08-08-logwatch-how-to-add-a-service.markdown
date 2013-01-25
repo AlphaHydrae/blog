@@ -22,9 +22,9 @@ apt-get install logwatch fortune-mod
 
 I highly recommend including fortune which adds a random quote to every report. Knowing that a possibly funny quote sits at the bottom of the reports is the main reason I manage to scroll through them every day.
 
-## Customization
+## New Service
 
-The goal was to add the logs of my backup scripts in `/var/log/backup/` to the logwatch reports. First you have to define a log file group. This tells logwatch which log files it should read.
+The goal was to add the logs of my backup scripts in `/var/log/backup/` to the logwatch reports. First you have to define a log file group. This tells logwatch which files to read.
 
 {% codeblock %}
 # /etc/logwatch/conf/logfiles/my-backup.conf
@@ -52,7 +52,7 @@ Title = "My Backups"
 LogFile = my-backup
 {% endcodeblock %}
 
-Finally, you must write a script to parse the log files. I’ve seen a lot of examples in perl, but I prefer bash for simple scripts. Note that the script has the same name as the service file.
+Finally, you need a script to parse the log files. I’ve seen a lot of examples in perl, but I prefer bash for simple scripts. Note that the script has the same name as the service file.
 
 {% codeblock lang:bash %}
 #!/usr/bin/env bash
@@ -63,7 +63,6 @@ OLD_IFS=$IFS
 IFS=$'\n'
  
 # The contents of the log file are given in stdin.
-# We iterate over each line.
 for LINE in $( cat /dev/stdin ); do
  
     # Only lines matching this regexp will be included.
@@ -83,7 +82,7 @@ And you’re done! The contents of the backup log files will show up in the logw
 
 ## Log Rotation
 
-If you don’t want your logwatch reports to expand until you get bored of scrolling, you also need to rotate the log files. Logrotate will conveniently do that for you with this simple configuration.
+If you don’t want your logwatch reports to forever grow in size, you also need to rotate the log files. Logrotate will conveniently do that for you with this simple configuration.
 
 {% codeblock %}
 # /etc/logrotate.d/backup
