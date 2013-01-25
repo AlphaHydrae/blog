@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Setting up your own Git server"
+title: "Set up your own Git server"
 date: 2012-08-14 08:28
 comments: false
 categories: [git]
