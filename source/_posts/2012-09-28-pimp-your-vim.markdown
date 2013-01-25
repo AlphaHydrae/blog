@@ -6,6 +6,8 @@ comments: false
 categories: [vim, tools]
 ---
 
+[{% img right /images/contents/vim/logo.gif %}](http://www.vim.org)
+
 In the good ol' days I used Eclipse, NetBeans, Dreamweaver. Then I switched to TextMate when I started doing Ruby. Now I use Vim for all my Ruby/Javascript development. At this point in my backwards journey, I would like to document how you can increase the awesomeness of Vim using a few well-chosen plugins.
 
 <!--more-->

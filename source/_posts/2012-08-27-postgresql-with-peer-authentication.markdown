@@ -6,6 +6,8 @@ comments: false
 categories: [postgresql, auth]
 ---
 
+[{% img right /images/contents/postgresql/logo.png 200 %}](http://www.postgresql.org)
+
 PostgreSQL has always been my favorite SQL database. I've never had any trouble setting it up, especially using UTF-8 which was always a pain to configure with MySQL when I tried it.
 
 Peer authentication allows to map OS user names to database user names for local connections. It can be used for password-less database access in a multi-user environment.

@@ -3,8 +3,10 @@ layout: post
 title: "Building Javascript with Grunt"
 date: 2012-10-16 09:59
 comments: false
-categories: [build, grunt, jasmine, javascript, tools]
+categories: [grunt, jasmine, javascript, tools]
 ---
+
+[{% img right /images/contents/gruntjs/logo.png 200 %}](http://gruntjs.com)
 
 When you develop a Javascript lib, you need to do fun stuff like concatenating source files, validating with JSHint and minifying. After I got past the initial phase of doing it by hand (many headaches, didn't last long), I started doing it with Rake tasks and npm packages. As you can imagine, the Rake task quickly became a headache of its own.
 
