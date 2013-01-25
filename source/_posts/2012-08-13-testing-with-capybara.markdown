@@ -10,6 +10,8 @@ categories: [capybara, selenium, rspec, testing]
 
 Since browser tests are generally isolated from the rest of your project, the language of the web app is irrelevant. I wrote this tutorial after setting up a test suite for a Node.js web app.
 
+<!--more-->
+
 ## Installation
 
 I assume here that you have already installed and set up Ruby exactly the way you like it. I recommend the excellent [RVM](https://rvm.io/) for that. I used Ruby version 1.9.2 for this tutorial. You should also have a recent version of Firefox.

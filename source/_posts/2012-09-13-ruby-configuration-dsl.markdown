@@ -16,6 +16,8 @@ MyClass.new.configure do
 end
 {% endcodeblock %}
 
+<!--more-->
+
 You have to be willing to use the nasty sounding instance_eval method. It's scary but trivial:
 
 {% codeblock lang:ruby %}

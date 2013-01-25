@@ -8,6 +8,8 @@ categories: [git]
 
 In addition to GitHub, I like having a private copy of my repositories on one of my own servers. It serves both as a secondary backup, and also to play with pushed commits as I'll explain in a future post. The idea is to set up a server that we'll access with SSH in the same way as GitHub, with a remote that looks like `git@myserver.com:myrepo.git`, and with public key authentication.
 
+<!--more-->
+
 ## Setup
 
 {% codeblock lang:bash First, let's make sure Git is installed %}

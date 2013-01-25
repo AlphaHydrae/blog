@@ -14,6 +14,8 @@ There's something that's always bugged me in my Git workflow.
 
 2 and 3 mixed together are not good on a public server. You don't want to rewrite history on a public branch unless your goal is to make enemies. But I still want to do both.
 
+<!--more-->
+
 ## Here Be Dragons
 
 My solution is to work with both a public and a private Git server.

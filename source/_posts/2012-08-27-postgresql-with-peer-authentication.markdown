@@ -12,6 +12,7 @@ Peer authentication allows to map OS user names to database user names for local
 
 This guide shows how to install PostgreSQL and configure peer authentication on Fedora.
 
+<!--more-->
 
 ## Installation
 

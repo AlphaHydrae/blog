@@ -10,6 +10,8 @@ When you develop a Javascript lib, you need to do fun stuff like concatenating s
 
 Enters Grunt, a build tool which does all that for you, plus other goodies. It's a task-based tool so it has tasks like concat to concatenate files, which you can run with grunt concat at the command line. This post is a quick example of what you can achieve with Grunt.
 
+<!--more-->
+
 This is the basic structure of the configuration file.
 
 {% codeblock lang:js %}
