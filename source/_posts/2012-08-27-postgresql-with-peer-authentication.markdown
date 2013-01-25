@@ -3,7 +3,7 @@ layout: post
 title: "PostgreSQL with peer authentication"
 date: 2012-08-27 09:22
 comments: false
-categories: 
+categories: [postgresql, auth]
 ---
 
 PostgreSQL has always been my favorite SQL database. I've never had any trouble setting it up, especially using UTF-8 which was always a pain to configure with MySQL when I tried it.

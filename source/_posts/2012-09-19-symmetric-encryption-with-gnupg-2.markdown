@@ -3,7 +3,7 @@ layout: post
 title: "Symmetric encryption with GnuPG 2"
 date: 2012-09-19 09:36
 comments: false
-categories: 
+categories: [gnupg, encryption]
 ---
 
 Sometimes you get sick of all this private/public key business and you just want to symmetrically encrypt some files. It ought to be simple!

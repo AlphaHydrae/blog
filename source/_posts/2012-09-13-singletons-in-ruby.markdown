@@ -3,7 +3,7 @@ layout: post
 title: "Singletons in Ruby"
 date: 2012-09-13 09:29
 comments: false
-categories: 
+categories: [ruby, singleton, patterns]
 ---
 
 {% codeblock lang:ruby %}

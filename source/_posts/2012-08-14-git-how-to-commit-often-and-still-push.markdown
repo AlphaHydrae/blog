@@ -3,7 +3,7 @@ layout: post
 title: "Git: how to commit often and still push"
 date: 2012-08-14 09:03
 comments: false
-categories: 
+categories: [git, workflow]
 ---
 
 There's something that's always bugged me in my Git workflow.

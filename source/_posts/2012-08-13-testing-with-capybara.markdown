@@ -3,7 +3,7 @@ layout: post
 title: "Testing with Capybara, Selenium and RSpec"
 date: 2012-08-13 22:45
 comments: false
-categories: 
+categories: [capybara, selenium, rspec, testing]
 ---
 
 [RSpec](https://www.relishapp.com/rspec/) is a behavior-driven development framework that I use to write tests in [Ruby](http://www.ruby-lang.org/). [Capybara](https://github.com/jnicklas/capybara/) is an acceptance test framework that simulates how a real user would interact with your web app. Finally, there's [Selenium](http://seleniumhq.org/) which has drivers to control Firefox and other browsers.

@@ -3,7 +3,7 @@ layout: post
 title: "Logwatch: how to add a service"
 date: 2012-08-08 18:19
 comments: false
-categories: 
+categories: [logwatch, sysadmin]
 ---
 
 I use [logwatch](http://sourceforge.net/projects/logwatch/) to monitor disk usage and the everyday break-in attempts on my Fedora and Ubuntu servers. It sends me a daily report by mail. Since I also received separate mails from by backup scripts, I wanted to see if I could include everything into the logwatch report so that I would only have one mail to read per server.

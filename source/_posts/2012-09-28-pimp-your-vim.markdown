@@ -3,7 +3,7 @@ layout: post
 title: "Pimp your Vim"
 date: 2012-09-28 09:46
 comments: false
-categories: 
+categories: [vim, tools]
 ---
 
 In the good ol' days I used Eclipse, NetBeans, Dreamweaver. Then I switched to TextMate when I started doing Ruby. Now I use Vim for all my Ruby/Javascript development. At this point in my backwards journey, I would like to document how you can increase the awesomeness of Vim using a few well-chosen plugins.

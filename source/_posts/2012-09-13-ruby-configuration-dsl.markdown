@@ -3,7 +3,7 @@ layout: post
 title: "Ruby Configuration DSL"
 date: 2012-09-13 09:32
 comments: false
-categories: 
+categories: [ruby, dsl, patterns]
 ---
 
 I had been wondering how that kind of Ruby magic works for some time.

@@ -1,6 +1,6 @@
 source $HOME/.screenrc
 
-screen -t vim 1 $EDITOR -c GG
-screen -t zsh 2
-screen -t watch 3 rake preview
+screen -t vim 0 $EDITOR -c GG
+screen -t zsh 1
+screen -t watch 2 rake preview
 select vim
