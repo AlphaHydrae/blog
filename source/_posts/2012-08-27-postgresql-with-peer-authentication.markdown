@@ -8,9 +8,7 @@ categories: [postgresql, auth]
 
 [{% img right /images/contents/postgresql/logo.png 200 %}](http://www.postgresql.org)
 
-PostgreSQL has always been my favorite SQL database. I've never had any trouble setting it up, especially using UTF-8 which was always a pain to configure with MySQL when I tried it.
-
-Peer authentication allows to map OS user names to database user names for local connections. It can be used for password-less database access in a multi-user environment.
+PostgreSQL has always been my favorite SQL database, especially compared to MySQL which I've always found a pain to configure for my uses. Peer authentication allows to map OS user names to database user names for local connections. It can be used for password-less database access in a multi-user environment.
 
 This guide shows how to install PostgreSQL and configure peer authentication on Fedora.
 
@@ -18,7 +16,7 @@ This guide shows how to install PostgreSQL and configure peer authentication on 
 
 ## Installation
 
-{% codeblock %}
+{% codeblock lang:bash %}
 # install
 yum install postgresql postgresql-devel postgresql-server postgresql-contrib
  
@@ -41,16 +39,16 @@ Environment=PGDATA=/path/to/pgsql/data
 
 The package provides a systemd service which you can enable on boot and start like this:
 
-{% codeblock %}
+{% codeblock lang:bash %}
 systemctl enable postgresql.service
 systemctl start postgresql.service
 {% endcodeblock %}
 
 ## Peer Authentication
 
-By default, peer authentication allows each system user to authenticate as the database user with the same name, but that's usually not sufficient for my purposes. For example, I also want my root system user to be able to authenticate as postgres (the godlike user).
+By default, peer authentication allows each system user to authenticate as the database user with the same name, but that's usually not sufficient for my purposes. For example, I also want my **root** system user to be able to authenticate as **postgres** (the godlike database user).
 
-To do this, you must edit pg_ident.conf in the PostgreSQL data directory. Here you can create user name maps like this one:
+To do this, you must edit `pg_ident.conf` in the PostgreSQL data directory. Here you can create user name maps like this one:
 
 {% codeblock %}
 # MAPNAME    SYSTEM-USERNAME  PG-USERNAME
@@ -58,18 +56,16 @@ To do this, you must edit pg_ident.conf in the PostgreSQL data directory. Here y
   adminmap   root             postgres
 {% endcodeblock %}
 
-`SYSTEM-USERNAME` is the user name detected by the operating system. `PG-USERNAME` is the database user name that this user should have. You must group user name pairs under a `MAPNAME` which you will user later in the authentication configuration.
+`SYSTEM-USERNAME` is the user name detected by the operating system. `PG-USERNAME` is the database user name that this user should have. You must group user name pairs under a `MAPNAME` which you will user later in the authentication configuration. The map above defines that both the **postgres** and **root** system users can connect as the **postgres** database user.
 
-The map above defines that both the postgres and root system users can connect as the postgres database user.
-
-Once you have created your user name maps, you can use them in pg_hba.conf, the authentication configuration file. Here is an example:
+Once you have created your user name maps, you can use them in `pg_hba.conf`, the authentication configuration file. Here is an example:
 
 {% codeblock %}
 # TYPE    DATABASE   USER       ADDRESS   METHOD
   local   all        postgres             peer     map=adminmap
 {% endcodeblock %}
 
-This defines that the database user postgres can access all databases. Notice that we selected the peer authentication method and that we reference adminmap, the user name map we created earlier. Therefore, with this configuration both the postgres and root system users can connect to all databases as postgres.
+This defines that the **postgres** database user can access all databases. Notice that we selected the peer authentication method and that we reference **adminmap**, the user name map we created earlier. Therefore, with this configuration both the **postgres** and **root** system users can connect to all databases as **postgres**.
 
 Now go forth and multiply the user name maps.
 

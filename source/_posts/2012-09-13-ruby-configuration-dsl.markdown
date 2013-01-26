@@ -18,7 +18,7 @@ end
 
 <!--more-->
 
-You have to be willing to use the nasty sounding instance_eval method. It's scary but trivial:
+You have to be willing to use the nasty sounding `instance_eval` method. It's scary but trivial:
 
 {% codeblock lang:ruby %}
 def MyClass
@@ -63,4 +63,4 @@ class MyClass
 end
 {% endcodeblock %}
 
-See this article for a more complete version. Take look at Ruby's BasicObject for the original documentation.
+See [this article](http://www.dan-manges.com/blog/ruby-dsls-instance-eval-with-delegation) for a more complete version. Take look at Ruby's [BasicObject](http://ruby-doc.org/core-1.9.3/BasicObject.html#method-i-instance_eval) for the original documentation.

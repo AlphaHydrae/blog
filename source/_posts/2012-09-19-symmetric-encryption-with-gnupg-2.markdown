@@ -8,9 +8,9 @@ categories: [gnupg, encryption]
 
 [{% img right /images/contents/gnupg/logo.png 200 %}](http://www.gnupg.org)
 
-Sometimes you get sick of all this private/public key business and you just want to symmetrically encrypt some files. It ought to be simple!
+I use these commands to symmetrically encrypt files with GnuPG 2. Sometimes you just need to get away from all this private/public key business.
 
-I do that with GnuPG 2. Install gnupg2 with your favorite package manager, then use the following commands. These will prompt for the encryption password:
+Install **gnupg2** with your favorite package manager, then type the following commands. It will prompt for the encryption password:
 
 {% codeblock lang:bash %}
 # encrypt file.txt to file.txt.gpg

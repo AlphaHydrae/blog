@@ -8,11 +8,11 @@ categories: [vim, tools]
 
 [{% img right /images/contents/vim/logo.gif %}](http://www.vim.org)
 
-In the good ol' days I used Eclipse, NetBeans, Dreamweaver. Then I switched to TextMate when I started doing Ruby. Now I use Vim for all my Ruby/Javascript development. At this point in my backwards journey, I would like to document how you can increase the awesomeness of Vim using a few well-chosen plugins.
+In the good ol' days I used Eclipse, NetBeans, Dreamweaver. Then I switched to TextMate when I started doing Ruby. Now I use Vim for all my Ruby/Javascript development. At this point in my backwards journey through time, I would like to document how you can increase the awesomeness of Vim using a few well-chosen plugins.
 
 <!--more-->
 
-First things first: use pathogen.vim! Pathogen allows you to install each Vim plugin in its own separate directory under .vim/bundle. It makes your life much less painful.
+First things first: **use [pathogen.vim](https://github.com/tpope/vim-pathogen)**. Pathogen allows you to install each Vim plugin in its own separate directory under `.vim/bundle`. It makes your life much less painful.
 
 {% codeblock lang:bash %}
 # Installation procedure from https://github.com/tpope/vim-pathogen
@@ -23,7 +23,7 @@ curl -Sso ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen
 call pathogen#infect()
 {% endcodeblock %}
 
-## NERD tree
+## [NERD tree](https://github.com/scrooloose/nerdtree)
 
 This is a filesystem tree that you can display as a sidebar. You can navigate it with your keyboard and/or mouse. Open it up with :NERDTree.
 
@@ -35,7 +35,7 @@ git clone https://github.com/scrooloose/nerdtree
 
 {% img center /images/contents/vim/nerdtree.png %}
 
-## SuperTab
+## [SuperTab](https://github.com/ervandew/supertab)
 
 Allows you to use the Tab key for auto-completion.
 
@@ -47,9 +47,9 @@ git clone https://github.com/ervandew/supertab
 
 {% img center /images/contents/vim/supertab.png %}
 
-## rails.vim
+## [rails.vim](https://github.com/tpope/vim-rails)
 
-Ruby on Rails power tools. It adds syntax highlighting for methods like has_and_belongs_to_many, allows you to jump between related files (model, controller, helper, migration, etc), and more.
+Ruby on Rails power tools. It adds syntax highlighting for methods like `has_and_belongs_to_many`, allows you to jump between related files (model, controller, helper, migration, etc), and more.
 
 {% codeblock lang:bash %}
 # Install with pathogen
@@ -57,7 +57,7 @@ cd ~/.vim/bundle
 git clone git://github.com/tpope/vim-rails.git
 {% endcodeblock %}
 
-## Command-T
+## [Command-T](https://github.com/wincent/Command-T)
 
 "Go to file" smart plugin. It does pretty awesome things like find `/app/controllers/home_controller.rb` just by typing `ach`. It's a bit trickier to install because it has a C Ruby extension for speed.
 
@@ -89,9 +89,9 @@ let mapleader = ","
 
 {% img center /images/contents/vim/commandt.png %}
 
-## fugitive.vim
+## [fugitive.vim](https://github.com/tpope/vim-fugitive)
 
-Git wrapper to call Git commands from Vim. Allows you to manipulate the index, move files with open buffers, and much more. Watch this screencast for an introduction.
+Git wrapper to call Git commands from Vim. Allows you to manipulate the index, move files with open buffers, and much more. Watch [this screencast](http://vimcasts.org/episodes/fugitive-vim---a-complement-to-command-line-git/) for an introduction.
 
 {% codeblock lang:bash %}
 # Install with pathogen

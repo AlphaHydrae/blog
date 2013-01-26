@@ -10,7 +10,7 @@ categories: [grunt, jasmine, javascript, tools]
 
 When you develop a Javascript lib, you need to do fun stuff like concatenating source files, validating with JSHint and minifying. After I got past the initial phase of doing it by hand (many headaches, didn't last long), I started doing it with Rake tasks and npm packages. As you can imagine, the Rake task quickly became a headache of its own.
 
-Enters Grunt, a build tool which does all that for you, plus other goodies. It's a task-based tool so it has tasks like concat to concatenate files, which you can run with grunt concat at the command line. This post is a quick example of what you can achieve with Grunt.
+Enters Grunt, a build tool which does all that for you, plus other goodies. It's a task-based tool so it has tasks like `concat` to concatenate files, which you can run with `grunt concat` at the command line. This post is a quick example of what you can achieve with Grunt.
 
 <!--more-->
 
@@ -38,11 +38,11 @@ module.exports = function(grunt) {
 
 As you can see, there is a plugin system allowing you to include others' plugins or write your own.
 
-The project configuration contains task configurations and other useful data. In the above example, we do two things. First we read and parse the project's package.json file into pkg. In meta, we extract the package version. We will use this information in some tasks.
+The project configuration contains task configurations and other useful data. In the above example, we do two things. First we read and parse the project's `package.json` file into `pkg`. In meta, we extract the package version. We will use this information in some tasks.
 
 ## Validating with JSHint
 
-Grunt provides the lint task for that. You can define the files to validate and JSHint options.
+Grunt provides the `lint` task for that. You can define the files to validate and JSHint options.
 
 {% codeblock lang:js %}
 lint: {
@@ -56,11 +56,11 @@ jshint: {
 }
 {% endcodeblock %}
 
-Then just run grunt lint.
+Then just run `grunt lint`.
 
 ## Concatenating
 
-Grunt provides the concat task.
+Grunt provides the `concat` task.
 
 {% codeblock lang:js %}
 concat: {
@@ -75,7 +75,7 @@ concat: {
 }
 {% endcodeblock %}
 
-Here, you define that you want to concatenate three files from vendor and src into one file in lib. The concatenation has a name (myPlugin) which is shown when you run it. You can define as many as you want. They will all be performed when you run grunt concat.
+Here, you define that you want to concatenate three files from `vendor` and `src` into one file in `lib`. The concatenation has a name (myPlugin) which is shown when you run it. You can define as many as you want. They will all be performed when you run `grunt concat`.
 
 ## Defining a Banner
 
@@ -96,7 +96,7 @@ meta: {
 
 ## Minifying with UglifyJS
 
-Grunt provides minification with UglifyJS with the min task.
+Grunt provides minification with UglifyJS with the `min` task.
 
 {% codeblock lang:js %}
 min: {
@@ -110,15 +110,15 @@ min: {
 }
 {% endcodeblock %}
 
-This configuration defines that we want `lib/myPlugin.min.js` to be built by minifying our concatenated source file and prepending the banner (the banner will not be minified by UglifyJS as it starts with `/*!`). As you can see, you can use information from other tasks like concat.
+This configuration defines that we want `lib/myPlugin.min.js` to be built by minifying our concatenated source file and prepending the banner (the banner will not be minified by UglifyJS as it starts with `/*!`). As you can see, you can use information from other tasks like `concat`.
 
-If you need to configure UglifyJS options, you can add an uglify object at the same level as min.
+If you need to configure UglifyJS options, you can add an `uglify` object at the same level as `min`.
 
 ## Running Jasmine Specs
 
 My favorite Javascript testing framework at the moment is Jasmine. Grunt has a Jasmine plugin that allows you to run your specs headlessly with PhantomJS.
 
-First you must install the plugin. If you're using NPM and have a package.json file, you can add this to your dependencies and run npm install:
+First you must install the plugin. If you're using NPM and have a `package.json` file, you can add this to your dependencies and run `npm install`:
 
 {% codeblock lang:js %}
 "devDependencies": {
@@ -138,7 +138,7 @@ module.exports = function(grunt) {
 };
 {% endcodeblock %}
 
-Once this is done, you can at last configure the jasmine task.
+Once this is done, you can at last configure the `jasmine` task.
 
 {% codeblock lang:js %}
 jasmine : {
@@ -173,10 +173,8 @@ module.exports = function(grunt) {
 };
 {% endcodeblock %}
 
-In this case, it validates the javascript, concatenates the source files and minifies them. That way you can just run grunt and have everything ready for release. Of course, it will fail if validation doesn't pass, allowing to fix any errors before you can run it.
+In this case, it validates the javascript, concatenates the source files and minifies them. That way you can just run `grunt` and have everything ready for release. Of course, it will fail if validation doesn't pass, allowing you to fix any errors before you can run it.
 
 ## Moar
 
-The Grunt website provides a number of configuration file examples.
-
-Go build some Javascript now.
+The Grunt website provides a number of [configuration file examples](https://github.com/gruntjs/grunt/blob/0.3-stable/docs/example_gruntfiles.md).
