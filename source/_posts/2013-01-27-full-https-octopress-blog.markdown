@@ -14,3 +14,5 @@ The culprits were **Twitter**, **Google Fonts** and **Google Search**. This is t
 * `http://platform.twitter.com/...` in `source/_includes/twitter_sharing.html` (one URL)
 * `http://fonts.googleapis.com/...` in `source/_includes/custom/head.html` (two URLs)
 * `http://google.com/...` in the `simple_search` parameter of `_config.yml` (one URL)
+
+Also don't forget to have your `url` in `_config.yml` be HTTPS.
