@@ -149,7 +149,7 @@ class PeopleController < ActionController::Base
 
   def show
 
-    cache = Person.cached params[:id]
+    cache = Person.cache params[:id]
 
     # Parse the cache data.
     updated_at = Time.at(cache['updated_at'].to_i).utc
