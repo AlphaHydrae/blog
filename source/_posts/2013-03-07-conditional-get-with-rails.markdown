@@ -170,7 +170,7 @@ end
 
 ## jQuery Client
 
-And that's my periodic call from the browser. On the first request, jQuery will automatically get the ETag and last modified date from the server and send them for the next requests.
+And that's my periodic call from the browser. On the first request, jQuery will automatically get the ETag and last modified date from the server and send them for the next requests. Nothing to do here.
 
 {% codeblock lang:javascript %}
 function pollPerson() {
@@ -192,7 +192,7 @@ setInterval(pollPerson, 30000);
 
 ## Cache Auto-Expiration
 
-If you prefer to expire your cache after a certain time rather than with the `after_save` callback, you can tell Redis to do that.
+If you prefer to expire your cache after a certain time rather than with or in addition to the `after_save` callback, you can tell Redis to do that.
 
 {% codeblock lang:ruby %}
 # Wrap it in a multi block for faster execution.
