@@ -13,3 +13,9 @@ Welcome to my blog.
 This is a coding journal which I use to document some of the blood spilt during my technical journey to the edges of the intarweb. It contains condensed tutorials which I use as a reference for myself, and may occasionally include my opinions about the latest tech I found to play with. Be advised that updates will be sporadic.
 
 As for myself, I'm a software engineer and self-styled *code warrior*. When I'm not coding, I'm also many other things from an avid reader to a decent pianist and an amateur chess player. For a serious profile, go to [LinkedIn](http://ch.linkedin.com/in/simonoulevay).
+
+## Contact Me
+
+* **Professional:** [LinkedIn](http://ch.linkedin.com/in/simonoulevay)
+* **Twitter:** [alphydr](https://twitter.com/alphydr)
+* **E-mail:** contact (at this domain)
