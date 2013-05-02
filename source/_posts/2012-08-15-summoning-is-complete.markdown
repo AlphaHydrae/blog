@@ -3,7 +3,7 @@ layout: post
 title: "Summoning is complete"
 date: 2012-08-15 09:14
 comments: false
-categories: [shell, workflow]
+categories: [cli,shell,workflow]
 ---
 
 I'm a lazy developer and an even lazier sysadmin. This is my history search function.
