@@ -3,13 +3,13 @@ require "bundler/setup"
 require "stringex"
 require "dotenv"
 
-Dotenv.load! File.expand_path('~/.env')
+Dotenv.load! File.expand_path('~/.env.d/blog')
 
 ## -- Rsync Deploy config -- ##
 # Be sure your public key is listed in your server's ~/.ssh/authorized_keys file
-ssh_user       = ENV['AH_BLOG_SSH']
-ssh_port       = ENV['AH_BLOG_PORT'].to_i
-document_root  = ENV['AH_BLOG_ROOT']
+ssh_user       = ENV['SERVER_SSH']
+ssh_port       = ENV['SERVER_PORT'].to_i
+document_root  = ENV['SERVER_ROOT']
 rsync_delete   = true
 rsync_args     = ""  # Any extra arguments to pass to rsync
 deploy_default = "rsync"
