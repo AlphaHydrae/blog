@@ -2,11 +2,11 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: https://alphahydrae.com
+url: http://alphahydrae.com
 title: Alpha Hydrae
 subtitle: Random coding chronicles.
 author: Simon Oulevay
-simple_search: https://google.com/search
+simple_search: http://google.com/search
 description:
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
@@ -98,7 +98,7 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name:
+disqus_short_name: alphahydrae
 disqus_show_comment_count: false
 
 # Google Analytics
