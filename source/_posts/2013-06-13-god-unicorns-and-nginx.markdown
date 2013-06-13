@@ -4,7 +4,6 @@ title: "God, Unicorns and Nginx"
 date: 2013-06-13 19:30
 comments: true
 categories: [ruby,god,unicorn,nginx]
-published: false
 ---
 
 Time to write a little about the tools I use to deploy Ruby on Rails applications.
@@ -215,10 +214,10 @@ See [Unicorn Signals](http://unicorn.bogomips.org/SIGNALS.html) for more informa
 
 On occasion, I've had Unicorn-powered applications die on me due to bugs or memory issues.
 My favorite solution is to use God to restart them when that happens.
-God will watch the Unicorn process, start it when it's not running, restart it
-when certain conditions are met, and allow you to easily stop/restart the process when needed.
+God will watch the Unicorn master process, start it when it's not running, restart it
+when certain conditions are met, and allow you to easily stop/restart when needed.
 
-The following configuration manages starts and restarts and notifies me by mail when anything goes wrong.
+The following configuration manages this and notifies me by mail when anything goes wrong.
 I initially had trouble understanding the God transition syntax, so I added more comments for clarification.
 
 ```rb
@@ -380,7 +379,7 @@ end
 To do this, you must run God as root.
 In my case, I needed to run God as an unprivileged user so it wasn't an option.
 
-You can run god with this configuration like this:
+You can run god as a daemon with this configuration like this:
 
 ```bash
 god -c config/god.rb -l tmp/logs/god.log -P tmp/pids/god.pid
@@ -411,7 +410,8 @@ http {
 
   keepalive_timeout 65;
 
-  # Unicorn socket. Load balancing is done entirely by the operating system kernel.
+  # Unicorn cluster. This is simply the path to the socket.
+  # Load balancing is done entirely by the operating system kernel.
   upstream myapp_cluster {
     server unix:/path/to/app/tmp/sockets/unicorn.sock;
   }
