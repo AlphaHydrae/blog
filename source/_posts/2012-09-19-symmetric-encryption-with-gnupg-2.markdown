@@ -2,7 +2,7 @@
 layout: post
 title: "Symmetric encryption with GnuPG 2"
 date: 2012-09-19 09:36
-comments: false
+comments: true
 categories: [gnupg, encryption]
 ---
 

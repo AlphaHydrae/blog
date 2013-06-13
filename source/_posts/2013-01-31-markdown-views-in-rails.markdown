@@ -2,7 +2,7 @@
 layout: post
 title: "Markdown views with syntax highlighting in Rails"
 date: 2013-01-31 17:46
-comments: false
+comments: true
 categories: [markdown, rails, redcarpet, pygments]
 ---
 

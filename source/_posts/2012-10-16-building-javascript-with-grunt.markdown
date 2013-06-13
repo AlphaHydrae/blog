@@ -2,7 +2,7 @@
 layout: post
 title: "Building Javascript with Grunt"
 date: 2012-10-16 09:59
-comments: false
+comments: true
 categories: [grunt, jasmine, javascript, tools]
 ---
 

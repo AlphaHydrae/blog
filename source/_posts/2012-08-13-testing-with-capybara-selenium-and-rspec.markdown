@@ -2,7 +2,7 @@
 layout: post
 title: "Testing with Capybara, Selenium and RSpec"
 date: 2012-08-13 22:45
-comments: false
+comments: true
 categories: [capybara, selenium, rspec, testing]
 ---
 

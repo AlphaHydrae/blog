@@ -2,7 +2,7 @@
 layout: post
 title: "Set up your own Git server"
 date: 2012-08-14 08:28
-comments: false
+comments: true
 categories: [git]
 ---
 

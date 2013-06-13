@@ -2,7 +2,7 @@
 layout: post
 title: "Ruby Configuration DSL"
 date: 2012-09-13 09:32
-comments: false
+comments: true
 categories: [ruby, dsl, patterns]
 ---
 

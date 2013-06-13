@@ -2,7 +2,7 @@
 layout: post
 title: "Git: how to log commits from all branches"
 date: 2013-01-25 20:56
-comments: false
+comments: true
 categories: [git]
 ---
 

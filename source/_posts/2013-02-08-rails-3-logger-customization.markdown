@@ -2,7 +2,7 @@
 layout: post
 title: "Rails 3 logger customization"
 date: 2013-02-08 17:30
-comments: false
+comments: true
 categories: [rails,logging]
 ---
 

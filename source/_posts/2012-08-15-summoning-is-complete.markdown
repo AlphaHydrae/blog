@@ -2,7 +2,7 @@
 layout: post
 title: "Summoning is complete"
 date: 2012-08-15 09:14
-comments: false
+comments: true
 categories: [cli,shell,workflow]
 ---
 

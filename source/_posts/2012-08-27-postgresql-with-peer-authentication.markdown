@@ -2,7 +2,7 @@
 layout: post
 title: "PostgreSQL with peer authentication"
 date: 2012-08-27 09:22
-comments: false
+comments: true
 categories: [postgresql, auth]
 ---
 

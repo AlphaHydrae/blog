@@ -2,7 +2,7 @@
 layout: post
 title: "Conditional GET with Rails, Redis and jQuery"
 date: 2013-03-07 22:01
-comments: false
+comments: true
 categories: [http,etag,rails,jquery,redis]
 ---
 

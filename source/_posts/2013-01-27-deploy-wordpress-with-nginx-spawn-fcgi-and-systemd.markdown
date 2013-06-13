@@ -2,7 +2,7 @@
 layout: post
 title: "Deploy WordPress with nginx, spawn-fcgi and systemd"
 date: 2013-01-27 21:19
-comments: false
+comments: true
 categories: [wordpress, nginx, fcgi, systemd, sysadmin]
 ---
 

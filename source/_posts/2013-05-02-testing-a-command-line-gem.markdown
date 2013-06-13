@@ -2,7 +2,7 @@
 layout: post
 title: "Testing a command-line gem"
 date: 2013-05-02 19:12
-comments: false
+comments: true
 categories: [ruby,testing,commander,cli]
 ---
 

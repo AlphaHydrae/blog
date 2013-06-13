@@ -1,9 +1,10 @@
 ---
 layout: post
 title: "God, Unicorns and Nginx"
-date: 2013-06-11 19:31
-comments: false
+date: 2013-06-13 19:30
+comments: true
 categories: [ruby,god,unicorn,nginx]
+published: false
 ---
 
 Time to write a little about the tools I use to deploy Ruby on Rails applications.

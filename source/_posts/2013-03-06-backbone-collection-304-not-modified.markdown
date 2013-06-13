@@ -2,7 +2,7 @@
 layout: post
 title: "Backbone Collection 304 Not Modified"
 date: 2013-03-06 20:23
-comments: false
+comments: true
 categories: [javascript,backbone,http,etag]
 ---
 

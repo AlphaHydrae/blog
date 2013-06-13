@@ -2,7 +2,7 @@
 layout: post
 title: "Full-HTTPS Octopress Blog"
 date: 2013-01-27 20:03
-comments: false
+comments: true
 categories: [https, octopress]
 ---
 

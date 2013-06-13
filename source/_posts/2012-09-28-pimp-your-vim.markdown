@@ -2,7 +2,7 @@
 layout: post
 title: "Pimp your Vim"
 date: 2012-09-28 09:46
-comments: false
+comments: true
 categories: [vim, tools]
 ---
 
