@@ -471,3 +471,9 @@ http {
   }
 }
 {% endcodeblock %}
+
+## Meta
+
+* **God:** 0.13.2
+* **Nginx:** 1.4.1
+* **Unicorn:** 4.6.2
