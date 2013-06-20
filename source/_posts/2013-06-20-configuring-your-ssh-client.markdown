@@ -2,7 +2,7 @@
 layout: post
 title: "Configuring Your SSH Client"
 date: 2013-06-20 20:46
-comments: false
+comments: true
 categories: [ssh,workflow]
 ---
 
