@@ -68,7 +68,7 @@ default_asides:
 
 # Github repositories
 github_user: alphahydrae
-github_repo_count: 3
+github_repo_count: 5
 github_show_profile_link: true
 github_skip_forks: true
 
@@ -106,3 +106,6 @@ google_analytics_tracking_id: "UA-38012272-1"
 
 # Facebook Like
 facebook_like: false
+
+# Gravatar
+gravatar_email: contact@alphahydrae.com
