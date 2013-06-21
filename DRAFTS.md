@@ -4,4 +4,3 @@
 * rails renderer
 * one tool to configure them all [ansible,sysadmin]
 * capistrano & dotenv
-* manage multiple keys with ssh\_config
