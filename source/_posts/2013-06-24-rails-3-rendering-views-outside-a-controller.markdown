@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Rails 3: rendering views outside a controller"
-date: 2013-06-21 09:24
+date: 2013-06-24 09:24
 comments: true
 categories: [rails]
 ---
@@ -15,9 +15,10 @@ The trick is to create a subclass of `ActionView::Base` and mix in a few things 
 ```rb
 module Renderer
 
-  # Renders a view. Pass a hash of local variables as :assigns.
+  # Renders a view.
   def self.render options = {}
 
+    # Pass a hash of local variables as :assigns.
     assigns = options.delete(:assigns) || {}
 
     # Create a view.
