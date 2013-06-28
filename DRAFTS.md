@@ -6,4 +6,5 @@
 * securing your dropbox with encfs (& boxafe?)
 * managing symlinks with gitenv
 * protecting secrets with dotenv
-* mocking node modules with jasmine & sandboxed-module
+* rest & hypermedia apis
+* install command-t & vim & ruby with macports
