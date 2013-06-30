@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "REST &amp; Hypermedia APIs"
-date: 2013-06-29 20:44
+date: 2013-06-30 20:44
 comments: true
 categories: [api,http,hypermedia,patterns,rest]
 ---
@@ -16,7 +16,7 @@ because Rails provides everything you need to quickly write a beautiful REST API
 Or so I thought.
 
 After reading many articles and many more comments,
-I now understand that most so-called REST APIs today are not actually RESTful according to how it was originally defined.
+I now understand that most so-called REST APIs today are not actually RESTful according to how REST was originally defined.
 Many proponents of "true REST APIs" now seem to prefer talking about **Hypermedia APIs** which is a more practical description of what they are.
 You'll also hear about the [**HATEOAS**](http://en.wikipedia.org/wiki/HATEOAS) principle, meaning **Hypermedia As The Engine Of Application State**, one of the constraints of the REST architectural style.
 
@@ -26,8 +26,9 @@ A big part of software engineering is making trade-offs.
 But you have to understand what you're trading off.
 
 For the rest of this post, I'm going to put on my "True REST & Hypermedia API" zealot hat.
-Aside from point 1 which is a summary of what many people incorrectly understand REST to be,
-this post reflects my (condensed) understanding of what REST/Hypermedia principles are, and how they can be put into practice.
+Aside from point 1 which is a summary of what some people incorrectly understand REST to be,
+this post reflects my (condensed) understanding of what REST/Hypermedia principles are.
+I also describe useful standards and practices that can help to put these principles into practice in an HTTP API.
 
 Note that many people disagree that this is how it should be done.
 If you're interested in knowing more, I've listed the articles I found most useful to understand the subject at the bottom of this post.
@@ -51,7 +52,7 @@ A fair warning to those who may read on: this is a [tl;dr]({{ root_url }}/images
 <a name="rest-rails"></a>
 ## REST: The Rails Way
 
-This is the way most "REST APIs" I've seen work, as popularized by Ruby on Rails.
+This is the way most "REST APIs" I've seen work, as popularized notably by Ruby on Rails.
 
 * A RESTful API consists of **resources** (that map directly or indirectly to your domain objects).
 * Each resource or collection of resources has a **documented, unique URI**.
@@ -62,7 +63,7 @@ In a nutshell, we're exposing domain objects through HTTP with CRUD operations (
 
 {% img left /images/contents/hypermedia/stop.png 60 %}
 
-This is the point where you may want to stop reading if you don't want this conception of a REST API to be eviscerated and transmogrified into a completely different animal.
+This is the point where you may want to stop reading if you don't want this conception of a REST API to be eviscerated and transmogrified.
 
 <a name="hypermedia-apis"></a>
 ## Hypermedia APIs
@@ -81,7 +82,7 @@ One word: the **Web.**
 When you want to browse a website, there are basically two things you need to know: the root URI, and that you can follow links to new information.
 This is the simple but powerful concept of hyperlinks that has made the web so successful.
 
-From a technical point of view, the client is getting a representation of a resource
+From a technical point of view when getting a web page, the client is getting a representation of a resource
 in the `text/html` [Internet Media Type](https://en.wikipedia.org/wiki/Internet_media_type)
 (formerly known as MIME Type); this media type defines the behavior of links.
 The knowledge of the root URI and the media type is sufficient to drive the interaction.
@@ -99,11 +100,11 @@ Contrary to the previous notion of REST, there should be:
 * No fixed resource names or hierarchies.
 
 The goal is not to get predefined resources at specific URIs;
-it is to browse *hyperlinks* to *representations* of resources, wherever and whatever those resources might be.
+it is to follow *hyperlinks* to obtain *representations* of resources, wherever and whatever those resources might be.
 
 What you should spend time defining in a Hypermedia API are the **media types** used for representing resources;
 they define link relations to other resources through **hyperlinks**.
-The media types and links drive the application state, hence *Hypermedia As The Engine Of Application State.*
+The media types and hyperlinks drive the interaction, hence *Hypermedia As The Engine Of Application State.*
 
 <a name="media-types"></a>
 ## Media Types
@@ -112,7 +113,7 @@ The media types and links drive the application state, hence *Hypermedia As The 
 
 Almost. The problem is that `application/json` is not a hypermedia because it's not aware of links.
 There's nothing in the JSON specification that tells a client that this `person_uri` property you're using is actually a link.
-It's recommended to use a hyperlink-aware media type instead of plain JSON.
+There are advantages to using a hyperlink-aware media type instead of plain JSON.
 
 I'm not an expert (yet), but I'll outline the two solutions I've most read about:
 Hypertext Application Language and custom media types.
@@ -190,7 +191,7 @@ In this case, we have the `self` relation which is itself,
 the `next` relation which indicates where to get the next page of orders,
 and a `find` relation that can be used to find a specific order.
 
-And as you can see, the last part of the document under the reserved `_embedded` property contains embedded objects, which are also resources with links.
+The last part of the document under the reserved `_embedded` property contains embedded objects, which are also representations of resources with links.
 You can have multiple lists of embedded objects; here there is just one under `orders`:
 
 ```json
@@ -206,9 +207,12 @@ You can have multiple lists of embedded objects; here there is just one under `o
       "currency": "USD",
       "status": "shipped",
     },
+    ...
+  ]
+}
 ```
 
-The goal of HAL is to provide a standardized media type that describes hyperlinks and embedded resources.
+The goal of HAL is to provide a standardized media type that defines how to handle hyperlinks and embedded resources.
 That way you don't have to use linkless JSON/XML or develop your own media type (we'll talk about that one later).
 If you use HAL, you can focus on describing the link relations that drive your application.
 
@@ -268,10 +272,11 @@ That's it for HAL.
 <a name="custom-media-types"></a>
 ### Custom Media Types
 
-Now let's talk about custom media types.
-Many Hypermedia folks seem to advocate this solution.
+Media types describe the representations of the resources that can be used with your API,
+including links to other resources.
+There may be multiple representations of a same resource described by different media types.
 
-The idea is to define your own media types which describe the representations of your resources as well as the links between them.
+You can define your own media types to represent your resources as well as the links between them.
 What a media type should be, how to name and how to register it is defined in
 [Media Type Specifications and Registration Procedures (RFC 6838)](http://tools.ietf.org/html/rfc6838).
 Official registration may not be necessary depending on who is going to use your API,
@@ -282,13 +287,13 @@ I won't go too much into details about this RFC but I'll give you a real-world e
 For example, you can use the `application/vnd.github.beta.text+json` media type to retrieve a comment's body.
 Let's break that down:
 
-* `application` is the top-level type; this type is for data that does not fit under other top-level media types such as text or audio,
+* `application` is the top-level type; the application type is for data that does not fit under other top-level media types such as text or audio,
   particularly data to be consumed by some type of application program.
 * `vnd` is the prefix for the vendor tree, reserved for media types of publicly available products.
 * `github` is the name of this particular media type.
-* `beta` is a parameter that GitHub uses to indicate the version of the API (soon to be `v3`).
+* `beta` is a parameter that GitHub uses to indicate the version of the API (can also be `v3`).
 * `text` is another parameter to indicate the desired representation, in this case plain text.
-* `+json` at the end indicates the underlying structure of the media type (the responses of their API are always in JSON).
+* `+json` at the end indicates the underlying structure of the media type (the responses of their API are always wrapped in JSON).
 
 Check out the RFC if you want to know how to build your media type.
 In this case, the the response might look something like this (partial headers):
@@ -335,11 +340,13 @@ Content-Type: application/vnd.myapi.orders+json; charset=utf-8
 ```
 
 Instead of having a standard syntax for hyperlinks like HAL, the custom media type must define the link relations.
-The documentation page for this media type might for example indicate that the `uri` property is a hyperlink to the resource itself,
-whereas `basket_uri` is a hyperlink to a resource which can be represented with another media type such as `vnd.myapi.basket+json`.
+The documentation page for this media type might for example indicate that the `uri` property is a link to the resource itself,
+whereas `basket_uri` is a link to a resource which can be represented with another media type such as `vnd.myapi.basket+json`.
 For HTTP APIs, the media type may also describes what HTTP verbs are applicable and the associated behavior.
 
-All the media types used by your API must be part of the contract with the API clients, but the URI structure is allowed to change independently.
+All the media types used by your API must be part of the contract with the API clients,
+but the URI structure is allowed to change independently,
+and new representations can be easily be added to existing resources.
 
 <a name="link-header"></a>
 ## The Link Header
@@ -357,7 +364,7 @@ You can provide multiple link headers, or multiple links in one header:
 Link: </orders?page=1>; rel="prev", </orders?page=2>; rel="next"
 ```
 
-This can be a quick way to add hyperlinks to your API if you don't use a hypermedia format and cannot immediately define a custom media type.
+This can be a quick way to add hyperlinks to your API if you don't use a hypermedia format or cannot immediately define a custom media type.
 
 Note that [Web Linking (RFC 5988)](http://tools.ietf.org/html/rfc5988) defines that extension relation types
 (your custom business types) in link headers are *required* to be absolute URIs, for example:
@@ -408,7 +415,7 @@ Do you really expect me to go through all those link relations to get at my reso
 
 No, you can't.
 Not if you want to follow the principles of REST and Hypermedia.
-You're *supposed* to follow these relations in order to reduce the client/server coupling and allow the URI structure to evolve independently.
+You're *supposed* to follow these links in order to reduce the client/server coupling and allow the resources and URI structure to evolve independently.
 The URIs should not even be in your documentation (aside from the root).
 
 Let's take the previous example of the list of orders.
@@ -429,9 +436,9 @@ Content-Type: application/vnd.myapi+json; charset=utf-8
 }
 ```
 
-This representation of the root resource has a custom media type.
+This representation of the root resource is described by a custom media type.
 You would know from the documentation of this `application/vnd.myapi+json` media type
-that the `orders_uri` property is a hyperlink to the orders resource you need, and that it has
+that the `orders_uri` property is a link to the orders resource you need, and that it has
 a representation in some other media type like `application/vnd.myapi.orders+json`.
 Let's GET that:
 
@@ -452,7 +459,7 @@ Content-Type: application/vnd.myapi.orders+json; charset=utf-8
 }
 ```
 
-Again, from the media type you would know that you can find the resource you're looking for through the templated `find_uri` hyperlink:
+Again, from the media type you would know that you can find the resource you're looking for through the templated `find_uri` link:
 
 ```json
 $> curl -L -H 'Accept: application/vnd.myapi.order+json' /orders?id=425
@@ -477,14 +484,17 @@ In this example, that's three calls and a redirect to get to the order resource 
 **_Unacceptable!_** you say?
 Well that's how Hypermedia APIs work.
 
-However, you can build on top of standard HTTP caching mechanisms to mitigate those issues.
-All responses may contain `Cache-Control`, `Expires`, `Last-Modified-Since`, `ETag` and other cache control headers.
+However, this example uses many steps on purpose to illustrate hyperlinks.
+You could add a link to find orders directly in the representation of the root resource, saving one call.
+
+You can also build on top of standard HTTP caching mechanisms.
+All responses may contain cache control headers like `Cache-Control`, `Expires`, `Last-Modified-Since`, `ETag`.
 Clients may then cache the response for some time, or send headers like `If-Modified-Since` and `If-None-Match` and get back an
 *HTTP 304 Not Modified* response if the resources (and their URIs) have not changed.
 
-In most cases the first two calls will be much faster with caching, and reduce the amount of data transfer.
+In most cases calls will be much faster with caching and less data will be transferred.
 You don't necessarily have to do it yourself; some well-behaved HTTP tools can handle it for you.
-For example when using jQuery, pages will be automatically cached by the browser if applicable.
+For example when using jQuery, data will be automatically cached by the browser if applicable.
 
 HTTP caching is described in [Hypertext Transfer Protocol -- HTTP/1.1 (RFC 2616)](http://tools.ietf.org/html/rfc2616),
 notably [Section 13 - Caching in HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html).
@@ -492,6 +502,8 @@ I strongly suggest you read up on this if you haven't already.
 
 <a name="api-versioning"></a>
 ## API Versioning
+
+{% img right /images/contents/hypermedia/versioning.jpg 250 %}
 
 Over time your API will inevitably change:
 new features will be added;
@@ -504,26 +516,29 @@ I've mostly seen four options that I'll describe here.
 
 ### URI Versioning
 
-Theoretically this is not RESTful.
-Even if the resource changes in backward-incompatible ways,
-as long as it's still basically the same resource there's no reason to change its URI (resource identifier) based on the version.
-
-However, versioning the URI is a straightforward solution to support multiple versions of an API at the same time.
-As long as your backend can handle it (thinking mostly of complexity here),
-releasing a version 2 under different URIs ensures that version 1 clients will continue to function.
-Be aware though that your clients can easily become strongly coupled with one version, and that it might be difficult to upgrade them.
+This consists of adding a version number to all your URIs.
+You change the version number when resources change in backward-incompatible ways.
 
 ```
 http://my-api.com/v1/orders
 http://my-api.com/v2/orders
 ```
 
+Theoretically this is not RESTful.
+There's no reason to change the URI of a resource even if it changes in backward-incompatible ways,
+as long as it's still conceptually the same resource.
+Media type versioning can handle this as I'll describe later.
+However, I'll allow this digression because it seems to be the most used solution out there.
+
+Versioning the URI is a straightforward solution to support multiple versions of an API at the same time.
+As long as your backend can handle it (thinking mostly of complexity here),
+releasing a version 2 under different URIs ensures that version 1 clients will continue to function.
+
 In most cases, it is recommended that you only use a major version number.
 A scheme like [semantic versioning](http://semver.org) would be overkill for an API.
 Additions and backward-compatible changes should not increase the version number.
 
-Most API developers have chosen the URI versioning solution because it is practical,
-but it's pretty much unRESTful.
+Most API developers have chosen the URI versioning solution because it is simple to understand and to implement.
 
 ### No Versioning
 
@@ -544,17 +559,22 @@ A solution similar to new links is to version links within a resource.
 ```
 
 That way it's still possible to have multiple behaviors of the same resources in parallel without changing the original URIs.
-You just have to update the definition of the media types to describe those new links.
+I also haven't seen actual examples of this but I've seen it discussed mostly in the context of HAL.
 
 ### Media Type Versioning
 
-If a resource has backward-incompatible changes that conflict with its current media type, then a new media type can be defined.
-For example, you might go from `application/vnd.myapi.v1+json` to `application/vnd.myapi.v2+json`.
-No URI has changed; the new version is essentially just another representation of the same resource, documented separately.
-Different representations can be used by different clients.
+If a resource has backward-incompatible changes that cannot be supported by its current representation,
+then it should have a new representation described by a new media type.
+For example, you might go from `application/vnd.myapi.basket.v1+json` to `application/vnd.myapi.basket.v2+json`.
+No URIs need to be changed; the new version is essentially just another representation of the same resource, documented separately.
+Different representations can be used by different clients at the same time.
 
+This is I think the most elegant way to version resources.
 On the whole, most Hypermedia articles I've read that are not about HAL prefer this solution.
 It seems to best fit REST and Hypermedia principles.
+
+It does require the client and server to be aware of and correctly interpret media types,
+which is the goal of a Hypermedia API.
 
 <a name="final-comments"></a>
 ## Final Comments
@@ -563,30 +583,37 @@ It seems to best fit REST and Hypermedia principles.
 
 Let me take the zealot hat off.
 
-I don't think that Hypermedia APIs are harder to implement than so-called false REST APIs.
-You just have to focus on media types and to make sure that the documentation reflects the hypertext-driven nature of the API, not the URI structure.
-Like all APIs, it helps if you design your resources carefully to avoid as many changes as possible in the future.
-
 Hypermedia APIs are not a silver bullet.
 Clients must still know your media types and link relations.
-Outside of standardized media types, no automated client will be able to automatically browse an API specific to your application or business.
+In a perfect world where all API developers standardize and share their media types then sure,
+automated agents may be able to browse them.
+But in the real world most APIs are going to have their own custom media types.
+Even with HAL the links are going to be specific to your application or business.
 
 Hypermedia APIs also place a greater burden on their clients:
-they must use the API through link relations instead of hard-coded URIs, and should make use of caching for maximum efficiency.
-However, if correctly implemented it does reduce the coupling between server and client.
+the API must be browsed through link relations instead of using hard-coded URIs,
+and caching should be used for maximum efficiency.
+
+However, applying Hypermedia principles does decrease cient/server coupling and promote evolution;
+it hides your resources and their implementation details behind representations described by media types;
+and it allows the URI structure to evolve independently by using hyperlinks instead of fixed resource names and hierarchies.
 
 {% blockquote Roy T. Fielding http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven REST APIs must be hypertext-driven %}
 REST is software design on the scale of decades: every detail is intended to promote software longevity and independent evolution.
 {% endblockquote %}
 
-REST and Hypermedia principles have been carefully designed to solve these problems,
-and there's a myriad of RFCs and other specifications to standardize how to deal with them.
+REST and Hypermedia principles have been carefully designed to solve the problems of the web
+while retaining the properties that have made it successful.
+If you don't understand these principles yet,
+you should definitely look into it before dismissing them as academic or impractical.
+Once you understand, choose what is most appropriate to your needs.
 
-If you don't understand Hypermedia APIs yet, it's definitely worth looking into before dismissing them as academic or impractical.
-There are pros and cons to both solutions.
-Once you understand these, choose what is most appropriate for your needs.
+I don't think that Hypermedia APIs are much harder to implement.
+You just have to focus on media types and to make sure that the
+documentation reflects the hypertext-driven nature of the API, not the URI structure.
+And of course, these principles do not replace careful design of your resource representations to avoid as many changes as possible in the future.
 
-As for me, I will develop my next APIs as Hypermedia APIs to see if I can benefit from those principles in practice.
+As for me, I will develop my next APIs as Hypermedia APIs to put these principles into practice.
 
 May your API clients never break.
 
@@ -616,6 +643,7 @@ May your API clients never break.
 * [RFC 6838: Media Type Specifications and Registration Procedures](http://tools.ietf.org/html/rfc6838)
 * [JSON Hypertext Application Language (draft)](http://tools.ietf.org/html/draft-kelly-json-hal-05)
 
+<a name="fielding-dissertation"></a>
 ### Architectural Styles and the Design of Network-based Software Architectures
 
 Roy T. Fielding's doctoral dissertation which first defined REST.
