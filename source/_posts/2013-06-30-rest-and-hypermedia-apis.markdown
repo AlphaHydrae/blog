@@ -104,7 +104,8 @@ it is to follow *hyperlinks* to obtain *representations* of resources, wherever 
 
 What you should spend time defining in a Hypermedia API are the **media types** used for representing resources;
 they define link relations to other resources through **hyperlinks**.
-The media types and hyperlinks drive the interaction, hence *Hypermedia As The Engine Of Application State.*
+The interaction from state to state in your application (*REpresentational State Transfer*),
+is driven by the media types and hyperlinks, hence *Hypermedia As The Engine Of Application State.*
 
 <a name="media-types"></a>
 ## Media Types
@@ -630,6 +631,8 @@ May your API clients never break.
 * [Web API Versioning Smackdown (Mnot's Blog)](http://www.mnot.net/blog/2011/10/25/web_api_versioning_smackdown)
 * [Advantages Of (Also) Using HATEOAS in RESTful APIs (InfoQ)](http://www.infoq.com/news/2009/04/hateoas-restful-api-advantages)
 * [How to GET a Cup of Coffee (InfoQ)](http://www.infoq.com/articles/webber-rest-workflow)
+* [Honing in on HATEOAS (apigee)](https://blog.apigee.com/detail/api_design_honing_in_on_hateoas)
+* [API Design: Harnessing HATEOAS, Part 1 (apigee)](https://blog.apigee.com/detail/api_design_harnessing_hateoas_part_1)
 * [Designing Hypermedia APIs (steveklabnik@github)](http://steveklabnik.github.io/hypermedia-presentation/)
 * [HAL+JSON Specification](http://stateless.co/hal_specification.html)
 * [Getting hyper about hypermedia APIs (Signal vs. Noise)](http://37signals.com/svn/posts/3373-getting-hyper-about-hypermedia-apis)
