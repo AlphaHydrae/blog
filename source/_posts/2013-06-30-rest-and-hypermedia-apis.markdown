@@ -72,7 +72,7 @@ Shockingly, there are critical properties missing for this to be a true RESTful 
 Some of the above properties are even incompatible with REST principles.
 *Was I lied to?*
 
-*"REST APIs must be hypertext-driven,"* wrote Dr. Fielding in a rant against RPC blasphemers.
+*"REST APIs must be hypertext-driven,"* wrote Roy Fielding in a rant against RPC blasphemers.
 What does he mean by that?
 And what's up with this hyper stuff about hyperlinks and hypermedia?
 Why should I go through all this trouble anyway?
@@ -649,7 +649,7 @@ May your API clients never break.
 <a name="fielding-dissertation"></a>
 ### Architectural Styles and the Design of Network-based Software Architectures
 
-Roy T. Fielding's doctoral dissertation which first defined REST.
+Roy Fielding's doctoral dissertation which first defined REST.
 
 * [HTML Version](http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm)
 * [PDF Version](http://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf)
