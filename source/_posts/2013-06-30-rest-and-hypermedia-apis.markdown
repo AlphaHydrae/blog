@@ -595,7 +595,7 @@ Hypermedia APIs also place a greater burden on their clients:
 the API must be browsed through link relations instead of using hard-coded URIs,
 and caching should be used for maximum efficiency.
 
-However, applying Hypermedia principles does decrease cient/server coupling and promote evolution;
+However, applying Hypermedia principles does decrease client/server coupling and promote evolution;
 it hides your resources and their implementation details behind representations described by media types;
 and it allows the URI structure to evolve independently by using hyperlinks instead of fixed resource names and hierarchies.
 
