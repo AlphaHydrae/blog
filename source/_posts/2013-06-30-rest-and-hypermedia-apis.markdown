@@ -227,7 +227,8 @@ You can easily find live examples with Google.
 The relation property of a link in HAL (`self`, `next`, etc) is defined in [Web Linking (RFC 5988)](http://tools.ietf.org/html/rfc5988).
 In a nutshell, there are two kinds of relations: **Registered Relation Types** and **Extension Relation Types**.
 
-Registered relation types such as *self*, *next*, *previous*, *related* are officially listed by the RFC and have a specific meaning.
+Registered relation types such as *self*, *next*, *previous*, *related* are officially
+[listed by IANA](http://www.iana.org/assignments/link-relations/link-relations.xml) and have a specific meaning.
 You can use them as long as you respect their semantics.
 
 ```json
