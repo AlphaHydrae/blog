@@ -3,12 +3,12 @@ require "bundler/setup"
 require "stringex"
 require "dotenv"
 
-Dotenv.load! File.expand_path('~/.env.d/blog')
+Dotenv.load! File.expand_path('~/.env.d/blog') unless ENV['SERVER_SSH'] && ENV['SERVER_ROOT']
 
 ## -- Rsync Deploy config -- ##
 # Be sure your public key is listed in your server's ~/.ssh/authorized_keys file
 ssh_user       = ENV['SERVER_SSH']
-ssh_port       = ENV['SERVER_PORT'].to_i
+ssh_port       = (ENV['SERVER_PORT'] || 22).to_i
 document_root  = ENV['SERVER_ROOT']
 rsync_delete   = true
 rsync_args     = ""  # Any extra arguments to pass to rsync
