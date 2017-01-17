@@ -25,7 +25,7 @@ accomplish this:
 
 ```bash
 mkdir -p ~/Library/Application\ Support/LibreOffice/4/user/scripts/python
-curl https://raw.githubusercontent.com/slgobinath/libreoffice-code-highlighter/master/Highlight.py > ~/Library/Application\ Support/LibreOffice/4/user/Scripts/Highlight.py
+curl https://raw.githubusercontent.com/slgobinath/libreoffice-code-highlighter/master/Highlight.py > ~/Library/Application\ Support/LibreOffice/4/user/scripts/python/Highlight.py
 ```
 
 (The `/4` part probably depends on your version of LibreOffice.)
