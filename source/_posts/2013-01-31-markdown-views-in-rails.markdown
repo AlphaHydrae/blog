@@ -3,7 +3,7 @@ layout: post
 title: "Markdown views with syntax highlighting in Rails"
 date: 2013-01-31 17:46
 comments: true
-categories: [markdown, rails, redcarpet, pygments]
+categories: [markdown, highlight, rails, redcarpet, pygments]
 ---
 
 Today I had to add technical documentation pages to a Rails app. I chose to write those in [Markdown](http://daringfireball.net/projects/markdown/) as that's what I'm used to and it's a widely-used format. This post describes how to render Markdown views in a Rails application with [Pygments](http://pygments.org) for code syntax highlighting.
