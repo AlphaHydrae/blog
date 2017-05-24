@@ -1,12 +1,11 @@
 .bundle
-.env
+.env*
 .DS_Store
 .sass-cache
 .gist-cache
 .preview-mode
 .pygments-cache
 _deploy
-deploy.conf
 public
 sass.old
 source.old
