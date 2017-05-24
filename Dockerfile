@@ -12,4 +12,7 @@ RUN bundle install
 COPY . /usr/src/app
 RUN rake generate
 
-CMD [ "cp", "-R", "/usr/src/app/.", "/var/www/dist/" ]
+RUN apt-get update -qq \
+    && apt-get install -q -y rsync
+
+CMD [ "rsync", "-avze", "--delete", "/usr/src/app/public/", "/var/www/dist" ]
