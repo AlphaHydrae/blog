@@ -11,3 +11,5 @@ RUN bundle install
 
 COPY . /usr/src/app
 RUN rake generate
+
+CMD [ "cp", "-R", "/usr/src/app/.", "/var/www/dist/" ]
