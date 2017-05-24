@@ -15,4 +15,4 @@ RUN rake generate
 RUN apt-get update -qq \
     && apt-get install -q -y rsync
 
-CMD [ "rsync", "-avze", "--delete", "/usr/src/app/public/", "/var/www/dist" ]
+CMD [ "rsync", "-avz", "--delete", "/usr/src/app/public/", "/var/www/dist" ]
