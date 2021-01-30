@@ -1,0 +1,9 @@
+---
+layout: default
+---
+
+<div class="flex flex-col max-w-4xl mx-auto mt-24 mb-20 space-y-2">
+  {% for archived_post in site.archives %}
+    <p>{{ archived_post.title }}</p>
+  {% endfor %}
+</div>
