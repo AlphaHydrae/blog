@@ -5,7 +5,11 @@
   class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline {{ color }} group hover:text-blue-400"
   href="{{ thing.website }}"
 >
-  <span class="logo w-12 h-12 fill-current">{% include logo/{{ thing.logo | default: 'info' }}.html %}</span>
+  {%- if thing.logo -%}
+    <span class="logo w-12 h-12 fill-current">
+      {% include logo/{{ thing.logo }}.html %}
+    </span>
+  {%- endif -%}
   <div class="flex flex-col">
     <span class="font-mono no-underline {{ color }} group-hover:text-blue-400">
       {{ title }}

@@ -33,6 +33,24 @@
     @apply text-gray-100;
   }
 
+  article p img.right {
+    @apply float-right;
+    @apply ml-3;
+    @apply my-2;
+  }
+
+  article p strong {
+    @apply font-semibold;
+    @apply text-gray-100;
+  }
+
+  article p code {
+    @apply font-mono;
+    @apply text-base;
+    @apply p-1;
+    @apply bg-gray-800;
+  }
+
   article a {
     @apply text-blue-400;
   }

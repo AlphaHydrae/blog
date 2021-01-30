@@ -3,9 +3,9 @@ layout: post
 title: "Logwatch: how to add a service"
 date: 2012-08-08 18:19
 comments: true
+permalink: /:year/:month/:title
 categories: sysadmin
 tags: logging logwatch
-permalink: /:year/:month/:title
 versions:
   ubuntu: 12.04 LTS
   fedora: 17

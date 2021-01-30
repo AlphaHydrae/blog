@@ -3,8 +3,9 @@ layout: post
 title: "Git: how to commit often and still push"
 date: 2012-08-14 09:03
 comments: true
-categories: programming
 permalink: /:year/:month/:title/
+categories: programming
+tags: workflow
 versions:
   git: 1.x
 ---

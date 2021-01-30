@@ -1,5 +1,12 @@
 ---
 
+# Databases
+
+postgresql:
+  title: PostgreSQL
+  website: https://www.postgresql.org
+  color_class: text-blue-300
+
 # Operating Systems
 
 fedora:
@@ -50,6 +57,11 @@ git:
   website: https://git-scm.com
   color_class: text-red-500
 
+gnupg:
+  type: tool
+  title: GnuPG
+  website: https://gnupg.org
+
 logwatch:
   type: tool
   title: Logwatch
@@ -64,3 +76,9 @@ rspec:
   type: tool
   title: RSpec
   website: https://rspec.info
+
+vim:
+  type: tool
+  title: Vim
+  website: https://www.vim.org
+  color_class: text-green-500

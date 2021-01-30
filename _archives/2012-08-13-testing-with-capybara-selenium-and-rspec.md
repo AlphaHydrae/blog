@@ -3,9 +3,9 @@ layout: post
 title: "Testing with Capybara, Selenium and RSpec"
 date: 2012-08-13 22:45
 comments: true
-categories: programming
-tags: ruby rspec capybara selenium testing
 permalink: /:year/:month/:title
+categories: programming
+tags: testing ruby rspec capybara selenium
 versions:
   ruby: 1.9.2
   rspec: 2.11.0
