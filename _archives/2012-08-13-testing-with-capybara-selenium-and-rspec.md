@@ -3,8 +3,15 @@ layout: post
 title: "Testing with Capybara, Selenium and RSpec"
 date: 2012-08-13 22:45
 comments: true
-categories: [capybara, selenium, rspec, testing]
-permalink: /:year/:month/:title/
+categories: programming
+tags: ruby rspec capybara selenium testing
+permalink: /:year/:month/:title
+versions:
+  ruby: 1.9.2
+  rspec: 2.11.0
+  capybara: 1.1.2
+  rake: 0.9.2.2
+  bundler: 1.1.0
 ---
 
 This is a quick-and-dirty tutorial to set up automated browser tests with the
@@ -150,11 +157,3 @@ end
 And that’s pretty much it. Run `bundle exec rake spec` to run the test. This
 will run all `*_spec.rb` files in the spec directory. Firefox will magically
 open, load the required page and the contents will be checked.
-
-## Meta
-
-* **Ruby:** 1.9.2
-* **Capybara:** 1.1.2
-* **RSpec:** 2.11.0
-* **Rake:** 0.9.2.2
-* **Bundler:** 1.1.0

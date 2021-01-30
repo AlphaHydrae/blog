@@ -14,22 +14,38 @@ layout: default
     <h1 itemprop="name headline">{{ post.title | escape }}</h1>
 
     <!-- Metadata -->
-    <p class="flex justify-center space-x-5 text-gray-400">
+    <p class="flex flex-wrap justify-center space-x-5 text-gray-400">
 
       <!-- Publication date -->
       {% include post_date.html %}
 
       <!-- Last modification date (if available) -->
       {%- if post.last_modified_at -%}
-        <time class="items-center flex space-x-2" datetime="{{ post.last_modified_at | date_to_xmlschema }}" itemprop="dateModified">
-          {% octicon pencil width:16 height:16 class:"align-middle inline fill-current" aria-label:hi %}
+        <time class="flex items-center space-x-2" datetime="{{ post.last_modified_at | date_to_xmlschema }}" itemprop="dateModified">
+          {% octicon pencil width:16 height:16 class:"align-middle inline fill-current" %}
           <span class="font-mono">{{ post.last_modified_at | date: '%Y-%m-%d' }}</span>
         </time>
       {%- endif -%}
 
+      <!-- Categories -->
+      {% for category in post.main_categories %}
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+          {% octicon file-directory width:16 height:16 class:"align-middle inline fill-current" %}
+          <span class="font-mono">{{ category }}</span>
+        </span>
+      {% endfor %}
+
       <!-- Languages (if available) -->
-      {% for lang in post.langs %}
-        {% include post_lang.html lang=lang size=4 %}
+      {% for thing in post.things %}
+        {% include post_lang.html thing=thing size=4 %}
+      {% endfor %}
+
+      <!-- Tags -->
+      {% for tag in post.extra_tags %}
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+          {% octicon tag width:16 height:16 class:"align-middle inline fill-current" %}
+          <span class="font-mono">{{ tag }}</span>
+        </span>
       {% endfor %}
     </p>
   </header>
@@ -41,11 +57,11 @@ layout: default
 
   <!-- Language versions (if available) -->
   {%- if post.versions -%}
-    <div class="flex justify-evenly space-x-8 mt-12">
+    <div class="flex flex-wrap justify-evenly space-x-8 mt-16">
       {% for entry in post.versions %}
-        {% assign current_lang = entry[0] %}
+        {% assign current_thing = entry[0] %}
         {% assign current_version = entry[1] %}
-        {% include post_lang_version.html lang=current_lang version=current_version %}
+        {% include post_lang_version.html thing=current_thing version=current_version %}
       {% endfor %}
     </div>
   {%- endif -%}

@@ -1,4 +1,4 @@
-<time class="flex items-center justify-center space-x-2 text-gray-500" datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">
-  {% octicon calendar width:16 height:16 class:"align-middle inline fill-current" aria-label:hi %}
+<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">
+  {% octicon calendar width:16 height:16 class:"align-middle inline fill-current" %}
   <span class="font-mono">{{ post.date | date: '%Y-%m-%d' }}</span>
-</time>
+</span>

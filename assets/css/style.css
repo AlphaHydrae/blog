@@ -21,6 +21,16 @@
     @apply font-display;
     @apply text-4xl;
     @apply text-center;
+    @apply text-white;
+  }
+
+  article h2 {
+    @apply font-bold;
+    @apply font-display;
+    @apply text-3xl;
+    @apply mt-8;
+    @apply mb-4;
+    @apply text-gray-100;
   }
 
   article a {
@@ -37,15 +47,19 @@
 
   article ol {
     @apply list-decimal;
-    @apply list-inside;
+    @apply ml-6;
   }
 
   article ul {
     @apply list-disc;
-    @apply list-inside;
+    @apply ml-6;
   }
 
-  article ol ul {
+  article ul li, article ol li {
+    @apply pl-1;
+  }
+
+  article ol ol, article ol ul, article ul ul {
     @apply ml-5;
   }
 

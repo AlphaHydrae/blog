@@ -1,0 +1,66 @@
+---
+
+# Operating Systems
+
+fedora:
+  title: Fedora
+  website: https://getfedora.org
+  color_class: text-blue-600
+
+ubuntu:
+  title: Ubuntu
+  website: https://ubuntu.com
+  color_class: text-red-500
+
+# Programming Languages
+
+elixir:
+  type: language
+  title: Elixir
+  website: https://elixir-lang.org
+  color_class: text-purple-400
+
+erlang:
+  type: language
+  title: Erlang/OTP
+  website: https://www.erlang.org
+  color_class: text-red-500
+
+ruby:
+  type: language
+  title: Ruby
+  website: https://www.ruby-lang.org
+  color_class: text-red-700
+
+# Tools
+
+bundler:
+  type: tool
+  title: Bundler
+  website: https://bundler.io
+
+capybara:
+  type: tool
+  title: Capybara
+  website: http://teamcapybara.github.io/capybara/
+
+git:
+  type: tool
+  title: Git
+  website: https://git-scm.com
+  color_class: text-red-500
+
+logwatch:
+  type: tool
+  title: Logwatch
+  website: https://sourceforge.net/projects/logwatch/
+
+rake:
+  type: tool
+  title: Rake
+  website: https://github.com/ruby/rake
+
+rspec:
+  type: tool
+  title: RSpec
+  website: https://rspec.info

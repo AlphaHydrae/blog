@@ -1,5 +1,10 @@
-{% assign lang_data = site.data.langs[include.lang] %}
-<a class="flex items-center justify-center space-x-2 cursor-pointer text-gray-500 hover:{{ lang_data.color_class }} hover:underline" href="{{ lang_data.website }}">
-  {% include logo.html logo=include.lang size=include.size %}
-  <span class="font-mono">{{ include.lang }}</span>
+{% assign data = site.data.things[include.thing] %}
+{% assign logo = data.logo | default: 'info' %}
+{% assign color = data.color_class | default: 'text-gray-300' %}
+<a
+  class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:{{ color }} hover:underline"
+  href="{{ data.website }}"
+>
+  {% include logo.html logo=logo size=include.size %}
+  <span class="font-mono">{{ include.thing }}</span>
 </a>
