@@ -12,4 +12,5 @@ gem "webrick", "~> 1.7"
 # Jekyll plugins
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.12"
+  gem "octopress-image-tag", "~> 1.1"
 end

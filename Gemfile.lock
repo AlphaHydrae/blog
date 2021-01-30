@@ -50,6 +50,11 @@ GEM
       jekyll (>= 3.5, < 5.0)
       jekyll-feed (~> 0.9)
       jekyll-seo-tag (~> 2.1)
+    octopress-image-tag (1.1.0)
+      jekyll
+    octopress-quote-tag (1.0.4)
+      jekyll
+      rubypants
     pathutil (0.16.2)
       forwardable-extended (~> 2.6)
     public_suffix (4.0.6)
@@ -58,6 +63,7 @@ GEM
       ffi (~> 1.0)
     rexml (3.2.4)
     rouge (3.26.0)
+    rubypants (0.7.1)
     safe_yaml (1.0.5)
     sassc (2.4.0)
       ffi (~> 1.9)
@@ -73,6 +79,8 @@ DEPENDENCIES
   jekyll (~> 4.2.0)
   jekyll-feed (~> 0.12)
   minima (~> 2.5)
+  octopress-image-tag (~> 1.1)
+  octopress-quote-tag (~> 1.0)
   webrick (~> 1.7)
 
 BUNDLED WITH
