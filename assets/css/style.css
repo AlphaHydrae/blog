@@ -51,7 +51,7 @@
 
 .highlight .c     { color: #545454; font-style: italic } /* Comment */
 .highlight .err   { color: #f07178; background-color: #e3d2d2 } /* Error */
-.highlight .k     { color: #89DDFF; font-weight: bold } /* Keyword */
+.highlight .k     { color: #89DDFF } /* Keyword */
 .highlight .o     { font-weight: bold } /* Operator */
 .highlight .cm    { color: #545454; font-style: italic } /* Comment.Multiline */
 .highlight .cp    { color: #545454; font-weight: bold } /* Comment.Preproc */

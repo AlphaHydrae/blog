@@ -7,11 +7,13 @@
 
     {%- include header.html -%}
 
-    <main class="flex-1 font-body overflow-y-auto page-content" aria-label="Content">
-      {{ content }}
-    </main>
+    <div class="flex-1 overflow-y-auto">
+      <main class="font-body" aria-label="Content">
+        {{ content }}
+      </main>
 
-    {%- include footer.html -%}
+      {%- include footer.html -%}
+    </div>
 
   </body>
 

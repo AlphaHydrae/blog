@@ -1,57 +1,45 @@
----
-layout: default
----
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
 
-<div id="home" class="container max-w-prose mx-auto">
-  {%- if page.title -%}
-    <h1 class="page-heading">{{ page.title }}</h1>
-  {%- endif -%}
+  {%- include head.html -%}
 
-  {{ content }}
-
-  {% if site.paginate %}
-    {% assign posts = paginator.posts %}
-  {% else %}
-    {% assign posts = site.posts %}
-  {% endif %}
-
-  {%- if posts.size > 0 -%}
-    {%- if page.list_title -%}
-      <h2 class="post-list-heading">{{ page.list_title }}</h2>
-    {%- endif -%}
-    <ul class="post-list">
-      {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-      {%- for post in posts -%}
-      <li>
-        <span class="post-meta">{{ post.date | date: date_format }}</span>
-        <h3>
-          <a class="post-link" href="{{ post.url | relative_url }}">
-            {{ post.title | escape }}
+  <body class="bg-gray-900 flex flex-col h-screen m-0 p-0 text-gray-300">
+    <div class="my-auto">
+      <header class="flex justify-center mb-12">
+        <!-- Brand -->
+        <h1 class="relative flex items-center justify-between h-16">
+          <a href="{{ '/' | relative_url }}" class="text-white px-3 py-2 space-x-3 text-sm font-medium flex items-center">
+            <img class="h-12 w-12 rounded-full" src="{{ '/assets/avatar.jpg' | relative_url }}" alt="GitHub">
+            <span class="font-body text-xl">{{ site.title | escape }}</span>
           </a>
-        </h3>
-        {%- if site.show_excerpts -%}
-          {{ post.excerpt }}
-        {%- endif -%}
-      </li>
-      {%- endfor -%}
-    </ul>
+        </h1>
+      </header>
 
-    {% if site.paginate %}
-      <div class="pager">
-        <ul class="pagination">
-        {%- if paginator.previous_page %}
-          <li><a href="{{ paginator.previous_page_path | relative_url }}" class="previous-page">{{ paginator.previous_page }}</a></li>
-        {%- else %}
-          <li><div class="pager-edge">•</div></li>
-        {%- endif %}
-          <li><div class="current-page">{{ paginator.page }}</div></li>
-        {%- if paginator.next_page %}
-          <li><a href="{{ paginator.next_page_path | relative_url }}" class="next-page">{{ paginator.next_page }}</a></li>
-        {%- else %}
-          <li><div class="pager-edge">•</div></li>
-        {%- endif %}
+      <main id="home" class="container w-72 mx-auto">
+        {% assign posts = site.posts %}
+
+        <ul class="max-w-lg mx-auto">
+          {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+          {%- for post in posts limit:3 -%}
+          <li class="flex flex-col content-center my-6">
+
+            <!-- Post category -->
+            {%- if post.categories contains 'today-i-learned' -%}
+              <em class="font-body mr-2 text-white hover:text-yellow-200 text-center">Today I Learned</em>
+            {%- endif -%}
+
+            <!-- Post title -->
+            <h2 class="text-center hover:text-blue-400">
+              <a class="font-display" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+            </h2>
+
+            <!-- Post category & date -->
+            {% include post_date.html %}
+
+          </li>
+          {%- endfor -%}
         </ul>
-      </div>
-    {%- endif %}
-  {%- endif -%}
-</div>
+      </main>
+    </div>
+  </body>
+</html>
