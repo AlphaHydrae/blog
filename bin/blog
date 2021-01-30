@@ -1,0 +1,56 @@
+#!/usr/bin/env ruby
+require 'date'
+require 'i18n'
+
+I18n.config.available_locales = :en
+
+COMMON_CATEGORIES = {
+  'tif' => 'today-i-found',
+  'til' => 'today-i-learned'
+}
+
+COMMON_CATEGORY_KEYS = COMMON_CATEGORIES.keys
+
+action = ARGV.shift
+
+common_category = nil
+if COMMON_CATEGORY_KEYS.include?(action)
+  common_category = action
+  action = 'post'
+end
+
+raise "Unsupported action #{action.inspect}" if action != 'post'
+
+common_category = COMMON_CATEGORIES[common_category.nil? && COMMON_CATEGORIES.keys.include?(ARGV[0]) ? ARGV.shift : common_category]
+tags = ARGV[0].match(/\A[a-z0-9]+(?:-[a-z0-9]+)*(?:,|(?:,[a-z0-9]+(?:-[a-z0-9]+)*)+,?)\z/) ? ARGV.shift.gsub(/,\z/, '').split(/,/) : []
+
+root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+posts_dir = File.join(root, '_posts')
+
+title = ARGV.join(' ')
+post_file_title = I18n.transliterate(
+  title
+  .gsub(/'/, ' ')
+  .gsub(/[^ a-zA-Z0-9]/, '')
+  .gsub(/ +/, '-')
+  .gsub(/(?:\A-|-\z)/, '')
+).downcase
+
+now = DateTime.now
+post_file_date = now.strftime('%Y-%m-%d')
+
+post_file = File.join(posts_dir, "#{post_file_date}-#{post_file_title}.md")
+raise "Post #{post_file} already exists" if File.exists?(post_file)
+
+frontmatter = {
+  'layout' => 'post',
+  'title' => title,
+  'date' => now.strftime('%Y-%m-%d %H:%M:%S %z'),
+  'comments' => true,
+  'categories' => ['programming', common_category].compact,
+  'tags' => tags
+}
+
+File.open(post_file, 'w'){ |f| f.write "#{YAML.dump(frontmatter)}---\n\nHello Post"}
+
+puts "Created post file #{post_file}"
