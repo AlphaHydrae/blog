@@ -3,11 +3,8 @@ layout: post
 title: How to get the default values out of an Elixir struct
 date: '2021-01-27 21:31:02 +0100'
 comments: true
-categories:
-  - programming
-  - today-i-learned
-tags:
-  - elixir
+categories: programming today-i-learned
+tags: elixir
 versions:
   elixir: 1.11.3
   erlang: 23.2.3

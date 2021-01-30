@@ -36,8 +36,8 @@ layout: default
       {% endfor %}
 
       <!-- Languages (if available) -->
-      {% for thing in post.things %}
-        {% include post_lang.html thing=thing size=4 %}
+      {% for thing in post.featured_things %}
+        {% include post_thing.html thing=thing size=4 %}
       {% endfor %}
 
       <!-- Tags -->
@@ -61,7 +61,7 @@ layout: default
       {% for entry in post.versions %}
         {% assign current_thing = entry[0] %}
         {% assign current_version = entry[1] %}
-        {% include post_lang_version.html thing=current_thing version=current_version %}
+        {% include post_thing_version.html thing=current_thing version=current_version %}
       {% endfor %}
     </div>
   {%- endif -%}
