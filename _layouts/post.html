@@ -1,26 +1,36 @@
 ---
 layout: default
 ---
+{% assign post = page %}
+
 <article class="max-w-prose mx-auto" itemscope itemtype="https://schema.org/BlogPosting">
   <header class="mt-24 mb-20">
     <!-- Category -->
-    {%- if page.categories contains 'today-i-learned' -%}
+    {%- if post.categories contains 'today-i-learned' -%}
       <em class="block font-body mb-3 text-3xl text-center text-white">Today I Learned</em>
     {%- endif -%}
 
     <!-- Title -->
-    <h1 itemprop="name headline">{{ page.title | escape }}</h1>
+    <h1 itemprop="name headline">{{ post.title | escape }}</h1>
 
     <!-- Metadata -->
     <p class="flex justify-center space-x-5 text-gray-400">
-      {% assign post = page %}
+
+      <!-- Publication date -->
       {% include post_date.html %}
-      {%- if page.last_modified_at -%}
-        <time class="items-center flex space-x-2" datetime="{{ page.last_modified_at | date_to_xmlschema }}" itemprop="dateModified">
+
+      <!-- Last modification date (if available) -->
+      {%- if post.last_modified_at -%}
+        <time class="items-center flex space-x-2" datetime="{{ post.last_modified_at | date_to_xmlschema }}" itemprop="dateModified">
           {% octicon pencil width:16 height:16 class:"align-middle inline fill-current" aria-label:hi %}
-          <span class="font-mono">{{ page.last_modified_at | date: '%Y-%m-%d' }}</span>
+          <span class="font-mono">{{ post.last_modified_at | date: '%Y-%m-%d' }}</span>
         </time>
       {%- endif -%}
+
+      <!-- Languages (if available) -->
+      {% for lang in post.langs %}
+        {% include post_lang.html lang=lang %}
+      {% endfor %}
     </p>
   </header>
 
@@ -29,9 +39,20 @@ layout: default
     {{ content }}
   </div>
 
+  <!-- Language versions (if available) -->
+  {%- if post.versions -%}
+    <div class="flex justify-evenly space-x-8 mt-12">
+      {% for entry in post.versions %}
+        {% assign current_lang = entry[0] %}
+        {% assign current_version = entry[1] %}
+        {% include post_lang_version.html lang=current_lang version=current_version %}
+      {% endfor %}
+    </div>
+  {%- endif -%}
+
   {%- if site.disqus.shortname -%}
     {%- include disqus_comments.html -%}
   {%- endif -%}
 
-  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
+  <a class="u-url" href="{{ post.url | relative_url }}" hidden></a>
 </article>

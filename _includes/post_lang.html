@@ -1,0 +1,5 @@
+{% assign lang_data = site.data.langs[include.lang] %}
+<a class="flex items-center justify-center space-x-2 cursor-pointer text-gray-500 hover:{{ lang_data.color_class }} hover:underline" href="{{ lang_data.website }}">
+  {% include post_lang/{{ include.lang }}.html %}
+  <span class="font-mono">{{ include.lang }}</span>
+</a>

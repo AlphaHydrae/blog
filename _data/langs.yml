@@ -1,0 +1,11 @@
+---
+
+elixir:
+  title: Elixir
+  website: https://elixir-lang.org
+  color_class: text-purple-400
+
+erlang:
+  title: Erlang/OTP
+  website: https://www.erlang.org
+  color_class: text-red-500

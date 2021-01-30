@@ -4,10 +4,13 @@ title: How to get the default values out of an Elixir struct
 date: '2021-01-27 21:31:02 +0100'
 comments: true
 categories:
-- programming
-- today-i-learned
+  - programming
+  - today-i-learned
 tags:
-- elixir-lang
+  - elixir
+versions:
+  elixir: 1.11.3
+  erlang: 23.2.3
 ---
 
 Define a struct with some default values:
@@ -34,7 +37,8 @@ Map.get(defaults, :age)   # 18
 Map.get(defaults, :name)  # nil
 ```
 
-You can also access them directly:
+You can also use the static access operator (see *Map/struct access* in
+[*Writing assertive code with Elixir*][map-access]):
 
 ```elixir
 defaults = Person.__struct__()
@@ -43,5 +47,6 @@ defaults.name  # nil
 ```
 
 [defstruct/1]: https://hexdocs.pm/elixir/Kernel.html#defstruct/1
+[map-access]: https://dashbit.co/blog/writing-assertive-code-with-elixir
 [Map.get/3]: https://hexdocs.pm/elixir/Map.html#get/3
 [structs-are-maps]: https://elixir-lang.org/getting-started/structs.html#structs-are-bare-maps-underneath

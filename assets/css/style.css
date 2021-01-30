@@ -15,6 +15,9 @@
 
   article a {
     @apply text-blue-400;
+  }
+
+  article a:not(.no-underline) {
     @apply hover:underline;
   }
 
@@ -38,6 +41,9 @@
 
   pre {
     @apply overflow-x-auto;
+    @apply bg-gray-800;
+    @apply p-3;
+    @apply text-base;
   }
 }
 
