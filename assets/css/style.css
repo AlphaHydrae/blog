@@ -44,6 +44,8 @@
     @apply bg-gray-800;
     @apply p-3;
     @apply text-base;
+    @apply -mx-6;
+    @apply lg:mx-0;
   }
 }
 
