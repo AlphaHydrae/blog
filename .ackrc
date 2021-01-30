@@ -1,0 +1,4 @@
+# https://beyondgrep.com
+--ignore-dir=.jekyll-cache
+--ignore-dir=_site
+--ignore-dir=vendor
