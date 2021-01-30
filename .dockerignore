@@ -1,7 +1,0 @@
-.dockerignore
-.git
-.pygments-cache
-.sass-cache
-Dockerfile
-nginx.conf.hbs
-public

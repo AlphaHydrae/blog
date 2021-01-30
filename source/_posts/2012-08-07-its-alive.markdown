@@ -1,9 +1,0 @@
----
-layout: post
-title: "It's alive!"
-date: 2012-08-07 16:18
-comments: false
-categories: [info]
----
-
-A marker for the first post in the old Wordpress blog, for old time's sake.
