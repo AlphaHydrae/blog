@@ -8,6 +8,7 @@ gem "webrick", "~> 1.7"
 
 # Jekyll plugins
 group :jekyll_plugins do
+  gem "jekyll-email-protect", "~> 1.1"
   gem "jekyll-feed", "~> 0.15.1"
   gem "jekyll-octicons", "~> 11.2"
   gem "jekyll-postcss", "~> 0.4.0"

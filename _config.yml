@@ -13,6 +13,7 @@ collections:
 
 # Build settings
 plugins:
+  - jekyll-email-protect
   - jekyll-feed
   - jekyll-octicons
   - jekyll-postcss
