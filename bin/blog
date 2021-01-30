@@ -47,9 +47,10 @@ frontmatter = {
   'title' => title,
   'date' => now.strftime('%Y-%m-%d %H:%M:%S %z'),
   'comments' => true,
-  'categories' => ['programming', common_category].compact,
-  'tags' => tags
+  'categories' => ['programming', common_category].compact.join(' ')
 }
+
+frontmatter['tags'] = tags.join(' ') unless tags.empty?
 
 File.open(post_file, 'w'){ |f| f.write "#{YAML.dump(frontmatter)}---\n\nHello Post"}
 

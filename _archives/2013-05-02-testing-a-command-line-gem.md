@@ -3,18 +3,22 @@ layout: post
 title: "Testing a command-line gem"
 date: 2013-05-02 19:12
 comments: true
-categories: [ruby,testing,commander,cli]
 permalink: /:year/:month/:title/
+categories: programming
+tags: ruby testing cli
+versions:
+  ruby: 1.9.3 & 2.0.0
+  commander: 4.1.3
 ---
 
 I've written many ruby gems that have binaries, generally with
-[commander](git://github.com/visionmedia/commander.git) for the command-line
-interface. I was trying to increase the test coverage on those gems when I
-realized that it's tricky to test the parts are integrated with commander.
+[commander][commander] for the command-line interface. I was trying to increase
+the test coverage on those gems when I realized that it's tricky to test the
+parts are integrated with commander.
 
 This is what a common commander setup looks like:
 
-```rb
+```ruby
 require 'rubygems'
 require 'commander/import'
 
@@ -29,9 +33,11 @@ end
 
 Requiring that file from your gem's binary does the trick.
 
-```rb
+```ruby
 #!/usr/bin/env ruby
-require File.join(File.dirname(__FILE__), '..', 'lib', 'program')
+require File.join(
+  File.dirname(__FILE__), '..', 'lib', 'program'
+)
 ```
 
 Outstanding.
@@ -48,7 +54,7 @@ What you need is to have the commander program available as an object that you
 can test at will with any arguments. To achieve that, I looked at what
 `commander/import` does:
 
-```rb
+```ruby
 require 'commander'
 require 'commander/delegates'
 
@@ -65,22 +71,24 @@ What `Commander::Delegates` does is forward most commander methods (e.g.
 `program`, `command`) to a singleton `Commander::Runner` instance. So let's do
 the same thing with a runner of our own.
 
-```rb
+```ruby
 require 'commander'
 
 module FooBar
   class Program < Commander::Runner
-
     include Commander::UI
     include Commander::UI::AskForClass
-    # no need to include Commander::Delegates, as we're a Commander::Runner already
+
+    # No need to include Commander::Delegates,
+    # as we're a Commander::Runner already.
 
     def initialize argv = ARGV
       super argv
 
       program :name, 'Foo Bar'
       program :version, '1.0.0'
-      program :description, 'Stupid command that prints foo or bar.'
+      program :description,
+        'Stupid command that prints foo or bar.'
 
       command :foo do |c|
         # ...
@@ -92,7 +100,7 @@ end
 
 You can now test your commander program to your heart's content.
 
-```rb
+```ruby
 # test result
 program = FooBar::Program.new custom_args
 program.run!
@@ -116,9 +124,13 @@ expect(stderr.string).to be_empty
 
 Note that your binary must now run the commander program.
 
-```rb
+```ruby
 #!/usr/bin/env ruby
-require File.join(File.dirname(__FILE__), '..', 'lib', 'foo_bar', 'program')
+require File.join(
+  File.dirname(__FILE__), '..',
+  'lib', 'foo_bar', 'program'
+)
+
 FooBar::Program.new.run!
 ```
 
@@ -126,7 +138,4 @@ Unfortunately that doesn't cover user interaction, but I don't know how to test
 that yet. I will probably write another article when the time comes. In the
 meantime, enjoy.
 
-## Meta
-
-* **Ruby:** 1.9.3 & 2.0.0
-* **commander:** 4.1.3
+[commander]: https://github.com/commander-rb/commander

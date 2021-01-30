@@ -3,8 +3,9 @@ layout: post
 title: "REST & Hypermedia APIs"
 date: 2013-06-30 20:44
 comments: true
-categories: [api,http,hypermedia,patterns,rest]
 permalink: /:year/:month/:title/
+categories: design
+tags: rest hypermedia api http
 ---
 
 {% img right /assets/contents/hypermedia/wat.png 350 %}
@@ -62,6 +63,7 @@ A fair warning to those who may read on: this is a [tl;dr]({{ root_url
 1. [Final Comments](#final-comments)
 
 <a name="rest-rails"></a>
+
 ## REST: The Rails Way
 
 This is the way most "REST APIs" I've seen work, as popularized notably by Ruby
@@ -87,6 +89,7 @@ This is the point where you may want to stop reading if you don't want this
 conception of a REST API to be eviscerated and transmogrified.
 
 <a name="hypermedia-apis"></a>
+
 ## Hypermedia APIs
 
 Shockingly, there are critical properties missing for this to be a true RESTful
@@ -139,6 +142,7 @@ through **hyperlinks**. The interaction from state to state in your application
 hyperlinks, hence *Hypermedia As The Engine Of Application State.*
 
 <a name="media-types"></a>
+
 ## Media Types
 
 *So what is this *media type* of which you speak? Surely we're going to use JSON
@@ -152,10 +156,11 @@ are advantages to using a hyperlink-aware media type instead of plain JSON.
 I'm not an expert (yet), but I'll outline the two solutions I've most read
 about: Hypertext Application Language and custom media types.
 
-{% img right /assets/contents/hypermedia/hal+json.png 400 %}
-
 <a name="hal"></a>
+
 ### Hypertext Application Language (HAL)
+
+{% img right /assets/contents/hypermedia/hal+json.png 350 %}
 
 [HAL](http://stateless.co/hal_specification.html) is a generic JSON/XML media
 type for representing resources and their relations with hyperlinks.
@@ -216,7 +221,7 @@ Nothing special here. The next part is more interesting:
   "self": { "href": "/orders" },
   "next": { "href": "/orders?page=2" },
   "find": { "href": "/orders{?id}", "templated": true }
-},
+}
 ```
 
 In the JSON version of HAL, the reserved `_links` property indicates how to get
@@ -244,7 +249,6 @@ can have multiple lists of embedded objects; here there is just one under
       "currency": "USD",
       "status": "shipped",
     },
-    ...
   ]
 }
 ```
@@ -262,6 +266,7 @@ browsers](https://github.com/mikekelly/hal-browser) that can automatically
 discover HAL APIs. You can easily find live examples with Google.
 
 <a name="link-relation-types"></a>
+
 #### Link Relation Types
 
 The relation property of a link in HAL (`self`, `next`, etc) is defined in [Web
@@ -290,8 +295,12 @@ types should be URIs that uniquely identify the relation type. For example:
 
 ```json
 "_links": {
-  "http://my-api.com/media/orders": { "href": "/orders" },
-  "http://my-api.com/media/orders/next": { "href": "/orders?page=2" }
+  "http://my-api.com/media/orders": {
+    "href": "/orders"
+  },
+  "http://my-api.com/media/orders/next": {
+    "href": "/orders?page=2"
+  }
 }
 ```
 
@@ -316,10 +325,11 @@ Syntax](http://www.w3.org/TR/curie/):
 
 That's it for HAL.
 
-{% img right /assets/contents/hypermedia/at.png 200 %}
-
 <a name="custom-media-types"></a>
+
 ### Custom Media Types
+
+{% img right /assets/contents/hypermedia/at.png 200 %}
 
 Media types describe the representations of the resources that can be used with
 your API, including links to other resources. There may be multiple
@@ -408,6 +418,7 @@ clients, but the URI structure is allowed to change independently, and new
 representations can be easily be added to existing resources.
 
 <a name="link-header"></a>
+
 ## The Link Header
 
 Whether you choose HAL, custom media types or plain JSON, the [HTTP Link
@@ -438,6 +449,7 @@ Link: </baskets/98712>; rel="http://my-api.com/media/basket";
 ```
 
 <a name="uri-templates"></a>
+
 ## URI Templates
 
 [URI Template (RFC 6570)](http://tools.ietf.org/html/rfc6570) defines a useful
@@ -470,6 +482,7 @@ The RFC describes the supported expression expansions.
 I encourage you to read and use it.
 
 <a name="caching"></a>
+
 ## API Workflow &amp; Caching
 
 Now you will surely ask, as many have before you:
@@ -563,7 +576,7 @@ Content-Type: application/vnd.myapi.order+json; charset=utf-8
 In this example, that's three calls and a redirect to get to the order resource
 you were looking for.
 
-**_Unacceptable!_** you say? Well that's how Hypermedia APIs work.
+**_"Unacceptable!"_** you say? Well that's how Hypermedia APIs work.
 
 However, this example uses many steps on purpose to illustrate hyperlinks. You
 could add a link to find orders directly in the representation of the root

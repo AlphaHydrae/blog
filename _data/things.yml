@@ -3,18 +3,33 @@
 # Databases
 
 postgresql:
+  type: database
   title: PostgreSQL
   website: https://www.postgresql.org
   color_class: text-blue-300
 
+redis:
+  type: database
+  title: Redis
+  website: https://redis.io
+  color_class: text-red-500
+
 # Operating Systems
 
 fedora:
+  type: os
   title: Fedora
   website: https://getfedora.org
   color_class: text-blue-600
 
+os-x:
+  type: os
+  title: Mac OS X
+  website: https://www.apple.com
+  color_class: text-white
+
 ubuntu:
+  type: os
   title: Ubuntu
   website: https://ubuntu.com
   color_class: text-red-500
@@ -33,6 +48,30 @@ erlang:
   website: https://www.erlang.org
   color_class: text-red-500
 
+javascript:
+  type: javascript
+  title: JavaScript
+  website: https://www.ecma-international.org/publications-and-standards/standards/ecma-262/
+  color_class: text-yellow-200
+
+node:
+  type: language
+  title: Node.js
+  website: https://nodejs.org
+  color_class: text-green-500
+
+php:
+  type: language
+  title: PHP
+  website: https://www.php.net
+  color_class: text-indigo-400
+
+python:
+  type: language
+  title: Python
+  website: https://www.python.org
+  color_class: text-yellow-300
+
 ruby:
   type: language
   title: Ruby
@@ -40,6 +79,12 @@ ruby:
   color_class: text-red-700
 
 # Tools
+
+backbone:
+  type: tool
+  title: Backbone.js
+  website: https://backbonejs.org
+  color_class: text-blue-600
 
 bundler:
   type: tool
@@ -51,21 +96,73 @@ capybara:
   title: Capybara
   website: http://teamcapybara.github.io/capybara/
 
+commander:
+  type: tool
+  title: Commander
+  website: https://github.com/commander-rb/commander
+
 git:
   type: tool
   title: Git
   website: https://git-scm.com
   color_class: text-red-500
 
+god:
+  type: tool
+  title: God
+  website: http://godrb.com
+  color_class: text-yellow-300
+
 gnupg:
   type: tool
   title: GnuPG
   website: https://gnupg.org
 
+grunt:
+  type: tool
+  title: Grunt
+  website: https://gruntjs.com
+  color_class: text-yellow-500
+
+jasmine:
+  type: tool
+  title: Jasmine
+  website: https://jasmine.github.io
+  color_class: text-purple-500
+
+jquery:
+  type: tool
+  title: jQuery
+  website: https://jquery.com
+  color_class: text-blue-500
+
+libre-office:
+  type: tool
+  title: LibreOffice
+  website: https://www.libreoffice.org
+  color_class: text-green-400
+
 logwatch:
   type: tool
   title: Logwatch
   website: https://sourceforge.net/projects/logwatch/
+
+markdown:
+  type: tool
+  title: Markdown
+  website: https://daringfireball.net/projects/markdown/
+  color_class: text-white
+
+nginx:
+  type: tool
+  title: Nginx
+  website: https://www.nginx.com
+  color_class: text-green-500
+
+octopress:
+  type: tool
+  title: Octopress
+  website: http://octopress.org
 
 rake:
   type: tool
@@ -77,8 +174,30 @@ rspec:
   title: RSpec
   website: https://rspec.info
 
+ruby-on-rails:
+  type: tool
+  title: Ruby on Rails
+  website: https://rubyonrails.org
+  color_class: text-red-500
+
+spawn-fcgi:
+  type: tool
+  title: spawn-fcgi
+  website: https://linux.die.net/man/1/spawn-fcgi
+
+unicorn:
+  type: tool
+  title: Unicorn
+  website: http://unicorn.bogomips.org
+
 vim:
   type: tool
   title: Vim
   website: https://www.vim.org
   color_class: text-green-500
+
+wordpress:
+  type: tool
+  title: WordPress
+  website: https://wordpress.com
+  color_class: text-blue-500

@@ -3,8 +3,13 @@ layout: post
 title: "Highlight code in LibreOffice Impress on OS X"
 date: 2017-01-17 16:00
 comments: true
-categories: [highlight, impress, libreoffice, osx, pygments]
 permalink: /:year/:month/:title/
+categories: programming
+tags: syntax-highlighting libre-office os-x
+versions:
+  libre-office: 4.3.4.1
+  python: 3.3.5
+  os-x: 10.10.5 Yosemite
 ---
 
 It's a pain to put code with proper syntax highlighting in slides, but it turns
@@ -17,8 +22,6 @@ highlighting Python macro for LibreOffice, on OS X (the original instructions
 are for Linux). It uses [Pygments][pygments] to perform the syntax highlighting.
 
 <!-- more -->
-
-
 
 First, download the [Highlight.py][highlight-py] macro script and save it to
 your LibreOffice's python scripts directory. The following commands will
@@ -39,7 +42,8 @@ bundled Python version:
 
 ```bash
 cd ~/Downloads/pygments-main
-/Applications/LibreOffice.app/Contents/MacOS/python -E setup.py install
+/Applications/LibreOffice.app/Contents/MacOS/python \
+  -E setup.py install
 ```
 
 Now you can configure a keyboard shortcut to trigger the macro in LibreOffice:
@@ -56,14 +60,11 @@ Now you can configure a keyboard shortcut to trigger the macro in LibreOffice:
 You're all set! Follow the [usage instructions][highlighter-usage] of
 **libreoffice-code-highlighter** to highlight some code.
 
+## Meta
 
-
-# Meta
-
-* **LibreOffice:** 4.3.4.1
-* **Python:** 3.3.5 (bundled with LibreOffice)
-* **OS X:** 10.10.5 Yosemite
-* **libreoffice-code-highlighter:** [f21631](https://github.com/slgobinath/libreoffice-code-highlighter/blob/f216316783fa558ce0bd10da227a32500ca1a157/Highlight.py)
+[Version `f21631` of
+libreoffice-code-highlighter](https://github.com/slgobinath/libreoffice-code-highlighter/blob/f216316783fa558ce0bd10da227a32500ca1a157/Highlight.py)
+was used.
 
 
 

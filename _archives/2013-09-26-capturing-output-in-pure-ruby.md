@@ -3,8 +3,11 @@ layout: post
 title: "Capturing output in pure ruby"
 date: 2013-09-26 21:12
 comments: true
-categories: [ruby]
 permalink: /:year/:month/:title/
+categories: programming
+tags: []
+versions:
+  ruby: 1.9.3 & 2.0.0
 ---
 
 Rails has its own capture method but I've often needed to capture the output in
@@ -49,7 +52,11 @@ class Capture
     # restore normal output
     $stdout, $stderr = STDOUT, STDERR
 
-    OpenStruct.new result: result, stdout: stdout.string, stderr: stderr.string
+    OpenStruct.new(
+      result: result,
+      stdout: stdout.string,
+      stderr: stderr.string
+    )
   end
 end
 
@@ -61,7 +68,3 @@ end
 c.stdout.match 'foo'   #=> true
 c.stderr.match 'bar'   #=> true
 ```
-
-# Meta
-
-* **Ruby:** 1.9.3 & 2.0.0

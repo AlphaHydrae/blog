@@ -3,13 +3,17 @@ layout: post
 title: "Node.js dependency injection"
 date: 2013-06-28 19:12
 comments: true
-categories: [nodejs,patterns,testing]
 permalink: /:year/:month/:title/
+categories: programming
+tags: testing patterns
+versions:
+  javascript: ES5
+  node: 0.10.12
 ---
 
-Early in my [Node.js](http://nodejs.org) adventures, I started asking myself how
-to write real unit tests with mocked dependencies. Let's take a slightly
-modified Hello World example:
+Early in my [Node.js][node] adventures, I started asking myself how to write
+real unit tests with mocked dependencies. Let's take a slightly modified Hello
+World example:
 
 ```js
 var http = require('http');
@@ -40,8 +44,7 @@ makes many HTTP calls.
 ## Using a mock library for modules
 
 I found several Node.js modules that can do this, such as
-[sandboxed-module](https://github.com/felixge/node-sandboxed-module) or
-[mockery](https://github.com/mfncooper/mockery). For example,
+[sandboxed-module][sandboxed-module] or [mockery][mockery]. For example,
 **sandboxed-module** can require your module in a way that allows you to supply
 mocks for its own requires:
 
@@ -56,7 +59,7 @@ var httpMock = {
   }
 };
 
-// Require the module you wish to test with sandboxed-module.
+// Require the module you wish to test.
 var module = sandbox.require('./module', {
 
   requires : {
@@ -73,16 +76,14 @@ instead of the real thing.
 
 I was happy with this until I found out that it sometimes breaks things. I
 recently had tests failing for no apparent reason with sandboxed-module
-requiring one of my modules that uses [async](https://github.com/caolan/async).
-It seems that they don't play nice with each other.
+requiring one of my modules that uses [async][async]. It seems that they don't
+play nice with each other.
 
 ## Manual dependency injection
 
 You can always roll your own dependency injection. Note that there are
-[dependency injection
-modules](https://github.com/joyent/node/wiki/modules#wiki-dependency-injection)
-out there. I just didn't deem it necessary to restructure my application to use
-those when it's so easy to do.
+[dependency injection modules][di-modules] out there. I just didn't deem it
+necessary to restructure my application to use those when it's so easy to do.
 
 Here's how you could do it:
 
@@ -93,13 +94,15 @@ exports.inject = function(deps) {
 
   var http = deps.http;
 
-  // Construct and return a module with the provided dependencies.
+  // Construct and return a module with the provided
+  // dependencies.
   return {
 
     start : function() {
 
-      // The core code hasn't changed. It's just using the provided http
-      // module which could be either the real module or a mock.
+      // The core code hasn't changed. It's just using
+      // the provided http module which could be either
+      // the real module or a mock.
       http.createServer(function (req, res) {
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end('Hello World\n');
@@ -157,9 +160,14 @@ var myModuleForTesting = require('./module').inject({
 
 May your unit tests be swift.
 
-# Meta
+## Meta
 
-* **Node.js:** 0.10.12
 * [Do I need dependency injection in Node.js? (Stack Overflow)](http://stackoverflow.com/questions/9250851/do-i-need-dependency-injection-in-nodejs-or-how-to-deal-with)
 * [Dependency Injection with Node.js (diogogmt)](http://diogogmt.wordpress.com/2013/04/02/dependency-injection-with-node-js/)
 * [Inversion of Control and Dependency Injection with Broadway (nodejitsu)](http://blog.nodejitsu.com/ioc-and-dependency-injection-with-broadway)
+
+[async]: https://github.com/caolan/async
+[di-modules]: https://github.com/joyent/node/wiki/modules#wiki-dependency-injection
+[mockery]: https://github.com/mfncooper/mockery
+[node]: http://nodejs.org
+[sandboxed-module]: https://github.com/felixge/node-sandboxed-module

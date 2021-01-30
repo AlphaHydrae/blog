@@ -3,11 +3,16 @@ layout: post
 title: "Building Javascript with Grunt"
 date: 2012-10-16 09:59
 comments: true
-categories: [grunt, jasmine, javascript, tools]
 permalink: /:year/:month/:title/
+categories: programming
+tags: tools
+versions:
+  javascript: ES5
+  grunt: 0.3.x
+  jasmine: 1.x
 ---
 
-[{% img right /assets/contents/gruntjs/logo.png 200 %}](http://gruntjs.com)
+[{% img right /assets/contents/gruntjs/logo.png 200 %}][grunt]
 
 When you develop a Javascript lib, you need to do fun stuff like concatenating
 source files, validating with JSHint and minifying. After I got past the initial
@@ -24,7 +29,7 @@ what you can achieve with Grunt.
 
 This is the basic structure of the configuration file.
 
-{% highlight js %}
+```js
 module.exports = function(grunt) {
 
   // Plugins.
@@ -42,7 +47,7 @@ module.exports = function(grunt) {
     // ...
   });
 };
-{% endhighlight %}
+```
 
 As you can see, there is a plugin system allowing you to include others' plugins
 or write your own.
@@ -57,7 +62,7 @@ use this information in some tasks.
 Grunt provides the `lint` task for that. You can define the files to validate
 and JSHint options.
 
-{% highlight js %}
+```js
 lint: {
   files: ['src/myPlugin.*.js']
 },
@@ -67,7 +72,7 @@ jshint: {
     $: true
   }
 }
-{% endhighlight %}
+```
 
 Then just run `grunt lint`.
 
@@ -75,7 +80,7 @@ Then just run `grunt lint`.
 
 Grunt provides the `concat` task.
 
-{% highlight js %}
+```js
 concat: {
   myPlugin : {
     src : [
@@ -86,7 +91,7 @@ concat: {
     dest : 'lib/myPlugin.js'
   }
 }
-{% endhighlight %}
+```
 
 Here, you define that you want to concatenate three files from `vendor` and
 `src` into one file in `lib`. The concatenation has a name (myPlugin) which is
@@ -102,7 +107,7 @@ present in the final library file. Here we define a banner that we will use in
 the next minification task. This banner can include data from your package file
 or other meta data so you don't have to repeat yourself.
 
-{% highlight js %}
+```js
 meta: {
   // ...
   banner:
@@ -113,13 +118,13 @@ meta: {
     ' * <%= pkg.homepage %>\n' +
     ' */'
 }
-{% endhighlight %}
+```
 
 ## Minifying with UglifyJS
 
 Grunt provides minification with UglifyJS with the `min` task.
 
-{% highlight js %}
+```js
 min: {
   myPlugin: {
     src: [
@@ -129,7 +134,7 @@ min: {
     dest: 'lib/myPlugin.min.js'
   }
 }
-{% endhighlight %}
+```
 
 This configuration defines that we want `lib/myPlugin.min.js` to be built by
 minifying our concatenated source file and prepending the banner (the banner
@@ -147,15 +152,15 @@ Jasmine plugin that allows you to run your specs headlessly with PhantomJS.
 First you must install the plugin. If you're using NPM and have a `package.json`
 file, you can add this to your dependencies and run `npm install`:
 
-{% highlight js %}
+```js
 "devDependencies": {
   "grunt-jasmine-runner": "latest"
 }
-{% endhighlight %}
+```
 
 Then, you must add the plugin to your Grunt configuration file:
 
-{% highlight js %}
+```js
 module.exports = function(grunt) {
 
   // Plugins.
@@ -163,11 +168,11 @@ module.exports = function(grunt) {
 
   // ...
 };
-{% endhighlight %}
+```
 
 Once this is done, you can at last configure the `jasmine` task.
 
-{% highlight js %}
+```js
 jasmine : {
   src : [
     'vendor/jquery.js',
@@ -177,12 +182,12 @@ jasmine : {
   helpers : 'spec/javascripts/helpers/*.js',
   specs : 'spec/javascripts/**/*.spec.js'
 }
-{% endhighlight %}
+```
 
 `src` defines which source files to test (loaded first). `helpers` can include
 any code to help in testing. `specs` indicates the spec files containing your
 Jasmine tests. For more options, check out
-[grunt-jasmine-runner](https://github.com/jasmine-contrib/grunt-jasmine-runner).
+[grunt-jasmine-runner][grunt-jasmine-runner].
 
 You can now run your specs with grunt jasmine.
 
@@ -191,7 +196,7 @@ You can now run your specs with grunt jasmine.
 Once your project configuration is set up, you can also define a default task
 (or series of tasks).
 
-{% highlight js %}
+```js
 module.exports = function(grunt) {
 
   // Project configuration.
@@ -202,7 +207,7 @@ module.exports = function(grunt) {
   // Default task (when you call grunt without arguments).
   grunt.registerTask('default', 'lint concat min');
 };
-{% endhighlight %}
+```
 
 In this case, it validates the javascript, concatenates the source files and
 minifies them. That way you can just run `grunt` and have everything ready for
@@ -212,4 +217,8 @@ any errors before you can run it.
 ## Moar
 
 The Grunt website provides a number of [configuration file
-examples](https://github.com/gruntjs/grunt/blob/0.3-stable/docs/example_gruntfiles.md).
+examples][grunt-examples].
+
+[grunt]: http://gruntjs.com
+[grunt-examples]: https://github.com/gruntjs/grunt/blob/0.3-stable/docs/example_gruntfiles.md
+[grunt-jasmine-runner]: https://github.com/jasmine-contrib/grunt-jasmine-runner

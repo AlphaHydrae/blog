@@ -3,8 +3,9 @@ layout: post
 title: "Configuring Your SSH Client"
 date: 2013-06-20 20:46
 comments: true
-categories: [ssh,workflow]
 permalink: /:year/:month/:title/
+categories: sysadmin
+tags: ssh workflow
 ---
 
 I'm pretty bad at remembering IP addresses, and I'm too lazy to type the same
@@ -59,6 +60,5 @@ I've been using this for years now. It makes me feel better at every SSH
 connection, knowing that I've saved a dozen characters. May the holy keyboard be
 with you.
 
-## Meta
-
-* **ssh_config:** [Linux man page](http://linux.die.net/man/5/ssh_config)
+See the [*`ssh_config` Linux man page*](http://linux.die.net/man/5/ssh_config)
+for more information.
