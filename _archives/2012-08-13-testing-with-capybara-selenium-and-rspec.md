@@ -4,6 +4,7 @@ title: "Testing with Capybara, Selenium and RSpec"
 date: 2012-08-13 22:45
 comments: true
 categories: [capybara, selenium, rspec, testing]
+permalink: /:year/:month/:title/
 ---
 
 This is a quick-and-dirty tutorial to set up automated browser tests with the

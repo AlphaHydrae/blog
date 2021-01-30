@@ -4,6 +4,7 @@ title: "Backbone Collection 304 Not Modified"
 date: 2013-03-06 20:23
 comments: true
 categories: [javascript,backbone,http,etag]
+permalink: /:year/:month/:title/
 ---
 
 I'm using conditional requests with

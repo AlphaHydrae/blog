@@ -4,6 +4,7 @@ title: "Set up your own Git server"
 date: 2012-08-14 08:28
 comments: true
 categories: [git]
+permalink: /:year/:month/:title/
 ---
 
 In addition to GitHub, I like having a private copy of my repositories on one of

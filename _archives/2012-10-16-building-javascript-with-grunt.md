@@ -4,6 +4,7 @@ title: "Building Javascript with Grunt"
 date: 2012-10-16 09:59
 comments: true
 categories: [grunt, jasmine, javascript, tools]
+permalink: /:year/:month/:title/
 ---
 
 [{% img right /assets/contents/gruntjs/logo.png 200 %}](http://gruntjs.com)

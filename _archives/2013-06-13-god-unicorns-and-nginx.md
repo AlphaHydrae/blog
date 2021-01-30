@@ -4,6 +4,7 @@ title: "God, Unicorns and Nginx"
 date: 2013-06-13 12:50
 comments: true
 categories: [god,unicorn,nginx,sysadmin]
+permalink: /:year/:month/:title/
 ---
 
 Time to write a little about the tools I use to deploy Ruby on Rails

@@ -4,6 +4,7 @@ title: "Node.js dependency injection"
 date: 2013-06-28 19:12
 comments: true
 categories: [nodejs,patterns,testing]
+permalink: /:year/:month/:title/
 ---
 
 Early in my [Node.js](http://nodejs.org) adventures, I started asking myself how

@@ -4,6 +4,7 @@ title: "Testing a command-line gem"
 date: 2013-05-02 19:12
 comments: true
 categories: [ruby,testing,commander,cli]
+permalink: /:year/:month/:title/
 ---
 
 I've written many ruby gems that have binaries, generally with

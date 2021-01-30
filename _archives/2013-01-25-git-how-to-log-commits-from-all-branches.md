@@ -4,6 +4,7 @@ title: "Git: how to log commits from all branches"
 date: 2013-01-25 20:56
 comments: true
 categories: [git]
+permalink: /:year/:month/:title/
 ---
 
 By default, the `git log` command will only show commits reachable from

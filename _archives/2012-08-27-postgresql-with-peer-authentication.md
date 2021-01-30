@@ -4,6 +4,7 @@ title: "PostgreSQL with peer authentication"
 date: 2012-08-27 09:22
 comments: true
 categories: [postgresql, auth]
+permalink: /:year/:month/:title/
 ---
 
 [{% img right /assets/contents/postgresql/logo.png 200 %}](http://www.postgresql.org)

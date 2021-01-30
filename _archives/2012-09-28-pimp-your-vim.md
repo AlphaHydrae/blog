@@ -4,6 +4,7 @@ title: "Pimp your Vim"
 date: 2012-09-28 09:46
 comments: true
 categories: [vim, tools]
+permalink: /:year/:month/:title/
 ---
 
 [{% img right /assets/contents/vim/logo.gif %}](http://www.vim.org)

@@ -4,6 +4,7 @@ title: "Rails 3 logger customization"
 date: 2013-02-08 17:30
 comments: true
 categories: [rails,logging]
+permalink: /:year/:month/:title/
 ---
 
 Rails logging is pretty good but sometimes you need to tweak it a bit. In the

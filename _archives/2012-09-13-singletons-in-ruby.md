@@ -4,6 +4,7 @@ title: "Singletons in Ruby"
 date: 2012-09-13 09:29
 comments: true
 categories: [ruby, singleton, patterns]
+permalink: /:year/:month/:title/
 ---
 
 Here's how:

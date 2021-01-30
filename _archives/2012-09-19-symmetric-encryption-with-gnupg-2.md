@@ -4,6 +4,7 @@ title: "Symmetric encryption with GnuPG 2"
 date: 2012-09-19 09:36
 comments: true
 categories: [gnupg, encryption]
+permalink: /:year/:month/:title/
 ---
 
 [{% img right /assets/contents/gnupg/logo.png 200 %}](http://www.gnupg.org)

@@ -4,6 +4,7 @@ title: "Deploy WordPress with nginx, spawn-fcgi and systemd"
 date: 2013-01-27 21:19
 comments: true
 categories: [wordpress, nginx, fcgi, systemd, sysadmin]
+permalink: /:year/:month/:title/
 ---
 
 It's a bit weird to post this now that I've switched to Octopress, but this is

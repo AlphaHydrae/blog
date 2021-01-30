@@ -4,6 +4,7 @@ title: "Markdown views with syntax highlighting in Rails"
 date: 2013-01-31 17:46
 comments: true
 categories: [markdown, highlight, rails, redcarpet, pygments]
+permalink: /:year/:month/:title/
 ---
 
 Today I had to add technical documentation pages to a Rails app. I chose to

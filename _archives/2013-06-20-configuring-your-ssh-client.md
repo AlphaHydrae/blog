@@ -4,6 +4,7 @@ title: "Configuring Your SSH Client"
 date: 2013-06-20 20:46
 comments: true
 categories: [ssh,workflow]
+permalink: /:year/:month/:title/
 ---
 
 I'm pretty bad at remembering IP addresses, and I'm too lazy to type the same

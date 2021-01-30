@@ -4,6 +4,7 @@ title: "Logwatch: how to add a service"
 date: 2012-08-08 18:19
 comments: true
 categories: [logwatch, sysadmin, logging]
+permalink: /:year/:month/:title/
 ---
 
 I use [logwatch](http://sourceforge.net/projects/logwatch/) to monitor disk

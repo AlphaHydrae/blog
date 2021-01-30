@@ -4,6 +4,7 @@ title: "Capturing output in pure ruby"
 date: 2013-09-26 21:12
 comments: true
 categories: [ruby]
+permalink: /:year/:month/:title/
 ---
 
 Rails has its own capture method but I've often needed to capture the output in

@@ -4,6 +4,7 @@ title: "It's Reborn"
 date: 2013-01-24 18:00
 comments: true
 categories: [info]
+permalink: /:year/:month/:title/
 ---
 
 My hacker ego has finally had enough of WordPress. Real programmers use a

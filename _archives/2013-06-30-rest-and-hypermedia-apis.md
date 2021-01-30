@@ -4,6 +4,7 @@ title: "REST & Hypermedia APIs"
 date: 2013-06-30 20:44
 comments: true
 categories: [api,http,hypermedia,patterns,rest]
+permalink: /:year/:month/:title/
 ---
 
 {% img right /assets/contents/hypermedia/wat.png 350 %}

@@ -4,6 +4,7 @@ title: "Git: how to commit often and still push"
 date: 2012-08-14 09:03
 comments: true
 categories: [git, workflow]
+permalink: /:year/:month/:title/
 ---
 
 I usually like to [rewrite my commit

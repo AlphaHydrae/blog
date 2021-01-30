@@ -4,6 +4,7 @@ title: "Highlight code in LibreOffice Impress on OS X"
 date: 2017-01-17 16:00
 comments: true
 categories: [highlight, impress, libreoffice, osx, pygments]
+permalink: /:year/:month/:title/
 ---
 
 It's a pain to put code with proper syntax highlighting in slides, but it turns

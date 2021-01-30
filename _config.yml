@@ -5,6 +5,11 @@ description: Progamming
 url: https://alphahydrae.com # Base hostname & protocol
 baseurl: "" # Subpath
 github_username: AlphaHydrae
+permalink: /:year/:month/:day/:title/
+
+collections:
+  archives:
+    output: true
 
 # Build settings
 plugins:

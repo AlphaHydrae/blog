@@ -4,6 +4,7 @@ title: "Full-HTTPS Octopress Blog"
 date: 2013-01-27 20:03
 comments: true
 categories: [https, octopress]
+permalink: /:year/:month/:title/
 ---
 
 I wanted this blog to be served over HTTPS for now, but I noticed that there was

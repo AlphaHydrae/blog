@@ -4,6 +4,7 @@ title: "Rails 3: rendering views outside a controller"
 date: 2013-06-24 09:24
 comments: true
 categories: [rails]
+permalink: /:year/:month/:title/
 ---
 
 I discovered recently that Rails 3's action views really don't like it when you
