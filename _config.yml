@@ -3,14 +3,16 @@ title: AlphaHydrae
 email: contact@alphahydrae.com
 description: Progamming
 url: https://alphahydrae.com # Base hostname & protocol
-baseurl: / # Subpath
+baseurl: "" # Subpath
 github_username: AlphaHydrae
 
 # Build settings
-theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag
   - octopress-image-tag
+sass:
+  sass_dir: _sass
 
 # Exclude from processing
 exclude:
