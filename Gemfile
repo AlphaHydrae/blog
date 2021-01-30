@@ -12,5 +12,6 @@ group :jekyll_plugins do
   gem "jekyll-octicons", "~> 11.2"
   gem "jekyll-postcss", "~> 0.4.0"
   gem "jekyll-seo-tag", "~> 2.7"
+  gem "jemoji", "~> 0.12.0"
   gem "octopress-image-tag", "~> 1.1"
 end

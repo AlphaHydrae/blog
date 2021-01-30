@@ -1,11 +1,11 @@
 # Site settings
 title: AlphaHydrae
 email: contact@alphahydrae.com
-description: Programming
+description: Tales of a programmer
 url: https://alphahydrae.com # Base hostname & protocol
 baseurl: "" # Subpath
 github_username: AlphaHydrae
-permalink: /:year/:month/:day/:title/
+permalink: /:year/:month/:title/
 
 collections:
   archives:
@@ -17,6 +17,7 @@ plugins:
   - jekyll-octicons
   - jekyll-postcss
   - jekyll-seo-tag
+  - jemoji
   - octopress-image-tag
 
 exclude:

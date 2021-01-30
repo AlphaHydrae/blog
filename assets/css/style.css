@@ -6,7 +6,17 @@
 @tailwind utilities;
 
 @layer base {
-  h1 {
+  img.emoji {
+    @apply inline;
+  }
+
+  .emoji-container img.emoji {
+    @apply block;
+    @apply w-full;
+    @apply h-full;
+  }
+
+  article h1 {
     @apply font-bold;
     @apply font-display;
     @apply text-4xl;

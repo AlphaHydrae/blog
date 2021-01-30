@@ -355,7 +355,7 @@ Let's break that down:
 Check out the RFC if you want to know how to build your media type. In this
 case, the the response might look something like this (partial headers):
 
-```json
+```http
 HTTP/1.1 200 OK
 Server: nginx
 Date: Fri, 12 Oct 2012 23:33:14 GMT
@@ -370,7 +370,7 @@ This has no links though. For a better comparison with previous examples,
 imagine a media type `vnd.myapi.orders+json` representing a list of orders like
 the one in the HAL example. The response might look like this:
 
-```json
+```http
 HTTP/1.1 200 OK
 Server: nginx
 Date: Fri, 12 Oct 2012 23:33:14 GMT
@@ -491,8 +491,11 @@ uses.
 
 You must first find the orders resource from the root:
 
-```json
+```bash
 $> curl -H 'Accept: application/vnd.myapi+json' /
+```
+
+```http
 HTTP/1.1 200 OK
 Content-Type: application/vnd.myapi+json; charset=utf-8
 
@@ -509,8 +512,13 @@ type that the `orders_uri` property is a link to the orders resource you need,
 and that it has a representation in some other media type like
 `application/vnd.myapi.orders+json`. Let's GET that:
 
-```json
-$> curl -H 'Accept: application/vnd.myapi.orders+json' /orders
+```bash
+$> curl \
+     -H 'Accept: application/vnd.myapi.orders+json' \
+     /orders
+```
+
+```http
 HTTP/1.1 200 OK
 Content-Type: application/vnd.myapi.orders+json; charset=utf-8
 
@@ -529,8 +537,13 @@ Content-Type: application/vnd.myapi.orders+json; charset=utf-8
 Again, from the media type you would know that you can find the resource you're
 looking for through the templated `find_uri` link:
 
-```json
-$> curl -L -H 'Accept: application/vnd.myapi.order+json' /orders?id=425
+```bash
+$> curl -L \
+     -H 'Accept: application/vnd.myapi.order+json' \
+     /orders?id=425
+```
+
+```http
 HTTP/1.1 302 Found
 Location: http://my-api.com/orders/123
 
