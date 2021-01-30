@@ -1,0 +1,23 @@
+{% assign post = include.post %}
+{% assign title_enabled = include.title | default: 'enabled' %}
+
+<div class="flex flex-col content-center">
+
+  <!-- Post category -->
+  {%- if title_enabled == 'enabled' -%}
+    <em class="font-body mr-2 text-gray-300 text-center">
+      {%- if post.today.type == 'learned' -%}
+        :books: Today I Learned
+      {%- endif -%}
+    </em>
+  {%- endif -%}
+
+  <!-- Post title -->
+  <h2 class="text-center hover:text-blue-400">
+    <a class="font-display" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+  </h2>
+
+  <!-- Post category & date -->
+  {% include post_date.html post=post %}
+
+</div>

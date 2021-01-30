@@ -22,6 +22,10 @@
           {% include logo.html color='text-blue-500' logo='typescript' size=6 %}
           {% include logo.html color='text-yellow-400' logo='javascript' size=6 %}
           {% include logo.html color='text-red-700' logo='ruby' size=6 %}
+        </div>
+
+        <div class="flex space-x-2 fill-current">
+          {% include emoji.html emoji='heart' size=6 %}
           {% include logo.html color='text-red-500' logo='git' size=6 %}
           {% include logo.html color='text-blue-400' logo='docker' size=6 %}
           {% include logo.html color='text-gray-200' logo='ansible' size=6 %}
@@ -33,27 +37,11 @@
       <main id="home" class="container w-72 mx-auto">
         {% assign posts = site.posts %}
 
-        <ul class="max-w-lg mx-auto">
-          {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+        <div class="max-w-lg mx-auto">
           {%- for post in posts limit:3 -%}
-          <li class="flex flex-col content-center my-6">
-
-            <!-- Post category -->
-            {%- if post.categories contains 'today-i-learned' -%}
-              <em class="font-body mr-2 text-gray-300 text-center">:books: Today I Learned</em>
-            {%- endif -%}
-
-            <!-- Post title -->
-            <h2 class="text-center hover:text-blue-400">
-              <a class="font-display" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
-            </h2>
-
-            <!-- Post category & date -->
-            {% include post_date.html %}
-
-          </li>
+            {% include post_card.html post=post %}
           {%- endfor -%}
-        </ul>
+        </div>
       </main>
     </div>
   </body>

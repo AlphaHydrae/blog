@@ -1,0 +1,17 @@
+---
+
+found:
+  title: Today I Found
+  emoji: satellite
+
+learned:
+  title: Today I Learned
+  emoji: books
+
+watched:
+  title: Today I Watched
+  emoji: tv
+
+wrote:
+  title: Today I Wrote
+  emoji: pencil

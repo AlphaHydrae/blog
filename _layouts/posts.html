@@ -1,0 +1,33 @@
+---
+layout: default
+---
+
+<div class="flex max-w-4xl mx-auto mt-24 mb-20 space-x-2 text-center">
+  {% for today_type in page.featured %}
+    {% assign emoji = site.data.today[today_type].emoji %}
+    {% assign title = site.data.today[today_type].title %}
+
+    <section class="flex-1">
+      <h1 class="mb-8 text-2xl text-white">:{{ emoji }}: {{ title }}</h1>
+      {% assign posts = page.today[today_type] %}
+      {% assign posts_count = posts | size %}
+
+      {%- if posts_count >= 1 -%}
+        {% for post in posts %}
+          {% include post_card.html post=post title='disabled' %}
+        {% endfor %}
+      {%- else -%}
+        <em class="text-gray-500">No posts yet</em>
+      {%- endif -%}
+    </section>
+  {% endfor %}
+</div>
+
+{% assign remaining_posts_count = page.remaining_posts | size %}
+{%- if remaining_posts_count >= 1 -%}
+  <div class="flex max-w-2xl mx-auto mt-24 mb-20 space-x-2 text-center">
+    {% for post in remaining_posts %}
+      {% include post_card.html post=post %}
+    {% endfor %}
+  </div>
+{%- endif -%}

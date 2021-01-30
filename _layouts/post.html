@@ -6,7 +6,7 @@ layout: default
 <article class="max-w-prose mx-auto" itemscope itemtype="https://schema.org/BlogPosting">
   <header class="mt-24 mb-20">
     <!-- Category -->
-    {%- if post.categories contains 'today-i-learned' -%}
+    {%- if post.today.type == 'learned' -%}
       <em class="block font-body mb-3 text-3xl text-center text-white">Today I Learned</em>
     {%- endif -%}
 
@@ -17,7 +17,7 @@ layout: default
     <p class="flex flex-wrap justify-center space-x-5 text-gray-400">
 
       <!-- Publication date -->
-      {% include post_date.html %}
+      {% include post_date.html post=post %}
 
       <!-- Last modification date (if available) -->
       {%- if post.last_modified_at -%}
