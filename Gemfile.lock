@@ -97,7 +97,7 @@ PLATFORMS
   x86_64-darwin-19
 
 DEPENDENCIES
-  jekyll (~> 4.2.0)
+  jekyll (~> 4.2)
   jekyll-email-protect (~> 1.1)
   jekyll-feed (~> 0.15.1)
   jekyll-octicons (~> 11.2)
