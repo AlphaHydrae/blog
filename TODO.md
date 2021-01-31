@@ -5,7 +5,6 @@
 * Support today items in the past (a while ago)
 * Exact language colors
 * Disqus
-* Select featured today sections by most recent post
 * Unit test Jekyll generators
 * Interested in: Deno, Haskell, Rust
 * Updates to archived posts

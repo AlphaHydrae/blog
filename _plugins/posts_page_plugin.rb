@@ -32,7 +32,12 @@ module PostsPagePlugin
         memo
       end
 
-      featured = [ 'found', 'learned', 'wrote' ]
+      # Feature the 2 today categories with the most recent posts and always
+      # feature the "learned" category in the middle. This works because the
+      # keys of the `today` hash are already ordered by most recent posts.
+      featured = (today.keys - [ 'learned' ])[0, 2]
+      featured.insert(1, 'learned')
+
       today_posts = today.reduce([]){ |memo,(today_type,posts)| memo + posts }
       featured_today_posts = today_posts.select{ |post| featured.include?(post.data['today']['type']) }
 
