@@ -1,6 +1,5 @@
 # TODO
 
-* Use `git fetch origin $main_branch` in deploy script
 * Attribute emojis
 * Support today items in the past (a while ago)
 * Exact language colors

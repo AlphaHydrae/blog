@@ -27,7 +27,7 @@ echo "Main branch: $main_branch"
 
 git init
 git remote add origin git@github.com:AlphaHydrae/blog-draft.git
-git fetch origin
+git fetch origin "$main_branch"
 
 for remote in `git branch -r`; do
   git branch --track "${remote#origin/}" "$remote"
