@@ -7,7 +7,9 @@ I18n.config.available_locales = :en
 
 TODAY = {
   'tif' => 'found',
-  'til' => 'learned'
+  'til' => 'learned',
+  'tit' => 'think',
+  'tiw' => 'watched'
 }
 
 TODAY_KEYS = TODAY.keys
