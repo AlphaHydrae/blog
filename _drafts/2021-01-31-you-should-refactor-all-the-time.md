@@ -1,6 +1,6 @@
 ---
 layout: post
-title: You should refactor every day
+title: You should refactor all the time
 date: '2021-01-22 20:00:00 +0100'
 comments: true
 today:

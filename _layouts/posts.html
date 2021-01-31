@@ -30,11 +30,19 @@ layout: default
   {% endfor %}
 </div>
 
-{% assign remaining_posts_count = page.remaining_posts | size %}
+{%- assign remaining_posts_count = page.remaining_posts | size -%}
 {%- if remaining_posts_count >= 1 -%}
-  <div class="flex max-w-2xl mx-auto mt-24 mb-20 space-x-2 text-center">
-    {% for post in remaining_posts %}
-      {% include post_card.html post=post %}
+  {%- assign remaining_posts_count_modulo2 = remaining_posts_count | modulo: 2 -%}
+
+  <div class="grid grid-cols-1 col-start-1 md:grid-cols-4 max-w-2xl mx-auto mt-24 mb-20 space-x-2 text-center">
+    {% for post in page.remaining_posts %}
+      {%- if forloop.first and remaining_posts_count_modulo2 == 1 -%}
+        {%- assign post_extra_classes = 'md:col-start-2 md:col-span-2' -%}
+      {%- else -%}
+        {%- assign post_extra_classes = 'md:col-span-2' -%}
+      {%- endif -%}
+
+      {% include post_card.html post=post extra_classes=post_extra_classes %}
     {% endfor %}
   </div>
 {%- endif -%}

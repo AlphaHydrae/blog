@@ -32,13 +32,15 @@ module PostsPagePlugin
         memo
       end
 
+      featured = [ 'found', 'learned', 'wrote' ]
       today_posts = today.reduce([]){ |memo,(today_type,posts)| memo + posts }
+      featured_today_posts = today_posts.select{ |post| featured.include?(post.data['today']['type']) }
 
       @data = {
         'layout' => 'posts',
-        'featured' => [ 'found', 'learned', 'wrote' ],
+        'featured' => featured,
         'today' => today,
-        'remaining_posts' => all_posts - today_posts
+        'remaining_posts' => all_posts - featured_today_posts
       }
     end
   end
