@@ -78,6 +78,12 @@ ruby:
   website: https://www.ruby-lang.org
   color_class: text-red-700
 
+typescript:
+  type: language
+  title: TypeScript
+  website: https://www.typescriptlang.org
+  color_class: text-blue-500
+
 # Tools
 
 backbone:
@@ -100,6 +106,12 @@ commander:
   type: tool
   title: Commander
   website: https://github.com/commander-rb/commander
+
+eslint:
+  type: tool
+  title: ESLint
+  website: https://eslint.org
+  color_class: text-indigo-600
 
 git:
   type: tool
