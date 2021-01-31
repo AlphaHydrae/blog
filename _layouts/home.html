@@ -15,6 +15,7 @@
           </div>
         </h1>
 
+        <!-- Interests -->
         <div class="flex flex-wrap justify-center space-x-2 w-8/12 md:w-max fill-current">
           <span class="w-6 h-6 mt-2">{% include emoji.html emoji='heart' size=6 %}</span>
           <a class="w-6 h-6 mt-2" href="https://elixir-lang.org">{% include logo.html color='text-purple-400' hover_color='text-white' logo='elixir' size=6 %}</a>
@@ -37,18 +38,20 @@
         {%- assign posts_count = posts | size -%}
         {%- assign posts_count_modulo2 = posts_count | modulo: 2 -%}
 
+        <!-- Latest posts -->
         <div class="grid grid-cols-1 md:grid-cols-4 md:gap-6 max-w-2xl mx-auto">
           {%- for post in posts limit:5 -%}
-            {% capture odd %}{% cycle true, false %}{% endcapture %}
-            {%- if forloop.first or forloop.last and odd and posts_count_modulo2 == 0 -%}
-              {%- assign post_extra_classes = 'col-start-1 mt-4 md:col-start-2 md:col-span-2 md:mt-0' -%}
-            {%- else -%}
-              {%- assign post_extra_classes = 'mt-4 md:col-span-2 md:mt-0' -%}
+            {%- assign post_extra_classes = 'mt-4 md:col-span-2 md:mt-0' -%}
+            {%- if forloop.first -%}
+              {%- if posts_count >= 5 or posts_count_modulo2 == 2 -%}
+                {%- assign post_extra_classes = 'col-start-1 mt-4 md:col-start-2 md:col-span-2 md:mt-0' -%}
+              {%- endif -%}
             {%- endif -%}
             {% include post_card.html post=post extra_classes=post_extra_classes %}
           {%- endfor -%}
         </div>
 
+        <!-- More posts link -->
         <div class="flex justify-center mt-8">
           <a class="font-display text-lg text-gray-500 hover:text-blue-400 hover:underline" href="{{ '/posts' | relative_url }}">All Posts</a>
         </div>
