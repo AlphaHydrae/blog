@@ -7,7 +7,6 @@ module PostsPagePlugin
     end
   end
 
-  # Subclass of `Jekyll::Page` with custom method definitions.
   class PostsPage < Jekyll::Page
     def initialize(site:)
       @site = site
@@ -15,7 +14,7 @@ module PostsPagePlugin
       # Path to the source directory.
       @base = site.source
 
-      # Direcory the page will reside in.
+      # Directory the page will reside in.
       @dir = 'posts'
 
       # All pages have the same filename.
