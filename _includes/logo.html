@@ -1,3 +1,6 @@
-<span class="w-{{ include.size }} h-{{ include.size }} {{ include.color }} fill-current">
+{%- if include.hover_color -%}
+  {%- assign hover_color = 'hover:' | append: include.hover_color -%}
+{%- endif -%}
+<span class="w-{{ include.size }} h-{{ include.size }} {{ include.color }} {{ hover_color }} fill-current">
   {% include logo/{{ include.logo }}.html %}
 </span>
