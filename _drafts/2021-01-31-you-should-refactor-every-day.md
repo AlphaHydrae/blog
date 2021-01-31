@@ -11,8 +11,8 @@ tags: refactoring
 
 Have you seen code rot? I have. A lot of it was my own code.
 
-The more I learn about programming, the more I realize that refactoring must be
-an ongoing activity that you perform every day if you want to maintain the
+The more I learn about programming, the more I realize that [refactoring] must
+be an ongoing activity that you perform every day if you want to maintain the
 quality of your code and your architecture. It should never be a task that you
 schedule at the end of an iteration or a project–something that will be dropped
 at the first sign of an impending deadline.
@@ -127,4 +127,5 @@ Software*][domain-driven-design]:
 
 [code-simplicity]: https://www.oreilly.com/library/view/code-simplicity/9781449314750/
 [domain-driven-design]: https://www.oreilly.com/library/view/domain-driven-design-tackling/0321125215/
+[refactoring]: https://en.wikipedia.org/wiki/Code_refactoring
 [the-cycles-of-tdd]: https://blog.cleancoder.com/uncle-bob/2014/12/17/TheCyclesOfTDD.html
