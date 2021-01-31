@@ -3,8 +3,8 @@ set -e
 
 root="$( cd "$(dirname "$0")" >/dev/null 2>&1; pwd -P )"
 
-tmp_dir=`mktemp -d -t alphahydrae.draft.XXX`
-#trap "local_cleanup $tmp_dir" EXIT
+tmp_dir=`mktemp -d -t alphahydrae.blog.draft.XXX`
+trap "local_cleanup $tmp_dir" EXIT
 
 local_cleanup() {
   local tmp_dir="$1"
@@ -37,6 +37,7 @@ cd "$root"
 bundle exec jekyll build --config _config.yml,_config.draft.yml --destination "$tmp_dir" --drafts --future
 
 cd "$tmp_dir"
+rm -f CNAME
 git reset --soft "origin/$main_branch" --
 git add --all .
 git commit -m "Deploy static build on $(date)"
