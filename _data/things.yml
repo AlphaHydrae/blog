@@ -143,6 +143,12 @@ jasmine:
   website: https://jasmine.github.io
   color_class: text-purple-500
 
+jekyll:
+  type: tool
+  title: Jekyll
+  website: https://jekyllrb.com
+  color_class: text-red-600
+
 jquery:
   type: tool
   title: jQuery
