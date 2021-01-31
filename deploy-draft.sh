@@ -37,6 +37,7 @@ cd "$root"
 bundle exec jekyll build --config _config.yml,_config.draft.yml --destination "$tmp_dir" --drafts --future
 
 cd "$tmp_dir"
+rm -f CNAME
 git reset --soft "origin/$main_branch" --
 git add --all .
 git commit -m "Deploy static build on $(date)"
