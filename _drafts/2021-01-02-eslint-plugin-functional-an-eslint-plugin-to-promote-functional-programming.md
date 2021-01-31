@@ -21,6 +21,8 @@ This can be very useful in projects using [React][react], [Redux][redux] or
 similar libraries, which [require or at least recommend using immutable
 data][immutability].
 
+<!-- more -->
+
 ## Enforcing immutability
 
 For example, the [`immutable-data` rule][immutable-data-rule] forbids you to
