@@ -22,8 +22,17 @@ plugins:
   - octopress-image-tag
 
 exclude:
-  - .jekyll-cache/
+  - bin
+  - docker-compose.yml
+  - Dockerfile
   - Gemfile
   - Gemfile.lock
+  - .jekyll-cache/
   - node_modules/
+  - package.json
+  - package-lock.json
+  - postcss.config.js
+  - README.md
+  - tailwind.config.js
+  - TODO.md
   - vendor/

@@ -1,5 +1,6 @@
 # TODO
 
+* Attribute emojis
 * Support today items in the past (a while ago)
 * Exact language colors
 * Disqus
