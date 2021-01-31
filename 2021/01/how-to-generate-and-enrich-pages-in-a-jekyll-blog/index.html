@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>How to generate and enrich pages in a Jekyll blog | AlphaHydrae</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="How to generate and enrich pages in a Jekyll blog" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This site is made with Jekyll, a blog-aware static site generator written in Ruby." />
+<meta property="og:description" content="This site is made with Jekyll, a blog-aware static site generator written in Ruby." />
+<link rel="canonical" href="https://alphahydrae.com/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog/" />
+<meta property="og:url" content="https://alphahydrae.com/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog/" />
+<meta property="og:site_name" content="AlphaHydrae" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-30T22:09:49+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="How to generate and enrich pages in a Jekyll blog" />
+<script type="application/ld+json">
+{"url":"https://alphahydrae.com/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog/","headline":"How to generate and enrich pages in a Jekyll blog","dateModified":"2021-01-30T22:09:49+01:00","datePublished":"2021-01-30T22:09:49+01:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://alphahydrae.com/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog/"},"description":"This site is made with Jekyll, a blog-aware static site generator written in Ruby.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://alphahydrae.com/feed.xml" title="AlphaHydrae" /></head>
+<body class="bg-gray-900 flex flex-col h-screen m-0 p-0 text-gray-300"><header>
+  <nav class="bg-gray-700 w-full">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="relative flex items-center justify-between h-16">
+
+        <div class="flex items-center">
+          <!-- Brand -->
+          <a href="/" class="text-white px-3 py-2 space-x-3 text-sm font-medium flex items-center">
+            <img class="h-8 w-8 rounded-full" src="/assets/avatar.jpg" alt="GitHub">
+            <span class="font-body text-xl">AlphaHydrae</span>
+          </a>
+
+          <!-- Page links -->
+          <div class="hidden md:block ml-8 font-body text-sm">
+            <a class="hover:text-blue-400 hover:underline" href="/posts">Posts</a>
+          </div>
+        </div>
+
+        <!-- Profile dropdown -->
+        <div class="flex space-x-3 text-gray-300">
+          <!-- RSS -->
+          <a href="/feed.xml" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">Subscribe</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>RSS icon</title>
+              <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"></path>
+            </svg>
+          </a>
+          <!-- Linked In -->
+          <a href="https://www.linkedin.com/in/simonoulevay" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">LinkedIn</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>LinkedIn icon</title>
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path>
+            </svg>
+          </a>
+          <!-- GitHub -->
+          <a href="https://github.com/AlphaHydrae" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">GitHub</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>GitHub icon</title>
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="flex-1 overflow-y-auto">
+      <main class="font-body px-6 lg:px-0" aria-label="Content">
+        
+
+<article class="max-w-prose mx-auto" itemscope itemtype="https://schema.org/BlogPosting">
+  <header class="mt-24 mb-20">
+    <!-- Category --><em class="block font-body mb-3 text-3xl text-center text-white">
+        <img class="emoji" title=":books:" alt=":books:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4da.png" height="20" width="20">
+         A While Ago I Learned</em><!-- Title -->
+    <h1 itemprop="name headline">How to generate and enrich pages in a Jekyll blog</h1>
+
+    <!-- Metadata -->
+    <p class="flex flex-wrap justify-center space-x-5 text-gray-400">
+
+      <!-- Publication date -->
+      
+
+<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="2021-01-30T22:09:49+01:00" itemprop="datePublished">
+  <svg width="16" height="16" class="octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 0a.75.75 0 01.75.75V2h5V.75a.75.75 0 011.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 16H2.75A1.75 1.75 0 011 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 014.75 0zm0 3.5h8.5a.25.25 0 01.25.25V6h-11V3.75a.25.25 0 01.25-.25h2zm-2.25 4v6.75c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V7.5h-11z"></path></svg>
+  <span class="font-mono whitespace-nowrap">2021-01-30</span>
+</span>
+
+
+      <!-- Last modification date (if available) --><!-- Categories -->
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+          <svg width="16" height="16" class="octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z"></path></svg>
+          <span class="font-mono">programming</span>
+        </span>
+      
+
+      <!-- Languages (if available) -->
+      
+        
+
+
+<a class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:text-red-600 hover:underline" href="https://jekyllrb.com">
+  <span class="w-4 h-4   fill-current">
+  <svg role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Jekyll</title>
+  <path d="M8.073 24c-.348 0-.689-.063-1.02-.189-1.375-.525-2.104-2.02-1.726-3.402l-.015-.006.09-.226L12.399 2.01c.105-.27.057-.91.006-1.267-.016-.085-.016-.161.008-.24l.008-.023.006-.015V.458l.009-.019c.108-.292.45-.439 1.008-.439.673 0 1.602.21 2.551.573.797.307 1.523.689 2.033 1.075.602.45.842.854.707 1.2l-.031.045-.016.015c-.045.061-.09.12-.15.165-.314.271-.764.735-.84.945l-7.063 18.421-.016-.006c-.494.948-1.457 1.557-2.543 1.561H8.07l.003.006zm-2.187-3.718l-.02.05c-.447 1.201.162 2.557 1.364 3.018.271.105.551.154.837.154.971 0 1.83-.585 2.188-1.5l.027-.061 6.959-18.09c.146-.39.84-1.02.979-1.14l.016-.016c.012-.015.02-.015.02-.03 0-.06-.061-.27-.557-.645-.479-.36-1.154-.72-1.904-1.005-.868-.328-1.768-.539-2.368-.539-.39 0-.524.082-.545.126v.04c.016.104.147 1.035-.034 1.515l-6.962 18.12v.003zm8.95-11.507s-.964 1.109-1.843 1.509c-.88.398-1.529.293-2.32.756-.789.461-1.188 1.103-1.188 1.103L6.27 20.505c-.348.944.168 2.05 1.125 2.42.96.369 2.04-.12 2.412-1.056l5.029-13.094zM9.905 18.76c.104-.041.225 0 .266.105.042.104 0 .222-.105.264-.104.043-.225 0-.266-.104-.042-.097 0-.216.105-.265zm-1.014-1.802c-.152.068-.334 0-.397-.155-.07-.152 0-.334.154-.397.154-.07.335 0 .398.153.074.15.008.314-.155.39v.009zm.286-1.096c-.123-.288 0-.623.287-.758.285-.124.615 0 .75.285.121.289 0 .624-.285.757-.3.126-.629 0-.765-.285l.013.001zm2.426-2.258c.153-.074.335 0 .398.15.07.154 0 .336-.153.399-.155.07-.337 0-.399-.155-.074-.152 0-.334.154-.397v.003zm-1.293-1.379c.105-.042.226 0 .266.105.043.104 0 .226-.104.266-.104.042-.226 0-.265-.104-.044-.106.006-.227.103-.267zM13.681 1.14c.1-.261.993-.162 1.995.226.999.384 1.729.909 1.63 1.17-.104.264-.997.164-1.996-.221-1.005-.385-1.734-.91-1.632-1.176h.003z"></path>
+</svg>
+
+</span>
+
+  <span class="font-mono">jekyll</span>
+</a>
+
+      
+        
+
+
+<a class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:text-red-700 hover:underline" href="https://www.ruby-lang.org">
+  <span class="w-4 h-4   fill-current">
+  <svg role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Ruby</title>
+  <path d="M20.156.083c3.033.525 3.893 2.598 3.829 4.77L24 4.822 22.635 22.71 4.89 23.926h.016C3.433 23.864.15 23.729 0 19.139l1.645-3 2.819 6.586.503 1.172 2.805-9.144-.03.007.016-.03 9.255 2.956-1.396-5.431-.99-3.9 8.82-.569-.615-.51L16.5 2.114 20.159.073l-.003.01zM0 19.089v.026-.029.003zM5.13 5.073c3.561-3.533 8.157-5.621 9.922-3.84 1.762 1.777-.105 6.105-3.673 9.636-3.563 3.532-8.103 5.734-9.864 3.957-1.766-1.777.045-6.217 3.612-9.75l.003-.003z"></path>
+</svg>
+
+</span>
+
+  <span class="font-mono">ruby</span>
+</a>
+
+      
+
+      <!-- Tags -->
+      
+    </p>
+  </header>
+
+  <!-- Post content -->
+  <div class="text-lg" itemprop="articleBody">
+    <p>This site is made with <a href="https://jekyllrb.com">Jekyll</a>, a blog-aware <a href="https://jamstack.org/generators/">static site
+generator</a> written in <a href="https://www.ruby-lang.org">Ruby</a>.</p>
+
+<p>Jekyll takes the Markdown files in a directory and turns them into HTML pages.
+You can attach structured data to these pages like tags, categories and whatever
+you want using <a href="https://jekyllrb.com/docs/front-matter/">YAML frontmatter</a>. For example, this could
+be a Markdown file representing a blog post:</p>
+
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+<span class="na">layout</span><span class="pi">:</span> <span class="s">post</span>
+<span class="na">title</span><span class="pi">:</span> <span class="s">Blogging Like a Hacker</span>
+<span class="na">tags</span><span class="pi">:</span> <span class="s">blog hack jekyll</span>
+<span class="nn">---</span>
+
+Hello, World!
+</code></pre></div></div>
+
+<p>This is pretty cool and simple to use, but I needed more for this blog. I wanted
+to generate pages dynamically that are not based on existing Markdown files. And
+I also wanted to generate data that would be bothersome to hardcode into
+frontmatter.</p>
+
+<p>All of this can be done with <a href="https://jekyllrb.com/docs/plugins/generators/">generators</a>.</p>
+
+<!-- more -->
+
+<h2 id="enriching-existing-pages">Enriching existing pages</h2>
+
+<p>Here’s a simple generator which dynamically adds frontmatter data to every post
+in your blog:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">AddTagsCountPlugin</span>
+  <span class="k">class</span> <span class="nc">Generator</span> <span class="o">&lt;</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">Generator</span>
+    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">site</span><span class="p">)</span>
+      <span class="c1"># Iterate over each post (Markdown files</span>
+      <span class="c1"># in the `_posts` directory).</span>
+      <span class="n">site</span><span class="p">.</span><span class="nf">posts</span><span class="p">.</span><span class="nf">docs</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">post</span><span class="o">|</span>
+        <span class="c1"># Add a property to each post that indicates</span>
+        <span class="c1"># the number of tags.</span>
+        <span class="n">post</span><span class="p">.</span><span class="nf">data</span><span class="p">[</span><span class="s1">'tags_count'</span><span class="p">]</span> <span class="o">=</span>
+          <span class="n">post</span><span class="p">.</span><span class="nf">data</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="s1">'tags'</span><span class="p">,</span> <span class="p">[]).</span><span class="nf">length</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>This blog uses <a href="https://github.com/AlphaHydrae/blog/blob/8696e4dfe8d1a22cd4c6d4a97c55cd625d958409/_plugins/enrich_site.rb">a generator plugin to enrich the frontmatter data of its
+posts</a>.
+It does things like attach logos to post tags and automatically deduce
+additional tags based on other frontmatter data.</p>
+
+<h2 id="generating-new-pages">Generating new pages</h2>
+
+<p>Here’s a simple generator which adds an entirely custom page to your blog,
+without needing a corresponding Markdown file:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">AddCustomPagePlugin</span>
+  <span class="k">class</span> <span class="nc">CustomGenerator</span> <span class="o">&lt;</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">Generator</span>
+    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">site</span><span class="p">)</span>
+      <span class="n">site</span><span class="p">.</span><span class="nf">pages</span> <span class="o">&lt;&lt;</span> <span class="no">CustomPage</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">site: </span><span class="n">site</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">class</span> <span class="nc">CustomPage</span> <span class="o">&lt;</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">Page</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">site</span><span class="p">:)</span>
+      <span class="vi">@site</span> <span class="o">=</span> <span class="n">site</span>
+
+      <span class="c1"># Path to the source directory.</span>
+      <span class="vi">@base</span> <span class="o">=</span> <span class="n">site</span><span class="p">.</span><span class="nf">source</span>
+
+      <span class="c1"># Directory the page will reside in.</span>
+      <span class="vi">@dir</span> <span class="o">=</span> <span class="s1">'posts'</span>
+
+      <span class="c1"># All pages have the same filename.</span>
+      <span class="vi">@basename</span> <span class="o">=</span> <span class="s1">'index'</span>
+      <span class="vi">@ext</span> <span class="o">=</span> <span class="s1">'.html'</span>
+      <span class="vi">@name</span> <span class="o">=</span> <span class="s1">'index.html'</span>
+
+      <span class="c1"># Define any custom data you want.</span>
+      <span class="vi">@data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'layout'</span> <span class="o">=&gt;</span> <span class="s1">'page'</span><span class="p">,</span>
+        <span class="s1">'custom'</span> <span class="o">=&gt;</span> <span class="s1">'data'</span><span class="p">,</span>
+        <span class="c1"># Get data from wherever you need.</span>
+        <span class="s1">'whatever'</span> <span class="o">=&gt;</span> <span class="no">File</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s1">'~/whatever.txt'</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>You could of course generate as many pages as you want with this, based on
+whatever data source.</p>
+
+<p>This blog uses <a href="https://github.com/AlphaHydrae/blog/blob/8696e4dfe8d1a22cd4c6d4a97c55cd625d958409/_plugins/posts_page_plugin.rb">a generator
+plugin</a>
+to create <a href="/posts">its <code class="language-plaintext highlighter-rouge">/posts</code> page</a>. It groups posts
+into custom categories to display the featured columns in the page, then the
+rest of the posts underneath.</p>
+
+<h2 id="another-example">Another example</h2>
+
+<p>I first learned to use generators a while ago in 2016. While working for the
+<a href="https://mei.heig-vd.ch">Media Engineering Institute</a>, I used Jekyll to make <a href="http://psyphonie.ch">a website that hosts
+psychiatry-related videos</a>.</p>
+
+<p>It was interesting to make because unlike your usual Jekyll site, it does not
+contain a single Markdown file. All pages are <a href="https://github.com/MediaComem/hhpp/blob/6d79ba9e39360527bae423a0fdb458261d049313/_plugins/hhpp_plugin.rb">generated by this
+plugin</a> using <a href="https://github.com/MediaComem/hhpp/blob/6d79ba9e39360527bae423a0fdb458261d049313/_data/hhpp.yml">this YAML data file</a>, making this a good
+example of a truly custom Jekyll site.</p>
+
+
+  </div>
+
+  <!-- Language versions (if available) --><div class="flex flex-wrap justify-evenly space-x-8 mt-16">
+      
+        
+        
+        
+
+
+<a class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-red-600 group hover:text-blue-400" href="https://jekyllrb.com"><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Jekyll</title>
+  <path d="M8.073 24c-.348 0-.689-.063-1.02-.189-1.375-.525-2.104-2.02-1.726-3.402l-.015-.006.09-.226L12.399 2.01c.105-.27.057-.91.006-1.267-.016-.085-.016-.161.008-.24l.008-.023.006-.015V.458l.009-.019c.108-.292.45-.439 1.008-.439.673 0 1.602.21 2.551.573.797.307 1.523.689 2.033 1.075.602.45.842.854.707 1.2l-.031.045-.016.015c-.045.061-.09.12-.15.165-.314.271-.764.735-.84.945l-7.063 18.421-.016-.006c-.494.948-1.457 1.557-2.543 1.561H8.07l.003.006zm-2.187-3.718l-.02.05c-.447 1.201.162 2.557 1.364 3.018.271.105.551.154.837.154.971 0 1.83-.585 2.188-1.5l.027-.061 6.959-18.09c.146-.39.84-1.02.979-1.14l.016-.016c.012-.015.02-.015.02-.03 0-.06-.061-.27-.557-.645-.479-.36-1.154-.72-1.904-1.005-.868-.328-1.768-.539-2.368-.539-.39 0-.524.082-.545.126v.04c.016.104.147 1.035-.034 1.515l-6.962 18.12v.003zm8.95-11.507s-.964 1.109-1.843 1.509c-.88.398-1.529.293-2.32.756-.789.461-1.188 1.103-1.188 1.103L6.27 20.505c-.348.944.168 2.05 1.125 2.42.96.369 2.04-.12 2.412-1.056l5.029-13.094zM9.905 18.76c.104-.041.225 0 .266.105.042.104 0 .222-.105.264-.104.043-.225 0-.266-.104-.042-.097 0-.216.105-.265zm-1.014-1.802c-.152.068-.334 0-.397-.155-.07-.152 0-.334.154-.397.154-.07.335 0 .398.153.074.15.008.314-.155.39v.009zm.286-1.096c-.123-.288 0-.623.287-.758.285-.124.615 0 .75.285.121.289 0 .624-.285.757-.3.126-.629 0-.765-.285l.013.001zm2.426-2.258c.153-.074.335 0 .398.15.07.154 0 .336-.153.399-.155.07-.337 0-.399-.155-.074-.152 0-.334.154-.397v.003zm-1.293-1.379c.105-.042.226 0 .266.105.043.104 0 .226-.104.266-.104.042-.226 0-.265-.104-.044-.106.006-.227.103-.267zM13.681 1.14c.1-.261.993-.162 1.995.226.999.384 1.729.909 1.63 1.17-.104.264-.997.164-1.996-.221-1.005-.385-1.734-.91-1.632-1.176h.003z"></path>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-red-600 group-hover:text-blue-400">
+      Jekyll
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">4.2.0</code>
+  </div>
+</a>
+
+      
+        
+        
+        
+
+
+<a class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-red-700 group hover:text-blue-400" href="https://www.ruby-lang.org"><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Ruby</title>
+  <path d="M20.156.083c3.033.525 3.893 2.598 3.829 4.77L24 4.822 22.635 22.71 4.89 23.926h.016C3.433 23.864.15 23.729 0 19.139l1.645-3 2.819 6.586.503 1.172 2.805-9.144-.03.007.016-.03 9.255 2.956-1.396-5.431-.99-3.9 8.82-.569-.615-.51L16.5 2.114 20.159.073l-.003.01zM0 19.089v.026-.029.003zM5.13 5.073c3.561-3.533 8.157-5.621 9.922-3.84 1.762 1.777-.105 6.105-3.673 9.636-3.563 3.532-8.103 5.734-9.864 3.957-1.766-1.777.045-6.217 3.612-9.75l.003-.003z"></path>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-red-700 group-hover:text-blue-400">
+      Ruby
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">3.0.0</code>
+  </div>
+</a>
+
+      
+    </div>
+<a class="u-url" href="/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog/" hidden></a>
+</article>
+
+      </main><footer class="max-w-prose mt-24 mb-12 mx-auto p-4 font-body text-gray-500 text-sm">
+
+  <div class="flex justify-between items-center">
+    <!-- Subscribe to feed -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="/feed.xml">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>RSS icon</title>
+        <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"></path>
+      </svg>
+      <span>Subscribe</span>
+    </a>
+
+    <!-- Email -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="mailto:%63%6F%6E%74%61%63%74@%61%6C%70%68%61%68%79%64%72%61%65.%63%6F%6D">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>Email icon</title>
+        <path fill-rule="evenodd" d="M1.75 3A1.75 1.75 0 000 4.75v14c0 .966.784 1.75 1.75 1.75h20.5A1.75 1.75 0 0024 18.75v-14A1.75 1.75 0 0022.25 3H1.75zM1.5 4.75a.25.25 0 01.25-.25h20.5a.25.25 0 01.25.25v.852l-10.36 7a.25.25 0 01-.28 0l-10.36-7V4.75zm0 2.662V18.75c0 .138.112.25.25.25h20.5a.25.25 0 00.25-.25V7.412l-9.52 6.433c-.592.4-1.368.4-1.96 0L1.5 7.412z"></path>
+      </svg>
+      <span>Email</span>
+    </a>
+
+    <!-- License -->
+    <span>© 2012-2021</span>
+  </div>
+
+  <div class="flex flex-col items-center mt-8 px-8 space-y-2 text-center text-xs">
+    <a class="opacity-80 hover:opacity-100" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png">
+    </a>
+    <p>
+      Unless otherwise specified, this work is licensed under a
+      <a class="text-blue-400 hover:underline" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+        Creative Commons Attribution-ShareAlike 4.0 International License
+      </a>.
+    </p>
+  </div>
+
+  <!-- Attribution -->
+  <div class="mt-4 text-center text-xs">
+    Fonts by <a class="text-blue-400 hover:underline" href="https://fonts.google.com">Google Fonts</a>,
+    brands by <a class="text-blue-400 hover:underline" href="https://simpleicons.org">Simple Icons</a>,
+    other icons by <a class="text-blue-400 hover:underline" href="https://primer.style/octicons/">Octicons</a>.
+  </div>
+
+</footer>
+</div>
+
+  </body>
+
+</html>

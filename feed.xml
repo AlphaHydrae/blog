@@ -1,4 +1,113 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-01-31T23:37:46+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">How to get the default values out of an Elixir struct</title><link href="https://alphahydrae.com/2021/01/how-to-get-the-default-values-out-of-an-elixir-struct/" rel="alternate" type="text/html" title="How to get the default values out of an Elixir struct" /><published>2021-01-27T21:31:02+01:00</published><updated>2021-01-27T21:31:02+01:00</updated><id>https://alphahydrae.com/2021/01/how-to-get-the-default-values-out-of-an-elixir-struct</id><content type="html" xml:base="https://alphahydrae.com/2021/01/how-to-get-the-default-values-out-of-an-elixir-struct/">&lt;p&gt;Define a struct with some default values:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-01-31T23:40:04+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">How to generate and enrich pages in a Jekyll blog</title><link href="https://alphahydrae.com/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog/" rel="alternate" type="text/html" title="How to generate and enrich pages in a Jekyll blog" /><published>2021-01-30T22:09:49+01:00</published><updated>2021-01-30T22:09:49+01:00</updated><id>https://alphahydrae.com/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog</id><content type="html" xml:base="https://alphahydrae.com/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog/">&lt;p&gt;This site is made with &lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt;, a blog-aware &lt;a href=&quot;https://jamstack.org/generators/&quot;&gt;static site
+generator&lt;/a&gt; written in &lt;a href=&quot;https://www.ruby-lang.org&quot;&gt;Ruby&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Jekyll takes the Markdown files in a directory and turns them into HTML pages.
+You can attach structured data to these pages like tags, categories and whatever
+you want using &lt;a href=&quot;https://jekyllrb.com/docs/front-matter/&quot;&gt;YAML frontmatter&lt;/a&gt;. For example, this could
+be a Markdown file representing a blog post:&lt;/p&gt;
+
+&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;post&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Blogging Like a Hacker&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;blog hack jekyll&lt;/span&gt;
+&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+
+Hello, World!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This is pretty cool and simple to use, but I needed more for this blog. I wanted
+to generate pages dynamically that are not based on existing Markdown files. And
+I also wanted to generate data that would be bothersome to hardcode into
+frontmatter.&lt;/p&gt;
+
+&lt;p&gt;All of this can be done with &lt;a href=&quot;https://jekyllrb.com/docs/plugins/generators/&quot;&gt;generators&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;enriching-existing-pages&quot;&gt;Enriching existing pages&lt;/h2&gt;
+
+&lt;p&gt;Here’s a simple generator which dynamically adds frontmatter data to every post
+in your blog:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;AddTagsCountPlugin&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Generator&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Jekyll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Generator&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;generate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# Iterate over each post (Markdown files&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# in the `_posts` directory).&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;posts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;docs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# Add a property to each post that indicates&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# the number of tags.&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;tags_count&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;tags&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;length&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This blog uses &lt;a href=&quot;https://github.com/AlphaHydrae/blog/blob/8696e4dfe8d1a22cd4c6d4a97c55cd625d958409/_plugins/enrich_site.rb&quot;&gt;a generator plugin to enrich the frontmatter data of its
+posts&lt;/a&gt;.
+It does things like attach logos to post tags and automatically deduce
+additional tags based on other frontmatter data.&lt;/p&gt;
+
+&lt;h2 id=&quot;generating-new-pages&quot;&gt;Generating new pages&lt;/h2&gt;
+
+&lt;p&gt;Here’s a simple generator which adds an entirely custom page to your blog,
+without needing a corresponding Markdown file:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;AddCustomPagePlugin&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CustomGenerator&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Jekyll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Generator&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;generate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;CustomPage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;site: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CustomPage&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Jekyll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Page&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:)&lt;/span&gt;
+      &lt;span class=&quot;vi&quot;&gt;@site&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;# Path to the source directory.&lt;/span&gt;
+      &lt;span class=&quot;vi&quot;&gt;@base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;source&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;# Directory the page will reside in.&lt;/span&gt;
+      &lt;span class=&quot;vi&quot;&gt;@dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;posts&apos;&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;# All pages have the same filename.&lt;/span&gt;
+      &lt;span class=&quot;vi&quot;&gt;@basename&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;index&apos;&lt;/span&gt;
+      &lt;span class=&quot;vi&quot;&gt;@ext&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;.html&apos;&lt;/span&gt;
+      &lt;span class=&quot;vi&quot;&gt;@name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;index.html&apos;&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;# Define any custom data you want.&lt;/span&gt;
+      &lt;span class=&quot;vi&quot;&gt;@data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;&apos;layout&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;page&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;&apos;custom&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;data&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# Get data from wherever you need.&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;&apos;whatever&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;~/whatever.txt&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You could of course generate as many pages as you want with this, based on
+whatever data source.&lt;/p&gt;
+
+&lt;p&gt;This blog uses &lt;a href=&quot;https://github.com/AlphaHydrae/blog/blob/8696e4dfe8d1a22cd4c6d4a97c55cd625d958409/_plugins/posts_page_plugin.rb&quot;&gt;a generator
+plugin&lt;/a&gt;
+to create &lt;a href=&quot;/posts&quot;&gt;its &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/posts&lt;/code&gt; page&lt;/a&gt;. It groups posts
+into custom categories to display the featured columns in the page, then the
+rest of the posts underneath.&lt;/p&gt;
+
+&lt;h2 id=&quot;another-example&quot;&gt;Another example&lt;/h2&gt;
+
+&lt;p&gt;I first learned to use generators a while ago in 2016. While working for the
+&lt;a href=&quot;https://mei.heig-vd.ch&quot;&gt;Media Engineering Institute&lt;/a&gt;, I used Jekyll to make &lt;a href=&quot;http://psyphonie.ch&quot;&gt;a website that hosts
+psychiatry-related videos&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It was interesting to make because unlike your usual Jekyll site, it does not
+contain a single Markdown file. All pages are &lt;a href=&quot;https://github.com/MediaComem/hhpp/blob/6d79ba9e39360527bae423a0fdb458261d049313/_plugins/hhpp_plugin.rb&quot;&gt;generated by this
+plugin&lt;/a&gt; using &lt;a href=&quot;https://github.com/MediaComem/hhpp/blob/6d79ba9e39360527bae423a0fdb458261d049313/_data/hhpp.yml&quot;&gt;this YAML data file&lt;/a&gt;, making this a good
+example of a truly custom Jekyll site.&lt;/p&gt;</content><author><name></name></author><category term="programming" /><category term="jekyll" /><category term="ruby" /><summary type="html">This site is made with Jekyll, a blog-aware static site generator written in Ruby.</summary></entry><entry><title type="html">How to get the default values out of an Elixir struct</title><link href="https://alphahydrae.com/2021/01/how-to-get-the-default-values-out-of-an-elixir-struct/" rel="alternate" type="text/html" title="How to get the default values out of an Elixir struct" /><published>2021-01-27T21:31:02+01:00</published><updated>2021-01-27T21:31:02+01:00</updated><id>https://alphahydrae.com/2021/01/how-to-get-the-default-values-out-of-an-elixir-struct</id><content type="html" xml:base="https://alphahydrae.com/2021/01/how-to-get-the-default-values-out-of-an-elixir-struct/">&lt;p&gt;Define a struct with some default values:&lt;/p&gt;
 
 &lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Person&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;defstruct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;age:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
@@ -25,4 +134,464 @@ with &lt;a href=&quot;https://hexdocs.pm/elixir/Map.html#get/3&quot;&gt;&lt;code
 &lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;defaults&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__struct__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;age&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# 18&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# nil&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="programming" /><category term="elixir" /><summary type="html">Define a struct with some default values:</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="programming" /><category term="elixir" /><summary type="html">Define a struct with some default values:</summary></entry><entry><title type="html">Cool functional programming features may be coming to JavaScript</title><link href="https://alphahydrae.com/2021/01/cool-functional-programming-features-may-be-coming-to-javascript/" rel="alternate" type="text/html" title="Cool functional programming features may be coming to JavaScript" /><published>2021-01-25T10:00:00+01:00</published><updated>2021-01-25T10:00:00+01:00</updated><id>https://alphahydrae.com/2021/01/cool-functional-programming-features-may-be-coming-to-javascript</id><content type="html" xml:base="https://alphahydrae.com/2021/01/cool-functional-programming-features-may-be-coming-to-javascript/">&lt;p&gt;I’ve been learning functional programming languages lately, so I was happy to
+see some of my favorite functional programming features in the &lt;a href=&quot;https://github.com/tc39/proposals/blob/master/stage-1-proposals.md&quot;&gt;TC39 stage 1
+proposals&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;the-pipeline-operator&quot;&gt;The pipeline operator&lt;/h2&gt;
+
+&lt;p&gt;I know the pipe operator &lt;a href=&quot;https://elixir-lang.org/getting-started/enumerables-and-streams.html#the-pipe-operator&quot;&gt;from Elixir&lt;/a&gt; and &lt;a href=&quot;https://elm-lang.org/docs/syntax#operators&quot;&gt;from
+Elm&lt;/a&gt;. The ECMAScript &lt;a href=&quot;https://github.com/tc39/proposal-pipeline-operator&quot;&gt;pipeline operator
+proposal&lt;/a&gt; introduces a similar operator &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;|&amp;gt;&lt;/code&gt; which
+allows you to streamline chained function calls in a readable, functional
+manner.&lt;/p&gt;
+
+&lt;p&gt;Let’s assume you have the following functions available:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;doubleSay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;capitalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toUpperCase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;substring&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;exclaim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Chaining them is not very readable because the functions do not execute in the
+order they appear in the code. Your brain has to get used to reading them from
+the inside to the outside of the chain:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// The order of execution is: doubleSay,&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// then capitalize, then exclaim.&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;exclaim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;capitalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;doubleSay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)));&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; &quot;Hello, hello!&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With the new pipeline operator, the following execution would be equivalent and
+much more intuitive to read and understand:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;doubleSay&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;capitalize&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;exclaim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; &quot;Hello, hello!&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;pattern-matching&quot;&gt;Pattern matching&lt;/h2&gt;
+
+&lt;p&gt;I’ve used pattern matching &lt;a href=&quot;https://elixir-lang.org/getting-started/pattern-matching.html&quot;&gt;in Elixir&lt;/a&gt;, &lt;a href=&quot;https://guide.elm-lang.org/types/pattern_matching.html&quot;&gt;in
+Elm&lt;/a&gt; and &lt;a href=&quot;https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html&quot;&gt;in Rust&lt;/a&gt;. The ECMAScript
+&lt;a href=&quot;https://github.com/tc39/proposal-pattern-matching&quot;&gt;pattern matching proposal&lt;/a&gt; would add a similar
+expression based on the existing &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment&quot;&gt;destructuring
+assignment&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It allows compact destructuring of complex data types in a switch-like manner:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;jsonService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;200&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Content-Length&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`size is &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;404&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;JSON not found&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;400&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;RequestError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;partial-application&quot;&gt;Partial application&lt;/h2&gt;
+
+&lt;p&gt;I’ve used partial application &lt;a href=&quot;https://guide.elm-lang.org/appendix/function_types.html#partial-application&quot;&gt;in Elm&lt;/a&gt; and with
+the Lodash-like &lt;a href=&quot;https://ramdajs.com&quot;&gt;Ramda library for JavaScript&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let’s say you have a generic addition function like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can use existing JavaScript features to create a partially-applied version
+of this function. Let’s say you often need to increment by 1 and want to derive
+this functionality from the existing function. You could use
+&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Function.prototype.bind&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;incrementByOne&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;incrementByOne&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Or you could use an &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions&quot;&gt;arrow function&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;incrementByOne&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;incrementByOne&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// 4&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://github.com/tc39/proposal-partial-application&quot;&gt;partial application proposal&lt;/a&gt; introduces a
+more compact way of doing this:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;incrementByOne&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;incrementByOne&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 5&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This would interact very nicely with the previous-mentioned pipeline operator
+proposal:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;newScore&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;player&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;score&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// This would be an equivalent expression using&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// the pipeline operator and partial application:&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;newScore&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;player&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;score&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;do-expressions&quot;&gt;Do expressions&lt;/h2&gt;
+
+&lt;p&gt;I’ve long enjoyed programming in languages where every expression returns a
+value. This is generally the case in functional programming languages like
+&lt;a href=&quot;https://elixir-lang.org&quot;&gt;Elixir&lt;/a&gt; and &lt;a href=&quot;https://elm-lang.org&quot;&gt;Elm&lt;/a&gt;, but also in some other languages like
+&lt;a href=&quot;https://www.ruby-lang.org&quot;&gt;Ruby&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In JavaScript, this is an expression:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can store its result into a variable:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// 3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;However, the &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else&quot;&gt;if statement&lt;/a&gt; in JavaScript is not an expression, so
+you cannot do this:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;someCondition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;someOtherCondition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You are forced to do something like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;someCondition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;someOtherCondition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://github.com/tc39/proposal-do-expressions&quot;&gt;do expressions proposal&lt;/a&gt; adds a more
+expression-oriented of doing this:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;someCondition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;someOtherCondition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;meta&quot;&gt;Meta&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;https://tc39.es&quot;&gt;TC39&lt;/a&gt; is a group of JavaScript developers, implementers, academics, and
+more, collaborating with the community to maintain and evolve the definition
+of JavaScript.&lt;/p&gt;
+
+  &lt;p&gt;The &lt;a href=&quot;https://github.com/tc39/proposals&quot;&gt;TC39 proposals&lt;/a&gt; are the changes proposed to ECMAScript,
+the JavaScript standard. Stage 1 proposals are early in the
+&lt;a href=&quot;https://tc39.es/process-document/&quot;&gt;process&lt;/a&gt; and have not yet been standardized.&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><category term="programming" /><category term="tc39" /><category term="functional" /><category term="javascript" /><summary type="html">I’ve been learning functional programming languages lately, so I was happy to see some of my favorite functional programming features in the TC39 stage 1 proposals.</summary></entry><entry><title type="html">Tailwind CSS, a cool utility-first CSS framework</title><link href="https://alphahydrae.com/2021/01/tailwind-css-a-cool-utilityfirst-css-framework/" rel="alternate" type="text/html" title="Tailwind CSS, a cool utility-first CSS framework" /><published>2021-01-24T20:45:37+01:00</published><updated>2021-01-24T20:45:37+01:00</updated><id>https://alphahydrae.com/2021/01/tailwind-css-a-cool-utilityfirst-css-framework</id><content type="html" xml:base="https://alphahydrae.com/2021/01/tailwind-css-a-cool-utilityfirst-css-framework/">&lt;p&gt;&lt;a href=&quot;https://tailwindcss.com&quot;&gt;Tailwind CSS&lt;/a&gt; is a utility-first CSS framework packed with classes
+like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;flex&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pt-4&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;text-center&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rotate-90&lt;/code&gt; that can be composed to build
+any design, directly in your markup.&lt;/p&gt;
+
+&lt;p&gt;I’ve been using &lt;a href=&quot;https://getbootstrap.com&quot;&gt;Bootstrap&lt;/a&gt; for a while, at least since version 2 was
+released in 2012. I still use it. It has its faults, one of them being that when
+you use Bootstrap without spending some time to customize it, your website kind
+of looks the same as all other Bootstrap websites.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Tailwind CSS is lower-level than Bootstrap. It has &lt;a href=&quot;https://tailwindcss.com/docs/utility-first&quot;&gt;primitive
+utilities&lt;/a&gt; rather than UI components. Think grids,
+colors, margins, not buttons and cards. I think it would be more accurate to
+call it a CSS library rather than a CSS framework, in the same way that jQuery
+is a library and React or Vue are frameworks. There is a higher level &lt;a href=&quot;https://tailwindui.com&quot;&gt;Tailwind
+UI&lt;/a&gt; library which seems to be more like a framework.&lt;/p&gt;
+
+&lt;p&gt;The theme of this blog is &lt;strong&gt;entirely styled with Tailwind CSS, with not one line
+of custom CSS&lt;/strong&gt; (with the exception of the CSS used for syntax highlighting of
+code).&lt;/p&gt;
+
+&lt;p&gt;I’m not a designer, and I’m not winning any design awards any time soon, but I
+think this theme looks okay and it’s pretty cool I was able to create it in a
+few days with these utilities when I’m definitely not a CSS pro.&lt;/p&gt;
+
+&lt;h2 id=&quot;building-components-from-primitive-utilities&quot;&gt;Building components from primitive utilities&lt;/h2&gt;
+
+&lt;p&gt;Traditionally, whenever you need to style something on the web, you write CSS.
+With Tailwind, you style elements by &lt;a href=&quot;https://tailwindcss.com/docs/utility-first&quot;&gt;applying pre-existing classes directly in
+your HTML&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;flex items-center p-6 max-w-sm mx-auto bg-white&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;flex-shrink-0&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;h-12 w-12&quot;&lt;/span&gt;
+         &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/img/logo.svg&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;alt=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ChitChat Logo&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text-xl font-medium&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;ChitChat&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text-gray-500&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;You have a new message!&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Take a look at &lt;a href=&quot;https://github.com/AlphaHydrae/blog/blob/92e6262ba1098df47fe25b3a137efda1d9e8fce4/_layouts/post.html#L6-L71&quot;&gt;the Liquid template for the layout of this
+page&lt;/a&gt;.
+All of the classes you see in the various &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;class&lt;/code&gt; attributes are Tailwind
+utilities.&lt;/p&gt;
+
+&lt;h2 id=&quot;mobile-first-responsive-design&quot;&gt;Mobile-first, responsive design&lt;/h2&gt;
+
+&lt;p&gt;Tailwind CSS is designed to &lt;a href=&quot;https://tailwindcss.com/docs/responsive-design&quot;&gt;build adaptive user
+interfaces&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Like Bootstrap, Tailwind encourages a &lt;a href=&quot;https://tailwindcss.com/docs/responsive-design#mobile-first&quot;&gt;mobile-first&lt;/a&gt;
+design. What this means is that unprefixed utilities (like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;uppercase&lt;/code&gt;) take
+effect on all screen sizes, while prefixed utilities (like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;md:uppercase&lt;/code&gt;) only
+take effect at the specified breakpoint and above.&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!--
+  Width of 16 by default,
+  32 on medium screens,
+  and 48 on large screens
+--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;w-16 md:w-32 lg:w-48&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;...&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;adding-base-styles&quot;&gt;Adding base styles&lt;/h2&gt;
+
+&lt;p&gt;You can &lt;a href=&quot;https://tailwindcss.com/docs/adding-base-styles&quot;&gt;define base styles&lt;/a&gt; to avoid repeating
+yourself. This helps keep your design &lt;a href=&quot;https://en.wikipedia.org/wiki/Don%27t_repeat_yourself&quot;&gt;DRY&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;@tailwind&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;@tailwind&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;components&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;@tailwind&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;utilities&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;@layer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;h1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;@apply&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;text-2xl;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;h2&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;@apply&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;text-xl;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Take a look at &lt;a href=&quot;https://github.com/AlphaHydrae/blog/blob/92e6262ba1098df47fe25b3a137efda1d9e8fce4/assets/css/style.css#L8-L141&quot;&gt;the stylesheet for this
+blog&lt;/a&gt;.
+Note the absence of any custom CSS (except the syntax highlighting CSS): all
+styles are derived from Tailwind’s primitive utilities.&lt;/p&gt;
+
+&lt;h2 id=&quot;some-more-information&quot;&gt;Some more information&lt;/h2&gt;
+
+&lt;p&gt;While Bootstrap is based on &lt;a href=&quot;https://sass-lang.com&quot;&gt;Sass&lt;/a&gt;, Tailwind CSS is &lt;a href=&quot;https://tailwindcss.com/docs/installation#installing-tailwind-css-as-a-post-css-plugin&quot;&gt;installed as a
+PostCSS plugin&lt;/a&gt;. &lt;a href=&quot;https://postcss.org&quot;&gt;PostCSS&lt;/a&gt; is a tool for
+transforming CSS with JavaScript. You can combine Tailwind with other PostCSS
+plugins like &lt;a href=&quot;https://github.com/postcss/autoprefixer&quot;&gt;the PostCSS autoprefixer plugin&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This blog is made with &lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt;. Integrating Tailwind CSS is easy with
+the &lt;a href=&quot;https://github.com/mhanberg/jekyll-postcss&quot;&gt;Jekyll PostCSS plugin&lt;/a&gt;. It takes one line, as you can see
+in &lt;a href=&quot;https://github.com/AlphaHydrae/blog/blob/92e6262ba1098df47fe25b3a137efda1d9e8fce4/postcss.config.js#L6&quot;&gt;this blog’s PostCSS configuration
+file&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="programming" /><category term="css" /><category term="tailwind-css" /><category term="post-css" /><summary type="html">Tailwind CSS is a utility-first CSS framework packed with classes like flex, pt-4, text-center and rotate-90 that can be composed to build any design, directly in your markup.</summary></entry><entry><title type="html">You should refactor all the time</title><link href="https://alphahydrae.com/2021/01/you-should-refactor-all-the-time/" rel="alternate" type="text/html" title="You should refactor all the time" /><published>2021-01-22T20:00:00+01:00</published><updated>2021-01-22T20:00:00+01:00</updated><id>https://alphahydrae.com/2021/01/you-should-refactor-all-the-time</id><content type="html" xml:base="https://alphahydrae.com/2021/01/you-should-refactor-all-the-time/">&lt;p&gt;Have you seen code rot? I have. A lot of it was my own code.&lt;/p&gt;
+
+&lt;p&gt;The more I learn about programming, the more I realize that &lt;a href=&quot;https://en.wikipedia.org/wiki/Code_refactoring&quot;&gt;refactoring&lt;/a&gt; must
+be an ongoing activity that you perform every day if you want to maintain the
+quality of your code and your architecture. It should never be a task that you
+schedule at the end of an iteration or a project–something that will be dropped
+at the first sign of an impending deadline.&lt;/p&gt;
+
+&lt;p&gt;I’m not the first to think this. I seem to be in good company.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;the-equation-of-software-design&quot;&gt;The Equation of Software Design&lt;/h2&gt;
+
+&lt;p&gt;By Max Kanat-Alexander in &lt;a href=&quot;https://www.oreilly.com/library/view/code-simplicity/9781449314750/&quot;&gt;&lt;em&gt;Code Simplicity&lt;/em&gt;&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.oreilly.com/library/view/code-simplicity/9781449314750/&quot;&gt;&lt;img class=&quot;right&quot; src=&quot;/assets/books/code-simplicity.jpg&quot; width=&quot;150&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The desirability of a change is directly proportional to the value now plus
+the future value, and inversely proportional to the effort of implementation
+plus the effort of maintenance.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;When you’re in it for the long haul, the effort of implementation will
+eventually be insignificant compared to the cumulated effort of maintenance.
+Therefore:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;It is more important to reduce the effort of maintenance than it is to reduce
+the effort of implementation.&lt;/p&gt;
+
+  &lt;p&gt;The quality level of your design should be proportional to the length of
+future time in which your system will continue to help people.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;You can’t afford to skip refactoring and let a significant amount of cruft
+accumulate. It &lt;em&gt;will&lt;/em&gt; come back to haunt you.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-cycles-of-tdd&quot;&gt;The Cycles of TDD&lt;/h2&gt;
+
+&lt;p&gt;By Robert C. Martin, a.k.a. &lt;em&gt;Uncle Bob&lt;/em&gt;, in &lt;a href=&quot;https://blog.cleancoder.com/uncle-bob/2014/12/17/TheCyclesOfTDD.html&quot;&gt;&lt;em&gt;The Cycles of
+TDD&lt;/em&gt;&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;h3 id=&quot;micro-cycle-red-green-refactor&quot;&gt;Micro cycle: Red-Green-Refactor&lt;/h3&gt;
+
+  &lt;p&gt;The micro-cycle that experienced TDDers follow. The Red/Green/Refactor
+cycle. […]&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;Create a unit tests that fails&lt;/li&gt;
+    &lt;li&gt;Write production code that makes that test pass.&lt;/li&gt;
+    &lt;li&gt;Clean up the mess you just made.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;The philosophy is based on the idea that our limited minds are not capable of
+pursuing the two simultaneous goals of all software systems: &lt;strong&gt;1. Correct
+behavior&lt;/strong&gt;. &lt;strong&gt;2. Correct structure&lt;/strong&gt;. So the RGR cycle tells us to first focus
+on making the software work correctly; and then, and only then, to focus on
+giving that working software a long-term survivable structure.&lt;/p&gt;
+
+  &lt;p&gt;Again, many people have written about this cycle. Indeed the idea derives from
+Kent Beck’s original injunction:&lt;/p&gt;
+
+  &lt;blockquote&gt;
+    &lt;p&gt;&lt;em&gt;Make it work. Make it right. Make it fast.&lt;/em&gt;&lt;/p&gt;
+  &lt;/blockquote&gt;
+
+  &lt;p&gt;Another way to think about this idea is:&lt;/p&gt;
+
+  &lt;blockquote&gt;
+    &lt;p&gt;&lt;em&gt;Getting software to work is only half of the job.&lt;/em&gt;&lt;/p&gt;
+  &lt;/blockquote&gt;
+
+  &lt;p&gt;Customers value two things about software. The way it makes a machine behave;
+and the ease with which it can be changed. Compromise either of those two
+values and the software will diminish in real value to the customer.&lt;/p&gt;
+
+  &lt;p&gt;Executing the Red/Green/Refactor cycle takes on the order of a minute or so.
+This is the granularity of refactoring. Refactoring is not something you do at
+the end of the project; it’s something you do on a minute-by-minute basis.
+There is no task on the project plan that says: Refactor. There is no time
+reserved at the end of the project, or the iteration, or the day, for
+refactoring. Refactoring is a continuous in-process activity, not something
+that is done late (and therefore optionally).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;a-design-for-developers&quot;&gt;A Design for Developers&lt;/h2&gt;
+
+&lt;p&gt;By Eric Evans in &lt;a href=&quot;https://www.oreilly.com/library/view/domain-driven-design-tackling/0321125215/&quot;&gt;&lt;em&gt;Domain-Driven Design: Tackling Complexity in the Heart of
+Software&lt;/em&gt;&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;https://www.oreilly.com/library/view/domain-driven-design-tackling/0321125215/&quot;&gt;&lt;img class=&quot;right&quot; src=&quot;/assets/books/domain-driven-design.jpg&quot; width=&quot;150&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+  &lt;p&gt;Software isn’t just for users. It’s also for developers. Developers have to
+integrate code with other parts of the system. In an iterative process,
+developers change the code again and again. Refactoring towards deeper insight
+both leads to and benefits from a supple design. […]&lt;/p&gt;
+
+  &lt;p&gt;If you wait until you can make a complete justification for a change, you’ve
+waited too long. Your project is already incurring heavy costs, and the
+postponed changes will be harder to make because the target code will have
+been more elaborated and more embedded in other code.&lt;/p&gt;
+
+  &lt;p&gt;Continuous refactoring has come to be considered a “best practice”, but most
+project teams are still too cautious about it. They see the risk of changing
+code and the cost of developer time to make a change; but what’s harder to see
+is the risk of keeping an awkward design and the cost of working around that
+design. Developers who want to refactor are often asked to justify the
+decision. Although this seems reasonable, it makes an already difficult thing
+impossibly difficult, and tends to squelch refactoring (or drive it
+underground). Software development is not such a predictable process that the
+benefits of a change or the costs of not making a change can be accurately
+calculated.&lt;/p&gt;
+
+  &lt;p&gt;[…] Therefore, refactor when:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;The design does not express the team’s current understanding of the domain;&lt;/li&gt;
+    &lt;li&gt;Important concepts are implicit in the design (and you see a way to make
+them explicit); or&lt;/li&gt;
+    &lt;li&gt;You see an opportunity to make some important part of the design suppler.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;This aggressive attitude does not justify any change at any time. Don’t
+refactor the day before a release. Don’t introduce “supple designs” that are
+just demonstrations of technical virtuosity but fail to cut to the core of the
+domain. Don’t introduce a “deeper model” that you couldn’t convince a domain
+expert to use, no matter how elegant it seems. Don’t be absolute about things,
+but push beyond the comfort zone in the direction of favoring refactoring.&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><category term="programming" /><category term="refactoring" /><summary type="html">Have you seen code rot? I have. A lot of it was my own code.</summary></entry><entry><title type="html">eslint-plugin-functional, an ESLint plugin to promote functional programming</title><link href="https://alphahydrae.com/2021/01/eslint-plugin-functional-an-eslint-plugin-to-promote-functional-programming/" rel="alternate" type="text/html" title="eslint-plugin-functional, an ESLint plugin to promote functional programming" /><published>2021-01-02T19:00:00+01:00</published><updated>2021-01-02T19:00:00+01:00</updated><id>https://alphahydrae.com/2021/01/eslint-plugin-functional-an-eslint-plugin-to-promote-functional-programming</id><content type="html" xml:base="https://alphahydrae.com/2021/01/eslint-plugin-functional-an-eslint-plugin-to-promote-functional-programming/">&lt;p&gt;&lt;a href=&quot;https://www.npmjs.com/package/eslint-plugin-functional&quot;&gt;eslint-plugin-functional&lt;/a&gt; is an &lt;a href=&quot;https://eslint.org&quot;&gt;ESLint&lt;/a&gt; plugin to disable mutation and
+promote functional programming in JavaScript.&lt;/p&gt;
+
+&lt;p&gt;This can be very useful in projects using &lt;a href=&quot;https://reactjs.org&quot;&gt;React&lt;/a&gt;, &lt;a href=&quot;https://redux.js.org&quot;&gt;Redux&lt;/a&gt; or
+similar libraries, which &lt;a href=&quot;https://redux.js.org/faq/immutable-data&quot;&gt;require or at least recommend using immutable
+data&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;enforcing-immutability&quot;&gt;Enforcing immutability&lt;/h2&gt;
+
+&lt;p&gt;For example, the &lt;a href=&quot;https://github.com/jonaskello/eslint-plugin-functional/blob/HEAD/docs/rules/immutable-data.md&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;immutable-data&lt;/code&gt; rule&lt;/a&gt; forbids you to
+mutate objects and arrays:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Modifying an existing object/array is not allowed!&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bar&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;baz&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Forcing you to create a new derived object:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;obj2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;baz&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;preferring-read-only-types&quot;&gt;Preferring read-only types&lt;/h2&gt;
+
+&lt;p&gt;If you’re using &lt;a href=&quot;https://www.typescriptlang.org&quot;&gt;TypeScript&lt;/a&gt;, you can use the
+&lt;a href=&quot;https://github.com/jonaskello/eslint-plugin-functional/blob/HEAD/docs/rules/prefer-readonly-type.md&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;prefer-readonly-type&lt;/code&gt; rule&lt;/a&gt; to enforce declaring
+interface/type properties as read-only. The following would be invalid with this
+rule:&lt;/p&gt;
+
+&lt;div class=&quot;language-ts highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kr&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Point&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;While this would be valid:&lt;/p&gt;
+
+&lt;div class=&quot;language-ts highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kr&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Point&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;readonly&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;readonly&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="programming" /><category term="eslint" /><category term="javascript" /><category term="typescript" /><category term="functional" /><summary type="html">eslint-plugin-functional is an ESLint plugin to disable mutation and promote functional programming in JavaScript.</summary></entry></feed>
