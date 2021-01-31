@@ -7,7 +7,13 @@
   <!-- Post category -->
   {%- if title_enabled == 'enabled' -%}
     <em class="font-body mr-2 text-gray-400 text-center">
-      :{{ site.data.today[post.today.type].emoji }}: {{ site.data.today[post.today.type].title }}
+      :{{ site.data.today[post.today.type].emoji }}:
+      {{ ' ' }}
+      {%- if post.today.past -%}
+        {{ site.data.today[post.today.type].past_title }}
+      {%- else -%}
+        {{ site.data.today[post.today.type].title }}
+      {%- endif -%}
     </em>
   {%- endif -%}
 

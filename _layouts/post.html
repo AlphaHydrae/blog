@@ -6,8 +6,16 @@ layout: default
 <article class="max-w-prose mx-auto" itemscope itemtype="https://schema.org/BlogPosting">
   <header class="mt-24 mb-20">
     <!-- Category -->
-    {%- if post.today.type == 'learned' -%}
-      <em class="block font-body mb-3 text-3xl text-center text-white">Today I Learned</em>
+    {%- if post.today -%}
+      <em class="block font-body mb-3 text-3xl text-center text-white">
+        :{{ site.data.today[post.today.type].emoji }}:
+        {{ ' ' }}
+        {%- if post.today.past -%}
+          {{ site.data.today[post.today.type].past_title }}
+        {%- else -%}
+          {{ site.data.today[post.today.type].title }}
+        {%- endif -%}
+      </em>
     {%- endif -%}
 
     <!-- Title -->
