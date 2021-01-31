@@ -21,6 +21,8 @@ released in 2012. I still use it. It has its faults, one of them being that when
 you use Bootstrap without spending some time to customize it, your website kind
 of looks the same as all other Bootstrap websites.
 
+<!-- more -->
+
 Tailwind CSS is lower-level than Bootstrap. It has [primitive
 utilities][tailwind-css-utility-first] rather than UI components. Think grids,
 colors, margins, not buttons and cards. I think it would be more accurate to

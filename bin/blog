@@ -61,6 +61,6 @@ frontmatter['categories'] = 'programming'
 frontmatter['tags'] = tags.join(' ') unless tags.empty?
 
 FileUtils.mkdir_p(drafts_dir)
-File.open(post_file, 'w'){ |f| f.write "#{YAML.dump(frontmatter)}---\n\nHello Post"}
+File.open(post_file, 'w'){ |f| f.write "#{YAML.dump(frontmatter)}---\n\nHello, World!\n\n<!-- more -->\n"}
 
 puts "Created draft post #{post_file}"

@@ -17,7 +17,9 @@ quality of your code and your architecture. It should never be a task that you
 schedule at the end of an iteration or a project–something that will be dropped
 at the first sign of an impending deadline.
 
-I seem to be in good company in thinking this.
+I'm not the first to think this. I seem to be in good company.
+
+<!-- more -->
 
 ## The Equation of Software Design
 

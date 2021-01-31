@@ -15,6 +15,8 @@ I've been learning functional programming languages lately, so I was happy to
 see some of my favorite functional programming features in the [TC39 stage 1
 proposals][tc39-proposals-stage-1].
 
+<!-- more -->
+
 ## The pipeline operator
 
 I know the pipe operator [from Elixir][elixir-pipe-operator] and [from
