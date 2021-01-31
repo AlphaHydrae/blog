@@ -5,7 +5,7 @@
 
   <body class="bg-gray-900 flex flex-col h-screen m-0 p-0 text-gray-300">
     <div class="my-auto p-12">
-      <header class="flex flex-col items-center space-y-2 mb-12">
+      <header class="flex flex-col items-center mb-12">
         <!-- Brand -->
         <h1 class="flex items-center px-3 py-2 space-x-3 font-body font-medium text-sm text-white">
           <img class="h-12 w-12 rounded-full" src="{{ '/assets/avatar.jpg' | relative_url }}" alt="GitHub">
@@ -15,20 +15,18 @@
           </div>
         </h1>
 
-        <div class="flex space-x-2 fill-current">
+        <div class="flex space-x-2 mt-2 fill-current">
           {% include emoji.html emoji='heart' size=6 %}
           {% include logo.html color='text-purple-400' logo='elixir' size=6 %}
           {% include logo.html color='text-blue-300' logo='elm' size=6 %}
           {% include logo.html color='text-blue-500' logo='typescript' size=6 %}
           {% include logo.html color='text-yellow-400' logo='javascript' size=6 %}
+          {% include logo.html color='text-green-500' logo='node' size=6 %}
           {% include logo.html color='text-red-700' logo='ruby' size=6 %}
-        </div>
-
-        <div class="flex space-x-2 fill-current">
-          {% include emoji.html emoji='heart' size=6 %}
           {% include logo.html color='text-red-500' logo='git' size=6 %}
           {% include logo.html color='text-blue-400' logo='docker' size=6 %}
           {% include logo.html color='text-gray-200' logo='ansible' size=6 %}
+          {% include logo.html color='text-blue-300' logo='postgresql' size=6 %}
           {% include logo.html color='text-green-500' logo='vim' size=6 %}
           {% include logo.html color='text-blue-500' logo='vscode' size=6 %}
         </div>
@@ -41,6 +39,10 @@
           {%- for post in posts limit:3 -%}
             {% include post_card.html post=post %}
           {%- endfor -%}
+        </div>
+
+        <div class="flex justify-center mt-8">
+          <a class="font-display text-lg text-gray-500 hover:text-blue-400 hover:underline" href="{{ '/posts' | relative_url }}">All Posts</a>
         </div>
       </main>
     </div>

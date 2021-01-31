@@ -5,7 +5,7 @@ date: 2013-01-27 21:19
 comments: true
 permalink: /:year/:month/:title/
 categories: sysadmin
-tags: php wordpress nginx fcgi systemd
+tags: wordpress php nginx fcgi systemd
 versions:
   fedora: 17
   php: 5.4.6

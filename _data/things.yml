@@ -117,6 +117,7 @@ gnupg:
   type: tool
   title: GnuPG
   website: https://gnupg.org
+  color_class: text-blue-400
 
 grunt:
   type: tool

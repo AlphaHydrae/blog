@@ -1,0 +1,5 @@
+{%- assign tag = include.tag -%}
+<span class="flex items-center space-x-2 mb-2 text-gray-500">
+  {% octicon tag width:16 height:16 class:"align-middle inline fill-current" %}
+  <span class="font-mono">{{ tag }}</span>
+</span>

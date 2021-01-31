@@ -7,8 +7,8 @@ permalink: /:year/:month/:title/
 categories: programming
 tags: testing patterns
 versions:
-  javascript: ES5
   node: 0.10.12
+  javascript: ES5
 ---
 
 Early in my [Node.js][node] adventures, I started asking myself how to write

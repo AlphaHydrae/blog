@@ -5,7 +5,7 @@ date: 2012-08-08 18:19
 comments: true
 permalink: /:year/:month/:title
 categories: sysadmin
-tags: logging logwatch
+tags: logwatch logging
 versions:
   ubuntu: 12.04 LTS
   fedora: 17

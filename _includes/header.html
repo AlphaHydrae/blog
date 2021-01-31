@@ -3,11 +3,18 @@
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
       <div class="relative flex items-center justify-between h-16">
 
-        <!-- Brand -->
-        <a href="{{ '/' | relative_url }}" class="text-white px-3 py-2 space-x-3 text-sm font-medium flex items-center">
-          <img class="h-8 w-8 rounded-full" src="{{ '/assets/avatar.jpg' | relative_url }}" alt="GitHub">
-          <span class="font-body text-xl">{{ site.title | escape }}</span>
-        </a>
+        <div class="flex items-center">
+          <!-- Brand -->
+          <a href="{{ '/' | relative_url }}" class="text-white px-3 py-2 space-x-3 text-sm font-medium flex items-center">
+            <img class="h-8 w-8 rounded-full" src="{{ '/assets/avatar.jpg' | relative_url }}" alt="GitHub">
+            <span class="font-body text-xl">{{ site.title | escape }}</span>
+          </a>
+
+          <!-- Page links -->
+          <div class="hidden md:block ml-8 font-body text-sm">
+            <a class="hover:text-blue-400 hover:underline" href="{{ '/posts' | relative_url }}">Posts</a>
+          </div>
+        </div>
 
         <!-- Profile dropdown -->
         <div class="flex space-x-3 text-gray-300">

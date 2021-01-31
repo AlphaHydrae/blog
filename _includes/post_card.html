@@ -17,7 +17,19 @@
     <a class="font-display" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
   </h2>
 
-  <!-- Post category & date -->
-  {% include post_date.html post=post %}
+  <!-- Simplified post metadata -->
+  <p class="flex flex-wrap justify-center space-x-5 text-gray-400">
+    <!-- Date -->
+    {% include post_date.html post=post %}
+
+    <!-- Featured thing or tag -->
+    {%- assign featured_thing = post.featured_things[0] -%}
+    {%- assign featured_tag = post.tags[0] -%}
+    {%- if featured_thing -%}
+      {% include post_thing.html thing=featured_thing size=4 %}
+    {%- elsif featured_tag -%}
+      {% include post_tag.html tag=featured_tag %}
+    {%- endif -%}
+  </p>
 
 </div>
