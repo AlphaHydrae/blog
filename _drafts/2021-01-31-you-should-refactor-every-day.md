@@ -23,7 +23,7 @@ I seem to be in good company in thinking this.
 
 By Max Kanat-Alexander in [*Code Simplicity*][code-simplicity]:
 
-[{% img right /assets/books/code-simplicity.jpg 150 %}](http://www.vim.org)
+[{% img right {{ site.baseurl }}/assets/books/code-simplicity.jpg 150 %}][code-simplicity]
 
 > The desirability of a change is directly proportional to the value now plus
 > the future value, and inversely proportional to the effort of implementation
@@ -88,7 +88,7 @@ TDD*][the-cycles-of-tdd]:
 By Eric Evans in [*Domain-Driven Design: Tackling Complexity in the Heart of
 Software*][domain-driven-design]:
 
-> [{% img right /assets/books/domain-driven-design.jpg 150 %}](http://www.vim.org)
+> [{% img right {{ site.baseurl }}/assets/books/domain-driven-design.jpg 150 %}][domain-driven-design]
 >
 > Software isn’t just for users. It’s also for developers. Developers have to
 > integrate code with other parts of the system. In an iterative process,
