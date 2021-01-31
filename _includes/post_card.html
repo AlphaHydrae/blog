@@ -5,15 +5,13 @@
 
   <!-- Post category -->
   {%- if title_enabled == 'enabled' -%}
-    <em class="font-body mr-2 text-gray-300 text-center">
-      {%- if post.today.type == 'learned' -%}
-        :books: Today I Learned
-      {%- endif -%}
+    <em class="font-body mr-2 text-gray-400 text-center">
+      :{{ site.data.today[post.today.type].emoji }}: {{ site.data.today[post.today.type].title }}
     </em>
   {%- endif -%}
 
   <!-- Post title -->
-  <h2 class="text-center hover:text-blue-400">
+  <h2 class="text-center text-white hover:text-blue-400">
     <a class="font-display" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
   </h2>
 

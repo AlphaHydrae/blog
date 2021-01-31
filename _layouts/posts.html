@@ -13,9 +13,11 @@ layout: default
       {% assign posts_count = posts | size %}
 
       {%- if posts_count >= 1 -%}
-        {% for post in posts %}
-          {% include post_card.html post=post title='disabled' %}
-        {% endfor %}
+        <div class="flex flex-col space-y-4">
+          {% for post in posts %}
+            {% include post_card.html post=post title='disabled' %}
+          {% endfor %}
+        </div>
       {%- else -%}
         <em class="text-gray-500">No posts yet</em>
       {%- endif -%}
