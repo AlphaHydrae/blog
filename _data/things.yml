@@ -177,6 +177,12 @@ octopress:
   title: Octopress
   website: http://octopress.org
 
+post-css:
+  type: tool
+  title: PostCSS
+  website: https://postcss.org
+  color_class: text-red-600
+
 rake:
   type: tool
   title: Rake
@@ -197,6 +203,12 @@ spawn-fcgi:
   type: tool
   title: spawn-fcgi
   website: https://linux.die.net/man/1/spawn-fcgi
+
+tailwind-css:
+  type: tool
+  title: Tailwind CSS
+  website: https://tailwindcss.com
+  color_class: text-green-400
 
 unicorn:
   type: tool
