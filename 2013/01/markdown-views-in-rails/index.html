@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Markdown views with syntax highlighting in Rails | AlphaHydrae</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Markdown views with syntax highlighting in Rails" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Today I had to add technical documentation pages to a Rails app. I chose to write those in Markdown as that’s what I’m used to and it’s a widely-used format. This post describes how to render Markdown views in a Ruby on Rails application with Pygments for code syntax highlighting." />
+<meta property="og:description" content="Today I had to add technical documentation pages to a Rails app. I chose to write those in Markdown as that’s what I’m used to and it’s a widely-used format. This post describes how to render Markdown views in a Ruby on Rails application with Pygments for code syntax highlighting." />
+<link rel="canonical" href="https://alphahydrae.com/2013/01/markdown-views-in-rails/" />
+<meta property="og:url" content="https://alphahydrae.com/2013/01/markdown-views-in-rails/" />
+<meta property="og:site_name" content="AlphaHydrae" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2013-01-31T17:46:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Markdown views with syntax highlighting in Rails" />
+<script type="application/ld+json">
+{"url":"https://alphahydrae.com/2013/01/markdown-views-in-rails/","headline":"Markdown views with syntax highlighting in Rails","dateModified":"2013-01-31T17:46:00+01:00","datePublished":"2013-01-31T17:46:00+01:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://alphahydrae.com/2013/01/markdown-views-in-rails/"},"description":"Today I had to add technical documentation pages to a Rails app. I chose to write those in Markdown as that’s what I’m used to and it’s a widely-used format. This post describes how to render Markdown views in a Ruby on Rails application with Pygments for code syntax highlighting.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://alphahydrae.com/feed.xml" title="AlphaHydrae" /></head>
+<body class="bg-gray-900 flex flex-col h-screen m-0 p-0 text-gray-300"><header>
+  <nav class="bg-gray-700 w-full">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="relative flex items-center justify-between h-16">
+
+        <div class="flex items-center">
+          <!-- Brand -->
+          <a href="/" class="text-white px-3 py-2 space-x-3 text-sm font-medium flex items-center">
+            <img class="h-8 w-8 rounded-full" src="/assets/avatar.jpg" alt="GitHub">
+            <span class="font-body text-xl">AlphaHydrae</span>
+          </a>
+
+          <!-- Page links -->
+          <div class="hidden md:block ml-8 font-body text-sm">
+            <a class="hover:text-blue-400 hover:underline" href="/posts">Posts</a>
+          </div>
+        </div>
+
+        <!-- Profile dropdown -->
+        <div class="flex space-x-3 text-gray-300">
+          <!-- RSS -->
+          <a href="/feed.xml" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">Subscribe</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>RSS icon</title>
+              <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"/>
+            </svg>
+          </a>
+          <!-- Linked In -->
+          <a href="https://www.linkedin.com/in/simonoulevay" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">LinkedIn</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>LinkedIn icon</title>
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <!-- GitHub -->
+          <a href="https://github.com/AlphaHydrae" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">GitHub</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>GitHub icon</title>
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="flex-1 overflow-y-auto">
+      <main class="font-body px-6 lg:px-0" aria-label="Content">
+        
+
+<article class="max-w-prose mx-auto" itemscope itemtype="https://schema.org/BlogPosting">
+  <header class="mt-24 mb-20">
+    <!-- Category --><!-- Title -->
+    <h1 itemprop="name headline">Markdown views with syntax highlighting in Rails</h1>
+
+    <!-- Metadata -->
+    <p class="flex flex-wrap justify-center space-x-5 text-gray-400">
+
+      <!-- Publication date -->
+      
+
+<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="2013-01-31T17:46:00+01:00" itemprop="datePublished">
+  <svg width="16" height="16" class="octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 0a.75.75 0 01.75.75V2h5V.75a.75.75 0 011.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 16H2.75A1.75 1.75 0 011 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 014.75 0zm0 3.5h8.5a.25.25 0 01.25.25V6h-11V3.75a.25.25 0 01.25-.25h2zm-2.25 4v6.75c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V7.5h-11z"></path></svg>
+  <span class="font-mono whitespace-nowrap">2013-01-31</span>
+</span>
+
+
+      <!-- Last modification date (if available) --><!-- Categories -->
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+          <svg width="16" height="16" class="octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z"></path></svg>
+          <span class="font-mono">programming</span>
+        </span>
+      
+
+      <!-- Languages (if available) -->
+      
+        
+
+
+<a
+  class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:text-red-700 hover:underline"
+  href="https://www.ruby-lang.org"
+>
+  <span class="w-4 h-4   fill-current">
+  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Ruby</title>
+  <path d="M20.156.083c3.033.525 3.893 2.598 3.829 4.77L24 4.822 22.635 22.71 4.89 23.926h.016C3.433 23.864.15 23.729 0 19.139l1.645-3 2.819 6.586.503 1.172 2.805-9.144-.03.007.016-.03 9.255 2.956-1.396-5.431-.99-3.9 8.82-.569-.615-.51L16.5 2.114 20.159.073l-.003.01zM0 19.089v.026-.029.003zM5.13 5.073c3.561-3.533 8.157-5.621 9.922-3.84 1.762 1.777-.105 6.105-3.673 9.636-3.563 3.532-8.103 5.734-9.864 3.957-1.766-1.777.045-6.217 3.612-9.75l.003-.003z"/>
+</svg>
+
+</span>
+
+  <span class="font-mono">ruby</span>
+</a>
+
+      
+        
+
+
+<a
+  class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:text-red-500 hover:underline"
+  href="https://rubyonrails.org"
+>
+  <span class="w-4 h-4   fill-current">
+  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Ruby on Rails</title>
+  <path d="M20.89 15.311v1.164h1.983c.406 0 1.103-.315 1.127-1.196v-.45c0-.752-.582-1.196-1.127-1.196h-.989v-.54h1.959v-1.17h-1.88c-.485 0-1.133.424-1.133 1.215v.405c0 .79.642 1.196 1.133 1.196 1.364.006-.327 0 .934 0v.566zm-10.62-.283s1.06-.096 1.06-1.55c0-1.452-1.285-1.587-1.285-1.587H7.729v4.584h1.164v-1.106L9.9 16.475h1.722zm-.45-.938h-.927v-1.048h.934s.26.102.26.52c0 .418-.266.528-.266.528zm4.384-2.167H13.02c-.842 0-1.127.81-1.127 1.196v3.356h1.182v-.804h1.11v.804h1.145v-3.356c0-.978-.836-1.196-1.127-1.196zm-.019 2.45H13.07V13.26s0-.25.37-.25h.406c.327 0 .333.25.333.25v1.112zm1.686-2.45h1.23v4.552h-1.23zm2.958 3.375v-3.375h-1.224v4.552h2.88v-1.177zM.424 16.475h4.79s-.916-4.43 2.115-6.224c.66-.34 2.764-1.614 6.208 1.087.109-.097.212-.174.212-.174S10.597 7.827 7.086 8.2c-1.764.167-3.934 1.871-5.207 4.122C.606 14.572.424 16.474.424 16.474zm0 0h4.79s-.916-4.43 2.115-6.224c.66-.34 2.764-1.614 6.208 1.087.109-.097.212-.174.212-.174S10.597 7.827 7.086 8.2c-1.764.167-3.934 1.871-5.207 4.122C.606 14.572.424 16.474.424 16.474zm0 0h4.79s-.916-4.43 2.115-6.224c.66-.34 2.764-1.614 6.208 1.087.109-.097.212-.174.212-.174S10.597 7.827 7.086 8.2c-1.77.167-3.94 1.871-5.213 4.122C.6 14.572.424 16.474.424 16.474zm9.979-7.915l.024-.43c-.055-.033-.206-.11-.588-.226l-.024.425c.2.07.394.148.588.231zm-.576 1.363l-.025.405c.2.007.4.033.6.078l.025-.4a4.06 4.06 0 00-.6-.083zM7.584 7.917h.06l-.121-.392a4.57 4.57 0 00-.582.039l.115.379c.176-.02.352-.026.528-.026zm.29 2.366l.14.444c.176-.09.352-.167.527-.225l-.133-.424a4.24 4.24 0 00-.533.205zm-2.752-1.69l-.272-.444a9.49 9.49 0 00-.473.276l.279.45c.157-.103.309-.2.466-.283zm1.243 2.893l.291.463c.103-.161.224-.31.358-.457l-.273-.437a3.487 3.487 0 00-.376.43zm-.879 2.07l.491.411a5.417 5.417 0 01.127-.752l-.436-.366a6.41 6.41 0 00-.182.707zm-2.655-3.054l-.43-.399c-.158.161-.31.322-.45.482l.468.425a6.423 6.423 0 01.412-.508zM1 13.376l-.697-.27a17.22 17.22 0 00-.303.771l.697.27c.079-.218.206-.533.303-.771zm4.395 1.813c.012.34.043.617.073.81l.727.277a8.962 8.962 0 01-.145-.836z"/>
+</svg>
+
+</span>
+
+  <span class="font-mono">ruby-on-rails</span>
+</a>
+
+      
+        
+
+
+<a
+  class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:text-white hover:underline"
+  href="https://daringfireball.net/projects/markdown/"
+>
+  <span class="w-4 h-4   fill-current">
+  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Markdown</title>
+  <path d="M22.27 19.385H1.73A1.73 1.73 0 010 17.655V6.345a1.73 1.73 0 011.73-1.73h20.54A1.73 1.73 0 0124 6.345v11.308a1.73 1.73 0 01-1.73 1.731zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.078h-2.308l-2.307 2.885-2.308-2.885H3.46v7.847zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.461 4.039z"/>
+</svg>
+
+</span>
+
+  <span class="font-mono">markdown</span>
+</a>
+
+      
+
+      <!-- Tags -->
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+  <span class="font-mono">syntax-highlighting</span>
+</span>
+
+      
+    </p>
+  </header>
+
+  <!-- Post content -->
+  <div class="text-lg" itemprop="articleBody">
+    <p>Today I had to add technical documentation pages to a Rails app. I chose to
+write those in <a href="http://daringfireball.net/projects/markdown/">Markdown</a> as that’s what I’m used to and it’s a
+widely-used format. This post describes how to render Markdown views in a <a href="https://rubyonrails.org">Ruby
+on Rails</a> application with <a href="http://pygments.org">Pygments</a> for code syntax
+highlighting.</p>
+
+<!-- more -->
+
+<p>The <a href="https://github.com/joliss/markdown-rails">markdown-rails</a> gem enables <code class="language-plaintext highlighter-rouge">.html.md</code> views.
+<a href="https://github.com/vmg/redcarpet">Redcarpet</a> is a better parser which you’ll want to use to have
+features like <a href="https://github.github.com/gfm/">GitHub Flavored Markdown</a>. Finally,
+<a href="https://github.com/tmm1/pygments.rb">pyments.rb</a> will handle the syntax highlighting.</p>
+
+<p>Add those gems to your <code class="language-plaintext highlighter-rouge">Gemfile</code> and run <code class="language-plaintext highlighter-rouge">bundle install</code>:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gem</span> <span class="s2">"markdown-rails"</span>
+<span class="n">gem</span> <span class="s2">"redcarpet"</span>
+<span class="n">gem</span> <span class="s2">"pygments.rb"</span>
+</code></pre></div></div>
+
+<p>To configure the parser and enable syntax highlighting, you can add this
+initializer:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># File: config/initializers/markdown.rb</span>
+
+<span class="c1"># Override the default renderer to add syntax</span>
+<span class="c1"># highlighting with Pygments.</span>
+<span class="k">class</span> <span class="nc">PygmentsHTML</span> <span class="o">&lt;</span> <span class="no">Redcarpet</span><span class="o">::</span><span class="no">Render</span><span class="o">::</span><span class="no">HTML</span>
+  <span class="k">def</span> <span class="nf">block_code</span> <span class="n">code</span><span class="p">,</span> <span class="n">language</span>
+    <span class="no">Pygments</span><span class="p">.</span><span class="nf">highlight</span> <span class="n">code</span><span class="p">,</span> <span class="ss">:lexer</span> <span class="o">=&gt;</span> <span class="n">language</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">MarkdownRails</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="c1"># See https://github.com/vmg/redcarpet for options.</span>
+  <span class="n">markdown</span> <span class="o">=</span> <span class="no">Redcarpet</span><span class="o">::</span><span class="no">Markdown</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">PygmentsHTML</span><span class="p">,</span>
+    <span class="ss">:tables</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span>
+    <span class="ss">:fenced_code_blocks</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span>
+    <span class="ss">:autolink</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+  <span class="p">)</span>
+
+  <span class="n">config</span><span class="p">.</span><span class="nf">render</span> <span class="k">do</span> <span class="o">|</span><span class="n">markdown_source</span><span class="o">|</span>
+    <span class="n">markdown</span><span class="p">.</span><span class="nf">render</span> <span class="n">markdown_source</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Note that you must have Pygments’ <code class="language-plaintext highlighter-rouge">pygmentize</code> command installed and in your
+path. You may install it on most platforms with <code class="language-plaintext highlighter-rouge">easy_install</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>easy_install Pygments
+</code></pre></div></div>
+
+<p>Well, that was pretty painless.</p>
+
+
+  </div>
+
+  <!-- Language versions (if available) --><div class="flex flex-wrap justify-evenly space-x-8 mt-16">
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-red-700 group hover:text-blue-400"
+  href="https://www.ruby-lang.org"
+><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Ruby</title>
+  <path d="M20.156.083c3.033.525 3.893 2.598 3.829 4.77L24 4.822 22.635 22.71 4.89 23.926h.016C3.433 23.864.15 23.729 0 19.139l1.645-3 2.819 6.586.503 1.172 2.805-9.144-.03.007.016-.03 9.255 2.956-1.396-5.431-.99-3.9 8.82-.569-.615-.51L16.5 2.114 20.159.073l-.003.01zM0 19.089v.026-.029.003zM5.13 5.073c3.561-3.533 8.157-5.621 9.922-3.84 1.762 1.777-.105 6.105-3.673 9.636-3.563 3.532-8.103 5.734-9.864 3.957-1.766-1.777.045-6.217 3.612-9.75l.003-.003z"/>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-red-700 group-hover:text-blue-400">
+      Ruby
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">1.9.3</code>
+  </div>
+</a>
+
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-red-500 group hover:text-blue-400"
+  href="https://rubyonrails.org"
+><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Ruby on Rails</title>
+  <path d="M20.89 15.311v1.164h1.983c.406 0 1.103-.315 1.127-1.196v-.45c0-.752-.582-1.196-1.127-1.196h-.989v-.54h1.959v-1.17h-1.88c-.485 0-1.133.424-1.133 1.215v.405c0 .79.642 1.196 1.133 1.196 1.364.006-.327 0 .934 0v.566zm-10.62-.283s1.06-.096 1.06-1.55c0-1.452-1.285-1.587-1.285-1.587H7.729v4.584h1.164v-1.106L9.9 16.475h1.722zm-.45-.938h-.927v-1.048h.934s.26.102.26.52c0 .418-.266.528-.266.528zm4.384-2.167H13.02c-.842 0-1.127.81-1.127 1.196v3.356h1.182v-.804h1.11v.804h1.145v-3.356c0-.978-.836-1.196-1.127-1.196zm-.019 2.45H13.07V13.26s0-.25.37-.25h.406c.327 0 .333.25.333.25v1.112zm1.686-2.45h1.23v4.552h-1.23zm2.958 3.375v-3.375h-1.224v4.552h2.88v-1.177zM.424 16.475h4.79s-.916-4.43 2.115-6.224c.66-.34 2.764-1.614 6.208 1.087.109-.097.212-.174.212-.174S10.597 7.827 7.086 8.2c-1.764.167-3.934 1.871-5.207 4.122C.606 14.572.424 16.474.424 16.474zm0 0h4.79s-.916-4.43 2.115-6.224c.66-.34 2.764-1.614 6.208 1.087.109-.097.212-.174.212-.174S10.597 7.827 7.086 8.2c-1.764.167-3.934 1.871-5.207 4.122C.606 14.572.424 16.474.424 16.474zm0 0h4.79s-.916-4.43 2.115-6.224c.66-.34 2.764-1.614 6.208 1.087.109-.097.212-.174.212-.174S10.597 7.827 7.086 8.2c-1.77.167-3.94 1.871-5.213 4.122C.6 14.572.424 16.474.424 16.474zm9.979-7.915l.024-.43c-.055-.033-.206-.11-.588-.226l-.024.425c.2.07.394.148.588.231zm-.576 1.363l-.025.405c.2.007.4.033.6.078l.025-.4a4.06 4.06 0 00-.6-.083zM7.584 7.917h.06l-.121-.392a4.57 4.57 0 00-.582.039l.115.379c.176-.02.352-.026.528-.026zm.29 2.366l.14.444c.176-.09.352-.167.527-.225l-.133-.424a4.24 4.24 0 00-.533.205zm-2.752-1.69l-.272-.444a9.49 9.49 0 00-.473.276l.279.45c.157-.103.309-.2.466-.283zm1.243 2.893l.291.463c.103-.161.224-.31.358-.457l-.273-.437a3.487 3.487 0 00-.376.43zm-.879 2.07l.491.411a5.417 5.417 0 01.127-.752l-.436-.366a6.41 6.41 0 00-.182.707zm-2.655-3.054l-.43-.399c-.158.161-.31.322-.45.482l.468.425a6.423 6.423 0 01.412-.508zM1 13.376l-.697-.27a17.22 17.22 0 00-.303.771l.697.27c.079-.218.206-.533.303-.771zm4.395 1.813c.012.34.043.617.073.81l.727.277a8.962 8.962 0 01-.145-.836z"/>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-red-500 group-hover:text-blue-400">
+      Ruby on Rails
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">3.x</code>
+  </div>
+</a>
+
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-white group hover:text-blue-400"
+  href="https://daringfireball.net/projects/markdown/"
+><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Markdown</title>
+  <path d="M22.27 19.385H1.73A1.73 1.73 0 010 17.655V6.345a1.73 1.73 0 011.73-1.73h20.54A1.73 1.73 0 0124 6.345v11.308a1.73 1.73 0 01-1.73 1.731zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.078h-2.308l-2.307 2.885-2.308-2.885H3.46v7.847zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.461 4.039z"/>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-white group-hover:text-blue-400">
+      Markdown
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">redcarpet 2.x</code>
+  </div>
+</a>
+
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-gray-400 group hover:text-blue-400"
+  href=""
+><div class="flex flex-col">
+    <span class="font-mono no-underline text-gray-400 group-hover:text-blue-400">
+      pygments.rb
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">< 0.5.0</code>
+  </div>
+</a>
+
+      
+    </div><a class="u-url" href="/2013/01/markdown-views-in-rails/" hidden></a>
+</article>
+
+      </main><footer class="max-w-prose mt-24 mb-12 mx-auto p-4 font-body text-gray-500 text-sm">
+
+  <div class="flex justify-between items-center">
+    <!-- Subscribe to feed -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="/feed.xml">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>RSS icon</title>
+        <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"/>
+      </svg>
+      <span>Subscribe</span>
+    </a>
+
+    <!-- Email -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="mailto:%63%6F%6E%74%61%63%74@%61%6C%70%68%61%68%79%64%72%61%65.%63%6F%6D">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>Email icon</title>
+        <path fill-rule="evenodd" d="M1.75 3A1.75 1.75 0 000 4.75v14c0 .966.784 1.75 1.75 1.75h20.5A1.75 1.75 0 0024 18.75v-14A1.75 1.75 0 0022.25 3H1.75zM1.5 4.75a.25.25 0 01.25-.25h20.5a.25.25 0 01.25.25v.852l-10.36 7a.25.25 0 01-.28 0l-10.36-7V4.75zm0 2.662V18.75c0 .138.112.25.25.25h20.5a.25.25 0 00.25-.25V7.412l-9.52 6.433c-.592.4-1.368.4-1.96 0L1.5 7.412z"></path>
+      </svg>
+      <span>Email</span>
+    </a>
+
+    <!-- License -->
+    <span>&copy; 2012-2021</span>
+  </div>
+
+  <div class="flex flex-col items-center mt-8 px-8 space-y-2 text-center text-xs">
+    <a class="opacity-80 hover:opacity-100" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
+    </a>
+    <p>
+      Unless otherwise specified, this work is licensed under a
+      <a class="text-blue-400 hover:underline" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+        Creative Commons Attribution-ShareAlike 4.0 International License
+      </a>.
+    </p>
+  </div>
+
+  <!-- Attribution -->
+  <div class="mt-4 text-center text-xs">
+    Fonts by <a class="text-blue-400 hover:underline" href="https://fonts.google.com">Google Fonts</a>,
+    brands by <a class="text-blue-400 hover:underline" href="https://simpleicons.org">Simple Icons</a>,
+    other icons by <a class="text-blue-400 hover:underline" href="https://primer.style/octicons/">Octicons</a>.
+  </div>
+
+</footer>
+</div>
+
+  </body>
+
+</html>

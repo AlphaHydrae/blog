@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>REST &amp; Hypermedia APIs | AlphaHydrae</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="REST &amp; Hypermedia APIs" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Tales of a programmer" />
+<meta property="og:description" content="Tales of a programmer" />
+<link rel="canonical" href="https://alphahydrae.com/2013/06/rest-and-hypermedia-apis/" />
+<meta property="og:url" content="https://alphahydrae.com/2013/06/rest-and-hypermedia-apis/" />
+<meta property="og:site_name" content="AlphaHydrae" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2013-06-30T20:44:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="REST &amp; Hypermedia APIs" />
+<script type="application/ld+json">
+{"url":"https://alphahydrae.com/2013/06/rest-and-hypermedia-apis/","headline":"REST &amp; Hypermedia APIs","dateModified":"2013-06-30T20:44:00+02:00","datePublished":"2013-06-30T20:44:00+02:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://alphahydrae.com/2013/06/rest-and-hypermedia-apis/"},"description":"Tales of a programmer","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://alphahydrae.com/feed.xml" title="AlphaHydrae" /></head>
+<body class="bg-gray-900 flex flex-col h-screen m-0 p-0 text-gray-300"><header>
+  <nav class="bg-gray-700 w-full">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="relative flex items-center justify-between h-16">
+
+        <div class="flex items-center">
+          <!-- Brand -->
+          <a href="/" class="text-white px-3 py-2 space-x-3 text-sm font-medium flex items-center">
+            <img class="h-8 w-8 rounded-full" src="/assets/avatar.jpg" alt="GitHub">
+            <span class="font-body text-xl">AlphaHydrae</span>
+          </a>
+
+          <!-- Page links -->
+          <div class="hidden md:block ml-8 font-body text-sm">
+            <a class="hover:text-blue-400 hover:underline" href="/posts">Posts</a>
+          </div>
+        </div>
+
+        <!-- Profile dropdown -->
+        <div class="flex space-x-3 text-gray-300">
+          <!-- RSS -->
+          <a href="/feed.xml" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">Subscribe</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>RSS icon</title>
+              <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"/>
+            </svg>
+          </a>
+          <!-- Linked In -->
+          <a href="https://www.linkedin.com/in/simonoulevay" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">LinkedIn</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>LinkedIn icon</title>
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <!-- GitHub -->
+          <a href="https://github.com/AlphaHydrae" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">GitHub</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>GitHub icon</title>
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="flex-1 overflow-y-auto">
+      <main class="font-body px-6 lg:px-0" aria-label="Content">
+        
+
+<article class="max-w-prose mx-auto" itemscope itemtype="https://schema.org/BlogPosting">
+  <header class="mt-24 mb-20">
+    <!-- Category --><!-- Title -->
+    <h1 itemprop="name headline">REST &amp; Hypermedia APIs</h1>
+
+    <!-- Metadata -->
+    <p class="flex flex-wrap justify-center space-x-5 text-gray-400">
+
+      <!-- Publication date -->
+      
+
+<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="2013-06-30T20:44:00+02:00" itemprop="datePublished">
+  <svg width="16" height="16" class="octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 0a.75.75 0 01.75.75V2h5V.75a.75.75 0 011.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 16H2.75A1.75 1.75 0 011 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 014.75 0zm0 3.5h8.5a.25.25 0 01.25.25V6h-11V3.75a.25.25 0 01.25-.25h2zm-2.25 4v6.75c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V7.5h-11z"></path></svg>
+  <span class="font-mono whitespace-nowrap">2013-06-30</span>
+</span>
+
+
+      <!-- Last modification date (if available) --><!-- Categories -->
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+          <svg width="16" height="16" class="octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z"></path></svg>
+          <span class="font-mono">design</span>
+        </span>
+      
+
+      <!-- Languages (if available) -->
+      
+
+      <!-- Tags -->
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+  <span class="font-mono">rest</span>
+</span>
+
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+  <span class="font-mono">hypermedia</span>
+</span>
+
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+  <span class="font-mono">api</span>
+</span>
+
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+  <span class="font-mono">http</span>
+</span>
+
+      
+    </p>
+  </header>
+
+  <!-- Post content -->
+  <div class="text-lg" itemprop="articleBody">
+    <p><img class="right" src="/assets/contents/hypermedia/wat.png" width="350" /></p>
+
+<p>Everybody writes
+<a href="http://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> APIs today.
+Everybody knows REST APIs are more generic, scalable and extensible than SOAP
+and RPC. Or do they?</p>
+
+<p>Like many I started writing REST APIs <a href="http://guides.rubyonrails.org/routing.html#resource-routing-the-rails-default">the Rails
+way</a>
+because Rails provides everything you need to quickly write a beautiful REST API
+out of the box. Or so I thought.</p>
+
+<p>After reading many articles and many more comments, I now understand that most
+so-called REST APIs today are not actually RESTful according to how REST was
+originally defined. Many proponents of “true REST APIs” now seem to prefer
+talking about <strong>Hypermedia APIs</strong> which is a more practical description of what
+they are. You’ll also hear about the
+<a href="http://en.wikipedia.org/wiki/HATEOAS"><strong>HATEOAS</strong></a> principle, meaning
+<strong>Hypermedia As The Engine Of Application State</strong>, one of the constraints of the
+REST architectural style.</p>
+
+<p>Now I don’t have a doctorate in computer science; I’m just a lowly software
+engineer trying to code some APIs. A big part of software engineering is making
+trade-offs. But you have to understand what you’re trading off.</p>
+
+<p>For the rest of this post, I’m going to put on my “True REST &amp; Hypermedia API”
+zealot hat. Aside from point 1 which is a summary of what some people
+incorrectly understand REST to be, this post reflects my (condensed)
+understanding of what REST/Hypermedia principles are. I also describe useful
+standards and practices that can help to put these principles into practice in
+an HTTP API.</p>
+
+<p>Note that many people disagree that this is how it should be done. If you’re
+interested in knowing more, I’ve listed the articles I found most useful to
+understand the subject at the bottom of this post. The comments sections of
+these articles are particularly interesting as they contain descriptions of
+actual problems, possible solutions, and mostly thoughtful criticism.</p>
+
+<p>A fair warning to those who may read on: this is a <a href="/assets/contents/general/tldr-cat.jpg">tl;dr</a> kind of post.</p>
+
+<!-- more -->
+
+<ol>
+  <li><a href="#rest-rails">REST: The Rails Way</a></li>
+  <li><a href="#hypermedia-apis">Hypermedia APIs</a></li>
+  <li><a href="#media-types">Media Types</a>
+    <ul>
+      <li><a href="#hal">Hypertext Application Language (HAL)</a></li>
+      <li><a href="#custom-media-types">Custom Media Types</a></li>
+    </ul>
+  </li>
+  <li><a href="#link-header">The Link Header</a></li>
+  <li><a href="#uri-templates">URI Templates</a></li>
+  <li><a href="#caching">API Workflow &amp; Caching</a></li>
+  <li><a href="#api-versioning">API Versioning</a></li>
+  <li><a href="#final-comments">Final Comments</a></li>
+</ol>
+
+<p><a name="rest-rails"></a></p>
+
+<h2 id="rest-the-rails-way">REST: The Rails Way</h2>
+
+<p>This is the way most “REST APIs” I’ve seen work, as popularized notably by Ruby
+on Rails.</p>
+
+<ul>
+  <li>A RESTful API consists of <strong>resources</strong> (that map directly or indirectly to
+your domain objects).</li>
+  <li>Each resource or collection of resources has a <strong>documented, unique URI</strong>.</li>
+  <li>These resources can be manipulated using <strong>HTTP verbs</strong> such as GET, POST,
+PUT, DELETE.</li>
+  <li>Each resource can have many representations; a representation is selected
+through <strong>content negotiation</strong> with the Accept header (e.g.
+<code class="language-plaintext highlighter-rouge">application/json</code>, <code class="language-plaintext highlighter-rouge">application/xml</code>) or a suffix (e.g. <code class="language-plaintext highlighter-rouge">person.json</code>,
+<code class="language-plaintext highlighter-rouge">person.xml</code>).</li>
+</ul>
+
+<p>In a nutshell, we’re exposing domain objects through HTTP with CRUD operations
+(and other custom operations, generally using POST), in some generic format like
+JSON.</p>
+
+<p><img class="left" src="/assets/contents/hypermedia/stop.png" width="60" /></p>
+
+<p>This is the point where you may want to stop reading if you don’t want this
+conception of a REST API to be eviscerated and transmogrified.</p>
+
+<p><a name="hypermedia-apis"></a></p>
+
+<h2 id="hypermedia-apis">Hypermedia APIs</h2>
+
+<p>Shockingly, there are critical properties missing for this to be a true RESTful
+API. Some of the above properties are even incompatible with REST principles.
+<em>Was I lied to?</em></p>
+
+<p><em>“REST APIs must be hypertext-driven,”</em> wrote Roy Fielding in a rant against RPC
+blasphemers. What does he mean by that? And what’s up with this hyper stuff
+about hyperlinks and hypermedia? Why should I go through all this trouble
+anyway?</p>
+
+<p>One word: the <strong>Web.</strong></p>
+
+<p>When you want to browse a website, there are basically two things you need to
+know: the root URI, and that you can follow links to new information. This is
+the simple but powerful concept of hyperlinks that has made the web so
+successful.</p>
+
+<p>From a technical point of view when getting a web page, the client is getting a
+representation of a resource in the <code class="language-plaintext highlighter-rouge">text/html</code> <a href="https://en.wikipedia.org/wiki/Internet_media_type">Internet Media
+Type</a> (formerly known as MIME
+Type); this media type defines the behavior of links. The knowledge of the root
+URI and the media type is sufficient to drive the interaction. Even if the other
+URIs of the website change, they can be reached again from the root URI through
+links.</p>
+
+<p>Hypermedia APIs are based on the same principle.</p>
+
+<blockquote>
+  <p>A REST API should be entered with no prior knowledge beyond the initial URI
+(bookmark) and set of standardized media types that are appropriate for the
+intended audience (i.e., expected to be understood by any client that might
+use the API).</p>
+
+  <p>— Roy T. Fielding, <a href="http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven">REST APIs must be
+hypertext-driven</a></p>
+</blockquote>
+
+<p>Contrary to the previous notion of REST, there should be:</p>
+
+<ul>
+  <li>No fixed URIs (aside from the root).</li>
+  <li>No fixed resource names or hierarchies.</li>
+</ul>
+
+<p>The goal is not to get predefined resources at specific URIs; it is to follow
+<em>hyperlinks</em> to obtain <em>representations</em> of resources, wherever and whatever
+those resources might be.</p>
+
+<p>What you should spend time defining in a Hypermedia API are the <strong>media types</strong>
+used for representing resources; they define link relations to other resources
+through <strong>hyperlinks</strong>. The interaction from state to state in your application
+(<em>REpresentational State Transfer</em>), is driven by the media types and
+hyperlinks, hence <em>Hypermedia As The Engine Of Application State.</em></p>
+
+<p><a name="media-types"></a></p>
+
+<h2 id="media-types">Media Types</h2>
+
+<p><em>So what is this *media type</em> of which you speak? Surely we’re going to use JSON
+for our API… right?*</p>
+
+<p>Almost. The problem is that <code class="language-plaintext highlighter-rouge">application/json</code> is not a hypermedia because it’s
+not aware of links. There’s nothing in the JSON specification that tells a
+client that this <code class="language-plaintext highlighter-rouge">person_uri</code> property you’re using is actually a link. There
+are advantages to using a hyperlink-aware media type instead of plain JSON.</p>
+
+<p>I’m not an expert (yet), but I’ll outline the two solutions I’ve most read
+about: Hypertext Application Language and custom media types.</p>
+
+<p><a name="hal"></a></p>
+
+<h3 id="hypertext-application-language-hal">Hypertext Application Language (HAL)</h3>
+
+<p><img class="right" src="/assets/contents/hypermedia/hal+json.png" width="350" /></p>
+
+<p><a href="http://stateless.co/hal_specification.html">HAL</a> is a generic JSON/XML media
+type for representing resources and their relations with hyperlinks.</p>
+
+<p>Let’s jump right into it. The following example document represents a list of
+orders:</p>
+
+<p><br style="clear:both" /></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"currentlyProcessing"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"shippedToday"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"_links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"self"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"next"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders?page=2"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"find"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders{?id}"</span><span class="p">,</span><span class="w"> </span><span class="nl">"templated"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"_embedded"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"orders"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"_links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"self"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders/123"</span><span class="w"> </span><span class="p">},</span><span class="w">
+          </span><span class="nl">"basket"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/baskets/98712"</span><span class="w"> </span><span class="p">},</span><span class="w">
+          </span><span class="nl">"customer"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/customers/7809"</span><span class="w"> </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"total"</span><span class="p">:</span><span class="w"> </span><span class="mf">30.00</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shipped"</span><span class="p">,</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"_links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"self"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders/124"</span><span class="w"> </span><span class="p">},</span><span class="w">
+          </span><span class="nl">"basket"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/baskets/97213"</span><span class="w"> </span><span class="p">},</span><span class="w">
+          </span><span class="nl">"customer"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/customers/12369"</span><span class="w"> </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"total"</span><span class="p">:</span><span class="w"> </span><span class="mf">20.00</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"processing"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Let’s break it down. First we have the properties of the list itself:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"currentlyProcessing"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"shippedToday"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Nothing special here. The next part is more interesting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"_links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"self"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"next"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders?page=2"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"find"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders{?id}"</span><span class="p">,</span><span class="w"> </span><span class="nl">"templated"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In the JSON version of HAL, the reserved <code class="language-plaintext highlighter-rouge">_links</code> property indicates how to get
+to related resources with hyperlinks. The keys in this map represent the <strong>rel</strong>
+or <strong>relation</strong> property of the link (the same you would find in an HTML link:
+<code class="language-plaintext highlighter-rouge">&lt;link rel="stylesheet" ...&gt;</code>). In this case, we have the <code class="language-plaintext highlighter-rouge">self</code> relation which
+is itself, the <code class="language-plaintext highlighter-rouge">next</code> relation which indicates where to get the next page of
+orders, and a <code class="language-plaintext highlighter-rouge">find</code> relation that can be used to find a specific order.</p>
+
+<p>The last part of the document under the reserved <code class="language-plaintext highlighter-rouge">_embedded</code> property contains
+embedded objects, which are also representations of resources with links. You
+can have multiple lists of embedded objects; here there is just one under
+<code class="language-plaintext highlighter-rouge">orders</code>:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"_embedded"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"orders"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"_links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"self"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders/123"</span><span class="w"> </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"basket"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/baskets/98712"</span><span class="w"> </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"customer"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/customers/7809"</span><span class="w"> </span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"total"</span><span class="p">:</span><span class="w"> </span><span class="mf">30.00</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shipped"</span><span class="p">,</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The goal of HAL is to provide a standardized media type that defines how to
+handle hyperlinks and embedded resources. That way you don’t have to use
+linkless JSON/XML or develop your own media type (we’ll talk about that one
+later). If you use HAL, you can focus on describing the link relations that
+drive your application.</p>
+
+<p>Since HAL is a standard, there are libraries that can help parse and generate it
+(you’ll find a list on the <a href="http://stateless.co/hal_specification.html">specification
+page</a>). There are even <a href="https://github.com/mikekelly/hal-browser">HAL
+browsers</a> that can automatically
+discover HAL APIs. You can easily find live examples with Google.</p>
+
+<p><a name="link-relation-types"></a></p>
+
+<h4 id="link-relation-types">Link Relation Types</h4>
+
+<p>The relation property of a link in HAL (<code class="language-plaintext highlighter-rouge">self</code>, <code class="language-plaintext highlighter-rouge">next</code>, etc) is defined in <a href="http://tools.ietf.org/html/rfc5988">Web
+Linking (RFC 5988)</a>. In a nutshell, there
+are two kinds of relations: <strong>Registered Relation Types</strong> and <strong>Extension
+Relation Types</strong>.</p>
+
+<p>Registered relation types such as <em>self</em>, <em>next</em>, <em>previous</em>, <em>related</em> are
+officially <a href="http://www.iana.org/assignments/link-relations/link-relations.xml">listed by
+IANA</a> and
+have a specific meaning. You can use them as long as you respect their
+semantics.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"_links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"self"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"next"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders?page=2"</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>You will of course need other relation types that are specific to your domain
+model, such as a <code class="language-plaintext highlighter-rouge">customer</code> link in the full document example you saw earlier.
+This is what extension relation types are for. According to the RFC, extension
+types should be URIs that uniquely identify the relation type. For example:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"_links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"http://my-api.com/media/orders"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"http://my-api.com/media/orders/next"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders?page=2"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>These URIs may point to a resource that describes the semantics of the relation
+type, such as a documentation page or a PDF on your website. If you don’t want
+to use full URIs as relation keys, you have to make sure that they can be
+expanded to URIs, by using for example the <a href="http://www.w3.org/TR/curie/">CURIE
+Syntax</a>:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"_links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"curies"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ex"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://my-api.com/media/"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"ex:orders"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"ex:orders/next"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/orders?page=2"</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>That’s it for HAL.</p>
+
+<p><a name="custom-media-types"></a></p>
+
+<h3 id="custom-media-types">Custom Media Types</h3>
+
+<p><img class="right" src="/assets/contents/hypermedia/at.png" width="200" /></p>
+
+<p>Media types describe the representations of the resources that can be used with
+your API, including links to other resources. There may be multiple
+representations of a same resource described by different media types.</p>
+
+<p>You can define your own media types to represent your resources as well as the
+links between them. What a media type should be, how to name and how to register
+it is defined in <a href="http://tools.ietf.org/html/rfc6838">Media Type Specifications and Registration Procedures (RFC
+6838)</a>. Official registration may not be
+necessary depending on who is going to use your API, but it’s useful if you’re
+hoping to create a shared standard (which could more easily be used by automated
+agents).</p>
+
+<p>I won’t go too much into details about this RFC but I’ll give you a real-world
+example: <a href="http://developer.github.com/v3/media/">GitHub uses media types for its
+API</a>. For example, you can use the
+<code class="language-plaintext highlighter-rouge">application/vnd.github.beta.text+json</code> media type to retrieve a comment’s body.
+Let’s break that down:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">application</code> is the top-level type; the application type is for data that
+does not fit under other top-level media types such as text or audio,
+particularly data to be consumed by some type of application program.</li>
+  <li><code class="language-plaintext highlighter-rouge">vnd</code> is the prefix for the vendor tree, reserved for media types of publicly
+available products.</li>
+  <li><code class="language-plaintext highlighter-rouge">github</code> is the name of this particular media type.</li>
+  <li><code class="language-plaintext highlighter-rouge">beta</code> is a parameter that GitHub uses to indicate the version of the API (can
+also be <code class="language-plaintext highlighter-rouge">v3</code>).</li>
+  <li><code class="language-plaintext highlighter-rouge">text</code> is another parameter to indicate the desired representation, in this
+case plain text.</li>
+  <li><code class="language-plaintext highlighter-rouge">+json</code> at the end indicates the underlying structure of the media type (the
+responses of their API are always wrapped in JSON).</li>
+</ul>
+
+<p>Check out the RFC if you want to know how to build your media type. In this
+case, the the response might look something like this (partial headers):</p>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Server</span><span class="p">:</span> <span class="s">nginx</span>
+<span class="na">Date</span><span class="p">:</span> <span class="s">Fri, 12 Oct 2012 23:33:14 GMT</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/vnd.github.beta.text+json; charset=utf-8</span>
+
+{
+  "body_text": "This commit is awesome."
+}
+</code></pre></div></div>
+
+<p>This has no links though. For a better comparison with previous examples,
+imagine a media type <code class="language-plaintext highlighter-rouge">vnd.myapi.orders+json</code> representing a list of orders like
+the one in the HAL example. The response might look like this:</p>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Server</span><span class="p">:</span> <span class="s">nginx</span>
+<span class="na">Date</span><span class="p">:</span> <span class="s">Fri, 12 Oct 2012 23:33:14 GMT</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/vnd.myapi.orders+json; charset=utf-8</span>
+
+{
+  "uri": "/orders",
+  "next_uri": "/orders?page=2",
+  "find_uri": "/orders{?id}",
+  "currentlyProcessing": 14,
+  "shippedToday": 20,
+  "orders": [
+    {
+      "uri": "/orders/123",
+      "basket_uri": "/baskets/98712",
+      "customer_uri": "/customers/7809",
+      "total": 30.00,
+      "currency": "USD",
+      "status": "shipped"
+    }
+  ]
+}
+</code></pre></div></div>
+
+<p>Instead of having a standard syntax for hyperlinks like HAL, the custom media
+type must define the link relations. The documentation page for this media type
+might for example indicate that the <code class="language-plaintext highlighter-rouge">uri</code> property is a link to the resource
+itself, whereas <code class="language-plaintext highlighter-rouge">basket_uri</code> is a link to a resource which can be represented
+with another media type such as <code class="language-plaintext highlighter-rouge">vnd.myapi.basket+json</code>. For HTTP APIs, the
+media type may also describes what HTTP verbs are applicable and the associated
+behavior.</p>
+
+<p>All the media types used by your API must be part of the contract with the API
+clients, but the URI structure is allowed to change independently, and new
+representations can be easily be added to existing resources.</p>
+
+<p><a name="link-header"></a></p>
+
+<h2 id="the-link-header">The Link Header</h2>
+
+<p>Whether you choose HAL, custom media types or plain JSON, the <a href="http://www.w3.org/Protocols/9707-link-header.html">HTTP Link
+Header</a> can also be used to
+provide hyperlinks with your resource representations. A link header looks like
+this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Link: &lt;/orders?page=2&gt;; rel="next"; title="Next page of orders"
+</code></pre></div></div>
+
+<p>You can provide multiple link headers, or multiple links in one header:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Link: &lt;/orders?page=1&gt;; rel="prev", &lt;/orders?page=2&gt;; rel="next"
+</code></pre></div></div>
+
+<p>This can be a quick way to add hyperlinks to your API if you don’t use a
+hypermedia format or cannot immediately define a custom media type.</p>
+
+<p>Note that <a href="http://tools.ietf.org/html/rfc5988">Web Linking (RFC 5988)</a> defines
+that extension relation types (your custom business types) in link headers are
+<em>required</em> to be absolute URIs, for example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Link: &lt;/baskets/98712&gt;; rel="http://my-api.com/media/basket";
+ title="The basket containing the ordered items"
+</code></pre></div></div>
+
+<p><a name="uri-templates"></a></p>
+
+<h2 id="uri-templates">URI Templates</h2>
+
+<p><a href="http://tools.ietf.org/html/rfc6570">URI Template (RFC 6570)</a> defines a useful
+format to describe a range of URIs through variable expansion. You can use it to
+provide more information about URI parameters in your API.</p>
+
+<p>As a quick example taken from the RFC, imagine that you have these parameterized
+URIs:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://example.com/~fred/
+http://example.com/~mark/
+
+http://example.com/dictionary/c/cat
+http://example.com/dictionary/d/dog
+
+http://example.com/search?q=cat&amp;lang=en
+http://example.com/search?q=chien&amp;lang=fr
+</code></pre></div></div>
+
+<p>You can express them as URI templates:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://example.com/~{username}/
+http://example.com/dictionary/{term:1}/{term}
+http://example.com/search{?q,lang}
+</code></pre></div></div>
+
+<p>The RFC describes the supported expression expansions.
+I encourage you to read and use it.</p>
+
+<p><a name="caching"></a></p>
+
+<h2 id="api-workflow--caching">API Workflow &amp; Caching</h2>
+
+<p>Now you will surely ask, as many have before you:</p>
+
+<blockquote>
+  <p>Do you really expect me to go through all those link relations to get at my
+resource? Can’t I just go to the URI directly?</p>
+
+  <p>— Angry Developer, Somewhere on the internet</p>
+</blockquote>
+
+<p>No, you can’t. Not if you want to follow the principles of REST and Hypermedia.
+You’re <em>supposed</em> to follow these links in order to reduce the client/server
+coupling and allow the resources and URI structure to evolve independently. The
+URIs should not even be in your documentation (aside from the root).</p>
+
+<p>Let’s take the previous example of the list of orders. Assume that you have an
+order ID and want to get a JSON representation of that order. Also assume that
+the only knowledge you have is the root of the API and the custom media types it
+uses.</p>
+
+<p>You must first find the orders resource from the root:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> curl <span class="nt">-H</span> <span class="s1">'Accept: application/vnd.myapi+json'</span> /
+</code></pre></div></div>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/vnd.myapi+json; charset=utf-8</span>
+
+{
+  "uri": "/",
+  "docs_uri": "/docs",
+  "orders_uri": "/orders"
+}
+</code></pre></div></div>
+
+<p>This representation of the root resource is described by a custom media type.
+You would know from the documentation of this <code class="language-plaintext highlighter-rouge">application/vnd.myapi+json</code> media
+type that the <code class="language-plaintext highlighter-rouge">orders_uri</code> property is a link to the orders resource you need,
+and that it has a representation in some other media type like
+<code class="language-plaintext highlighter-rouge">application/vnd.myapi.orders+json</code>. Let’s GET that:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> curl <span class="se">\</span>
+     <span class="nt">-H</span> <span class="s1">'Accept: application/vnd.myapi.orders+json'</span> <span class="se">\</span>
+     /orders
+</code></pre></div></div>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/vnd.myapi.orders+json; charset=utf-8</span>
+
+{
+  "uri": "/orders",
+  "next_uri": "/orders?page=2",
+  "find_uri": "/orders{?id}",
+  "currentlyProcessing": 14,
+  "shippedToday": 20,
+  "orders": [
+    ...
+  ]
+}
+</code></pre></div></div>
+
+<p>Again, from the media type you would know that you can find the resource you’re
+looking for through the templated <code class="language-plaintext highlighter-rouge">find_uri</code> link:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> curl <span class="nt">-L</span> <span class="se">\</span>
+     <span class="nt">-H</span> <span class="s1">'Accept: application/vnd.myapi.order+json'</span> <span class="se">\</span>
+     /orders?id<span class="o">=</span>425
+</code></pre></div></div>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Found</span>
+<span class="na">Location</span><span class="p">:</span> <span class="s">http://my-api.com/orders/123</span>
+
+HTTP/1.1 200 OK
+Content-Type: application/vnd.myapi.order+json; charset=utf-8
+
+{
+  "uri": "/orders/123",
+  "basket_uri": "/baskets/98712",
+  "customer_uri": "/customers/7809",
+  "total": 30.00,
+  "currency": "USD",
+  "status": "shipped"
+}
+</code></pre></div></div>
+
+<p>In this example, that’s three calls and a redirect to get to the order resource
+you were looking for.</p>
+
+<p><strong><em>“Unacceptable!”</em></strong> you say? Well that’s how Hypermedia APIs work.</p>
+
+<p>However, this example uses many steps on purpose to illustrate hyperlinks. You
+could add a link to find orders directly in the representation of the root
+resource, saving one call.</p>
+
+<p>You can also build on top of standard HTTP caching mechanisms. All responses may
+contain cache control headers like <code class="language-plaintext highlighter-rouge">Cache-Control</code>, <code class="language-plaintext highlighter-rouge">Expires</code>,
+<code class="language-plaintext highlighter-rouge">Last-Modified-Since</code>, <code class="language-plaintext highlighter-rouge">ETag</code>. Clients may then cache the response for some
+time, or send headers like <code class="language-plaintext highlighter-rouge">If-Modified-Since</code> and <code class="language-plaintext highlighter-rouge">If-None-Match</code> and get back
+an <em>HTTP 304 Not Modified</em> response if the resources (and their URIs) have not
+changed.</p>
+
+<p>In most cases calls will be much faster with caching and less data will be
+transferred. You don’t necessarily have to do it yourself; some well-behaved
+HTTP tools can handle it for you. For example when using jQuery, data will be
+automatically cached by the browser if applicable.</p>
+
+<p>HTTP caching is described in <a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol – HTTP/1.1 (RFC
+2616)</a>, notably <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html">Section 13 - Caching in
+HTTP</a>. I strongly
+suggest you read up on this if you haven’t already.</p>
+
+<p><a name="api-versioning"></a></p>
+<h2 id="api-versioning">API Versioning</h2>
+
+<p><img class="right" src="/assets/contents/hypermedia/versioning.jpg" width="250" /></p>
+
+<p>Over time your API will inevitably change: new features will be added; existing
+features will be changed; old features will be removed. How can backward- and
+forward-compatibility with API clients be maintained?</p>
+
+<p>There is heated debate over how to handle this issue in REST APIs. I’ve mostly
+seen four options that I’ll describe here.</p>
+
+<h3 id="uri-versioning">URI Versioning</h3>
+
+<p>This consists of adding a version number to all your URIs. You change the
+version number when resources change in backward-incompatible ways.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://my-api.com/v1/orders
+http://my-api.com/v2/orders
+</code></pre></div></div>
+
+<p>Theoretically this is not RESTful. There’s no reason to change the URI of a
+resource even if it changes in backward-incompatible ways, as long as it’s still
+conceptually the same resource. Media type versioning can handle this as I’ll
+describe later. However, I’ll allow this digression because it seems to be the
+most used solution out there.</p>
+
+<p>Versioning the URI is a straightforward solution to support multiple versions of
+an API at the same time. As long as your backend can handle it (thinking mostly
+of complexity here), releasing a version 2 under different URIs ensures that
+version 1 clients will continue to function.</p>
+
+<p>In most cases, it is recommended that you only use a major version number. A
+scheme like <a href="http://semver.org">semantic versioning</a> would be overkill for an
+API. Additions and backward-compatible changes should not increase the version
+number.</p>
+
+<p>Most API developers have chosen the URI versioning solution because it is simple
+to understand and to implement.</p>
+
+<h3 id="no-versioning">No Versioning</h3>
+
+<p>I’ve seen people writing that you should not version an API because it hinders
+its evolution. If you have changes so big that they’re completely
+backward-incompatible, they should be new resources or new links in resource
+representations. I haven’t seen any example of this but I wonder where that
+might lead after many resources and links have been added. Probably a big mess.</p>
+
+<h3 id="link-versioning">Link Versioning</h3>
+
+<p>A solution similar to new links is to version links within a resource.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"v1_basket_uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://my-api.com/baskets/123"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"v2_basket_uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://my-api.com/orders/234/basket"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>That way it’s still possible to have multiple behaviors of the same resources in
+parallel without changing the original URIs. I also haven’t seen actual examples
+of this but I’ve seen it discussed mostly in the context of HAL.</p>
+
+<h3 id="media-type-versioning">Media Type Versioning</h3>
+
+<p>If a resource has backward-incompatible changes that cannot be supported by its
+current representation, then it should have a new representation described by a
+new media type. For example, you might go from
+<code class="language-plaintext highlighter-rouge">application/vnd.myapi.basket.v1+json</code> to
+<code class="language-plaintext highlighter-rouge">application/vnd.myapi.basket.v2+json</code>. No URIs need to be changed; the new
+version is essentially just another representation of the same resource,
+documented separately. Different representations can be used by different
+clients at the same time.</p>
+
+<p>This is I think the most elegant way to version resources. On the whole, most
+Hypermedia articles I’ve read that are not about HAL prefer this solution. It
+seems to best fit REST and Hypermedia principles.</p>
+
+<p>It does require the client and server to be aware of and correctly interpret
+media types, which is the goal of a Hypermedia API.</p>
+
+<p><a name="final-comments"></a></p>
+<h2 id="final-comments">Final Comments</h2>
+
+<p><img class="right" src="/assets/contents/hypermedia/zealot.png" width="300" /></p>
+
+<p>Let me take the zealot hat off.</p>
+
+<p>Hypermedia APIs are not a silver bullet. Clients must still know your media
+types and link relations. In a perfect world where all API developers
+standardize and share their media types then sure, automated agents may be able
+to browse them. But in the real world most APIs are going to have their own
+custom media types. Even with HAL the links are going to be specific to your
+application or business.</p>
+
+<p>Hypermedia APIs also place a greater burden on their clients: the API must be
+browsed through link relations instead of using hard-coded URIs, and caching
+should be used for maximum efficiency.</p>
+
+<p>However, applying Hypermedia principles does decrease client/server coupling and
+promote evolution; it hides your resources and their implementation details
+behind representations described by media types; and it allows the URI structure
+to evolve independently by using hyperlinks instead of fixed resource names and
+hierarchies.</p>
+
+<blockquote>
+  <p>REST is software design on the scale of decades: every detail is intended to
+promote software longevity and independent evolution.</p>
+
+  <p>— Roy T. Fielding, <a href="http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven">REST APIs must be
+hypertext-driven</a></p>
+</blockquote>
+
+<p>REST and Hypermedia principles have been carefully designed to solve the
+problems of the web while retaining the properties that have made it successful.
+If you don’t understand these principles yet, you should definitely look into it
+before dismissing them as academic or impractical. Once you understand, choose
+what is most appropriate to your needs.</p>
+
+<p>I don’t think that Hypermedia APIs are much harder to implement. You just have
+to focus on media types and to make sure that the documentation reflects the
+hypertext-driven nature of the API, not the URI structure. And of course, these
+principles do not replace careful design of your resource representations to
+avoid as many changes as possible in the future.</p>
+
+<p>As for me, I will develop my next APIs as Hypermedia APIs to put these
+principles into practice.</p>
+
+<p>May your API clients never break.</p>
+
+<h2 id="meta">Meta</h2>
+
+<ul>
+  <li><a href="http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven">REST APIs must be hypertext-driven (Untangled, musings of Roy T. Fielding)</a></li>
+  <li><a href="http://blog.steveklabnik.com/posts/2012-02-23-rest-is-over">REST is over (Literate Programming)</a></li>
+  <li><a href="http://blog.steveklabnik.com/posts/2011-07-03-nobody-understands-rest-or-http">Nobody Understands REST or HTTP (Literate Programming)</a></li>
+  <li><a href="http://blog.steveklabnik.com/posts/2011-08-07-some-people-understand-rest-and-http">Some People Understand REST and HTTP (Literate Programming)</a></li>
+  <li><a href="http://timelessrepo.com/haters-gonna-hateoas">Haters gonna HATEOAS (The timeless repository)</a></li>
+  <li><a href="http://2beards.net/2012/03/what-the-hell-is-a-hypermedia-api-and-why-should-i-care/">What the hell is a Hypermedia API, and why should I care? (2beards)</a></li>
+  <li><a href="http://www.informit.com/articles/article.aspx?p=1566460">Versioning REST Services (Informit)</a></li>
+  <li><a href="https://speakerdeck.com/pengwynn/hypermedia-apis-less-hype-more-media-please">Hypermedia APIs - less hype more media, please (Speaker Deck)</a></li>
+  <li><a href="http://www.mnot.net/blog/2011/10/25/web_api_versioning_smackdown">Web API Versioning Smackdown (Mnot’s Blog)</a></li>
+  <li><a href="http://www.infoq.com/news/2009/04/hateoas-restful-api-advantages">Advantages Of (Also) Using HATEOAS in RESTful APIs (InfoQ)</a></li>
+  <li><a href="http://www.infoq.com/articles/webber-rest-workflow">How to GET a Cup of Coffee (InfoQ)</a></li>
+  <li><a href="https://blog.apigee.com/detail/api_design_honing_in_on_hateoas">Honing in on HATEOAS (apigee)</a></li>
+  <li><a href="https://blog.apigee.com/detail/api_design_harnessing_hateoas_part_1">API Design: Harnessing HATEOAS, Part 1 (apigee)</a></li>
+  <li><a href="http://steveklabnik.github.io/hypermedia-presentation/">Designing Hypermedia APIs (steveklabnik@github)</a></li>
+  <li><a href="http://stateless.co/hal_specification.html">HAL+JSON Specification</a></li>
+  <li><a href="http://37signals.com/svn/posts/3373-getting-hyper-about-hypermedia-apis">Getting hyper about hypermedia APIs (Signal vs. Noise)</a></li>
+  <li><a href="http://www.w3.org/Provider/Style/URI.html">Cool URIs don’t change (W3C)</a></li>
+</ul>
+
+<h3 id="relevant-rfcs">Relevant RFCs</h3>
+
+<ul>
+  <li><a href="http://tools.ietf.org/html/rfc2616">RFC 2616: Hypertext Transfer Protocol – HTTP/1.1</a></li>
+  <li><a href="http://tools.ietf.org/html/rfc5988">RFC 5988: Web Linking</a></li>
+  <li><a href="http://tools.ietf.org/html/rfc6570">RFC 6570: URI Template</a></li>
+  <li><a href="http://tools.ietf.org/html/rfc6838">RFC 6838: Media Type Specifications and Registration Procedures</a></li>
+  <li><a href="http://tools.ietf.org/html/draft-kelly-json-hal-05">JSON Hypertext Application Language (draft)</a></li>
+</ul>
+
+<p><a name="fielding-dissertation"></a></p>
+<h3 id="architectural-styles-and-the-design-of-network-based-software-architectures">Architectural Styles and the Design of Network-based Software Architectures</h3>
+
+<p>Roy Fielding’s doctoral dissertation which first defined REST.</p>
+
+<ul>
+  <li><a href="http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">HTML Version</a></li>
+  <li><a href="http://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf">PDF Version</a></li>
+</ul>
+
+  </div>
+
+  <!-- Language versions (if available) --><a class="u-url" href="/2013/06/rest-and-hypermedia-apis/" hidden></a>
+</article>
+
+      </main><footer class="max-w-prose mt-24 mb-12 mx-auto p-4 font-body text-gray-500 text-sm">
+
+  <div class="flex justify-between items-center">
+    <!-- Subscribe to feed -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="/feed.xml">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>RSS icon</title>
+        <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"/>
+      </svg>
+      <span>Subscribe</span>
+    </a>
+
+    <!-- Email -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="mailto:%63%6F%6E%74%61%63%74@%61%6C%70%68%61%68%79%64%72%61%65.%63%6F%6D">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>Email icon</title>
+        <path fill-rule="evenodd" d="M1.75 3A1.75 1.75 0 000 4.75v14c0 .966.784 1.75 1.75 1.75h20.5A1.75 1.75 0 0024 18.75v-14A1.75 1.75 0 0022.25 3H1.75zM1.5 4.75a.25.25 0 01.25-.25h20.5a.25.25 0 01.25.25v.852l-10.36 7a.25.25 0 01-.28 0l-10.36-7V4.75zm0 2.662V18.75c0 .138.112.25.25.25h20.5a.25.25 0 00.25-.25V7.412l-9.52 6.433c-.592.4-1.368.4-1.96 0L1.5 7.412z"></path>
+      </svg>
+      <span>Email</span>
+    </a>
+
+    <!-- License -->
+    <span>&copy; 2012-2021</span>
+  </div>
+
+  <div class="flex flex-col items-center mt-8 px-8 space-y-2 text-center text-xs">
+    <a class="opacity-80 hover:opacity-100" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
+    </a>
+    <p>
+      Unless otherwise specified, this work is licensed under a
+      <a class="text-blue-400 hover:underline" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+        Creative Commons Attribution-ShareAlike 4.0 International License
+      </a>.
+    </p>
+  </div>
+
+  <!-- Attribution -->
+  <div class="mt-4 text-center text-xs">
+    Fonts by <a class="text-blue-400 hover:underline" href="https://fonts.google.com">Google Fonts</a>,
+    brands by <a class="text-blue-400 hover:underline" href="https://simpleicons.org">Simple Icons</a>,
+    other icons by <a class="text-blue-400 hover:underline" href="https://primer.style/octicons/">Octicons</a>.
+  </div>
+
+</footer>
+</div>
+
+  </body>
+
+</html>

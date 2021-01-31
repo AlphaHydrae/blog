@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>God, Unicorns and Nginx | AlphaHydrae</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="God, Unicorns and Nginx" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Time to write a little about the tools I use to deploy Ruby on Rails applications." />
+<meta property="og:description" content="Time to write a little about the tools I use to deploy Ruby on Rails applications." />
+<link rel="canonical" href="https://alphahydrae.com/2013/06/god-unicorns-and-nginx/" />
+<meta property="og:url" content="https://alphahydrae.com/2013/06/god-unicorns-and-nginx/" />
+<meta property="og:site_name" content="AlphaHydrae" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2013-06-13T12:50:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="God, Unicorns and Nginx" />
+<script type="application/ld+json">
+{"url":"https://alphahydrae.com/2013/06/god-unicorns-and-nginx/","headline":"God, Unicorns and Nginx","dateModified":"2013-06-13T12:50:00+02:00","datePublished":"2013-06-13T12:50:00+02:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://alphahydrae.com/2013/06/god-unicorns-and-nginx/"},"description":"Time to write a little about the tools I use to deploy Ruby on Rails applications.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://alphahydrae.com/feed.xml" title="AlphaHydrae" /></head>
+<body class="bg-gray-900 flex flex-col h-screen m-0 p-0 text-gray-300"><header>
+  <nav class="bg-gray-700 w-full">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="relative flex items-center justify-between h-16">
+
+        <div class="flex items-center">
+          <!-- Brand -->
+          <a href="/" class="text-white px-3 py-2 space-x-3 text-sm font-medium flex items-center">
+            <img class="h-8 w-8 rounded-full" src="/assets/avatar.jpg" alt="GitHub">
+            <span class="font-body text-xl">AlphaHydrae</span>
+          </a>
+
+          <!-- Page links -->
+          <div class="hidden md:block ml-8 font-body text-sm">
+            <a class="hover:text-blue-400 hover:underline" href="/posts">Posts</a>
+          </div>
+        </div>
+
+        <!-- Profile dropdown -->
+        <div class="flex space-x-3 text-gray-300">
+          <!-- RSS -->
+          <a href="/feed.xml" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">Subscribe</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>RSS icon</title>
+              <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"/>
+            </svg>
+          </a>
+          <!-- Linked In -->
+          <a href="https://www.linkedin.com/in/simonoulevay" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">LinkedIn</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>LinkedIn icon</title>
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <!-- GitHub -->
+          <a href="https://github.com/AlphaHydrae" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">GitHub</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>GitHub icon</title>
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="flex-1 overflow-y-auto">
+      <main class="font-body px-6 lg:px-0" aria-label="Content">
+        
+
+<article class="max-w-prose mx-auto" itemscope itemtype="https://schema.org/BlogPosting">
+  <header class="mt-24 mb-20">
+    <!-- Category --><!-- Title -->
+    <h1 itemprop="name headline">God, Unicorns and Nginx</h1>
+
+    <!-- Metadata -->
+    <p class="flex flex-wrap justify-center space-x-5 text-gray-400">
+
+      <!-- Publication date -->
+      
+
+<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="2013-06-13T12:50:00+02:00" itemprop="datePublished">
+  <svg width="16" height="16" class="octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 0a.75.75 0 01.75.75V2h5V.75a.75.75 0 011.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 16H2.75A1.75 1.75 0 011 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 014.75 0zm0 3.5h8.5a.25.25 0 01.25.25V6h-11V3.75a.25.25 0 01.25-.25h2zm-2.25 4v6.75c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V7.5h-11z"></path></svg>
+  <span class="font-mono whitespace-nowrap">2013-06-13</span>
+</span>
+
+
+      <!-- Last modification date (if available) --><!-- Categories -->
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+          <svg width="16" height="16" class="octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z"></path></svg>
+          <span class="font-mono">sysadmin</span>
+        </span>
+      
+
+      <!-- Languages (if available) -->
+      
+        
+
+
+<a
+  class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:text-green-500 hover:underline"
+  href="https://www.nginx.com"
+>
+  <span class="w-4 h-4   fill-current">
+  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Nginx</title>
+  <path d="M12 0L1.605 6v12L12 24l10.395-6V6L12 0zm6 16.59c0 .705-.646 1.29-1.529 1.29-.631 0-1.351-.255-1.801-.81l-6-7.141v6.66c0 .721-.57 1.29-1.274 1.29H7.32c-.721 0-1.29-.6-1.29-1.29V7.41c0-.705.63-1.29 1.5-1.29.646 0 1.38.255 1.83.81l5.97 7.141V7.41c0-.721.6-1.29 1.29-1.29h.075c.72 0 1.29.6 1.29 1.29v9.18H18z"/>
+</svg>
+
+</span>
+
+  <span class="font-mono">nginx</span>
+</a>
+
+      
+
+      <!-- Tags -->
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+  <span class="font-mono">god</span>
+</span>
+
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+  <span class="font-mono">unicorn</span>
+</span>
+
+      
+    </p>
+  </header>
+
+  <!-- Post content -->
+  <div class="text-lg" itemprop="articleBody">
+    <p>Time to write a little about the tools I use to deploy <a href="https://rubyonrails.org">Ruby on
+Rails</a> applications.</p>
+
+<blockquote>
+  <p>Unicorn is an HTTP server for Rack applications designed to only serve fast
+clients on low-latency, high-bandwidth connections and take advantage of
+features in Unix/Unix-like kernels. Slow clients should only be served by
+placing a reverse proxy capable of fully buffering both the request and
+response in between Unicorn and slow clients.</p>
+
+  <p>— <a href="http://unicorn.bogomips.org">Unicorn</a></p>
+</blockquote>
+
+<p>I used to deploy my Rails applications with <a href="https://github.com/macournoyer/thin">thin</a>, which I still use in
+development, but I now do everything with Unicorn in production. Why? Because I
+find it the most convenient server to manage. It’s very fast, the configuration
+is easy to understand and it supports hot deployment with no downtime out of the
+box. It’s also built on Unix and can be controlled with signals.</p>
+
+<blockquote>
+  <p>God is an easy to configure, easy to extend monitoring framework written in
+Ruby. Keeping your server processes and tasks running should be a simple part
+of your deployment process. God aims to be the simplest, most powerful
+monitoring application available.</p>
+
+  <p>— <a href="http://godrb.com">God</a></p>
+</blockquote>
+
+<p>God is the monitoring tool I use to watch my Unicorn processes and restart them
+if they crash or start consuming too much memory. I haven’t really tried any of
+the other monitoring tools. <a href="https://github.com/bluepill-rb/bluepill">Bluepill</a> was recommended, and
+<a href="https://mmonit.com/monit/">Monit</a> can do a similar job, but I didn’t try those as God met my needs
+(and it sounds cooler).</p>
+
+<blockquote>
+  <p>Nginx (pronounced engine-x) is a free, open-source, high-performance HTTP
+server and reverse proxy, as well as an IMAP/POP3 proxy server. Nginx is known
+for its high performance, stability, rich feature set, simple configuration,
+and low resource consumption.</p>
+
+  <p>— <a href="https://www.nginx.com">nginx</a></p>
+</blockquote>
+
+<p>I switched from <a href="https://httpd.apache.org">Apache httpd</a> to <a href="https://www.nginx.com">Nginx</a> on my servers as
+soon as I saw Nginx’s configuration files. I find the syntax much easier to deal
+with, and the fact that it’s very lightweight suits my needs.</p>
+
+<p>The rest of this post describes a complete Unicorn/God/Nginx configuration for a
+Rails application.</p>
+
+<!-- more -->
+
+<ul>
+  <li><a href="#installation">Installation</a></li>
+  <li><a href="#unicorn">Unicorn Configuration</a></li>
+  <li><a href="#god">God Configuration</a></li>
+  <li><a href="#nginx">Nginx Configuration</a></li>
+</ul>
+
+<p><a name="installation"></a></p>
+
+<h2 id="installation">Installation</h2>
+
+<p>You may install God and Unicorn as gems.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem <span class="nb">install </span>god
+gem <span class="nb">install </span>unicorn
+</code></pre></div></div>
+
+<p>Or add them to your application’s Gemfile.</p>
+
+<p>Nginx is available in most package managers (yum, aptitude, macports). It’s a
+fast-moving project though, so you might want to <a href="http://nginx.org/en/docs/configure.html">compile it from
+source</a> for the latest features.</p>
+
+<p><a name="unicorn"></a></p>
+
+<h2 id="unicorn-configuration">Unicorn Configuration</h2>
+
+<p>Unicorn runs one master and multiple worker processes. The master process will
+receive requests and pass them to the workers for handling.</p>
+
+<p>The following configuration will make Unicorn run 5 workers to serve your
+application. Keep in mind that each worker will load your entire app, gems
+included, into memory. A worker for one of my apps typically consumes 30MB of
+RAM, so I have to be careful how many I use on memory-restricted hosts (some of
+my cloud servers only have 512MB of RAM).</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Sample verbose configuration file for Unicorn (not Rack).</span>
+<span class="c1">#</span>
+<span class="c1"># This configuration file documents many features of Unicorn</span>
+<span class="c1"># that may not be needed for some applications. See</span>
+<span class="c1"># http://unicorn.bogomips.org/examples/unicorn.conf.minimal.rb</span>
+<span class="c1"># for a much simpler configuration file.</span>
+<span class="c1">#</span>
+<span class="c1"># See http://unicorn.bogomips.org/Unicorn/Configurator.html</span>
+<span class="c1"># for complete documentation.</span>
+
+<span class="no">APP_PATH</span> <span class="o">=</span> <span class="s2">"/path/to/app"</span>
+
+<span class="c1"># Use at least one worker per core if you're on a dedicated</span>
+<span class="c1"># server, more will usually help for _short_ waits on</span>
+<span class="c1"># databases/caches.</span>
+<span class="n">worker_processes</span> <span class="mi">5</span>
+
+<span class="c1"># Run the app as an unprivileged user.</span>
+<span class="n">user</span> <span class="s2">"appuser"</span>
+
+<span class="n">working_directory</span> <span class="no">APP_PATH</span> <span class="c1"># available in 0.94.0+</span>
+
+<span class="c1"># Listen on a Unix domain socket or a TCP port.</span>
+<span class="c1"># We use a shorter backlog for quicker failover when busy.</span>
+<span class="n">listen</span> <span class="s2">"</span><span class="si">#{</span><span class="no">APP_PATH</span><span class="si">}</span><span class="s2">/tmp/sockets/unicorn.sock"</span><span class="p">,</span> <span class="ss">:backlog</span> <span class="o">=&gt;</span> <span class="mi">64</span>
+<span class="c1">#listen 8080, :tcp_nopush =&gt; true</span>
+
+<span class="c1"># Nuke workers after 30 seconds instead of</span>
+<span class="c1"># 60 seconds (the default).</span>
+<span class="n">timeout</span> <span class="mi">30</span>
+
+<span class="c1"># Feel free to point this anywhere accessible on the</span>
+<span class="c1"># filesystem.</span>
+<span class="n">pid</span> <span class="s2">"</span><span class="si">#{</span><span class="no">APP_PATH</span><span class="si">}</span><span class="s2">/tmp/pids/unicorn.pid"</span>
+
+<span class="c1"># By default, the Unicorn logger will write to stderr.</span>
+<span class="c1"># Additionally, ome applications/frameworks log to stderr</span>
+<span class="c1"># or stdout, so prevent them from going to /dev/null when</span>
+<span class="c1"># daemonized here:</span>
+<span class="n">stderr_path</span> <span class="s2">"</span><span class="si">#{</span><span class="no">APP_PATH</span><span class="si">}</span><span class="s2">/log/unicorn.stderr.log"</span>
+<span class="n">stdout_path</span> <span class="s2">"</span><span class="si">#{</span><span class="no">APP_PATH</span><span class="si">}</span><span class="s2">/log/unicorn.stdout.log"</span>
+
+<span class="c1"># Combine REE with "preload_app true" for memory savings.</span>
+<span class="c1"># http://rubyenterpriseedition.com/faq.html#adapt_apps_for_cow</span>
+<span class="n">preload_app</span> <span class="kp">true</span>
+<span class="no">GC</span><span class="p">.</span><span class="nf">respond_to?</span><span class="p">(</span><span class="ss">:copy_on_write_friendly</span><span class="o">=</span><span class="p">)</span> <span class="n">and</span>
+  <span class="no">GC</span><span class="p">.</span><span class="nf">copy_on_write_friendly</span> <span class="o">=</span> <span class="kp">true</span>
+
+<span class="n">before_fork</span> <span class="k">do</span> <span class="o">|</span><span class="n">server</span><span class="p">,</span> <span class="n">worker</span><span class="o">|</span>
+
+  <span class="c1"># The following is highly recomended for Rails +</span>
+  <span class="c1"># "preload_app true" as there's no need for the master</span>
+  <span class="c1"># process to hold a connection.</span>
+  <span class="k">defined?</span><span class="p">(</span><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">)</span> <span class="n">and</span>
+    <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">disconnect!</span>
+
+  <span class="c1"># This allows a new master process to incrementally</span>
+  <span class="c1"># phase out the old master process with SIGTTOU to</span>
+  <span class="c1"># avoid a thundering herd (especially in the</span>
+  <span class="c1"># "preload_app false" case) when doing a transparent</span>
+  <span class="c1"># upgrade. The last worker spawned will then kill</span>
+  <span class="c1"># off the old master process with a SIGQUIT.</span>
+  <span class="n">old_pid</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">server</span><span class="p">.</span><span class="nf">config</span><span class="p">[</span><span class="ss">:pid</span><span class="p">]</span><span class="si">}</span><span class="s2">.oldbin"</span>
+  <span class="k">if</span> <span class="n">old_pid</span> <span class="o">!=</span> <span class="n">server</span><span class="p">.</span><span class="nf">pid</span>
+    <span class="k">begin</span>
+      <span class="n">sig</span> <span class="o">=</span>
+        <span class="p">(</span><span class="n">worker</span><span class="p">.</span><span class="nf">nr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">server</span><span class="p">.</span><span class="nf">worker_processes</span> <span class="p">?</span>
+          <span class="ss">:QUIT</span> <span class="p">:</span> <span class="ss">:TTOU</span>
+      <span class="no">Process</span><span class="p">.</span><span class="nf">kill</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="no">File</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="n">old_pid</span><span class="p">).</span><span class="nf">to_i</span><span class="p">)</span>
+    <span class="k">rescue</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ENOENT</span><span class="p">,</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ESRCH</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="c1"># The following is only recommended for</span>
+  <span class="c1"># memory/DB-constrained installations.  It is not</span>
+  <span class="c1"># needed if your system can house twice as many</span>
+  <span class="c1"># worker_processes as you have configured.</span>
+  <span class="c1">#</span>
+  <span class="c1"># Throttle the master from forking too quickly by</span>
+  <span class="c1"># sleeping. Due to the implementation of standard</span>
+  <span class="c1"># Unix signal handlers, this helps (but does not</span>
+  <span class="c1"># completely) prevent identical, repeated signals</span>
+  <span class="c1"># from being lost when the receiving process is busy.</span>
+  <span class="c1"># sleep 1</span>
+<span class="k">end</span>
+
+<span class="n">after_fork</span> <span class="k">do</span> <span class="o">|</span><span class="n">server</span><span class="p">,</span> <span class="n">worker</span><span class="o">|</span>
+  <span class="c1"># Per-process listener ports for</span>
+  <span class="c1"># debugging/admin/migrations.</span>
+  <span class="c1"># addr = "127.0.0.1:#{9293 + worker.nr}"</span>
+  <span class="c1"># server.listen(</span>
+  <span class="c1">#   addr,</span>
+  <span class="c1">#   :tries =&gt; -1, :delay =&gt; 5, :tcp_nopush =&gt; true</span>
+  <span class="c1"># )</span>
+
+  <span class="c1"># The following is *required* for Rails +</span>
+  <span class="c1"># "preload_app true",</span>
+  <span class="k">defined?</span><span class="p">(</span><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">)</span> <span class="n">and</span>
+    <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">establish_connection</span>
+
+  <span class="c1"># If preload_app is true, then you may also want to</span>
+  <span class="c1"># check and restart any other shared</span>
+  <span class="c1"># sockets/descriptors such as Memcached, and Redis.</span>
+  <span class="c1"># TokyoCabinet file handles are safe to reuse</span>
+  <span class="c1"># between any number of forked children (assuming</span>
+  <span class="c1"># your kernel correctly implements pread()/pwrite()</span>
+  <span class="c1"># system calls).</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="hot-deployment">Hot Deployment</h3>
+
+<p>When you send a <code class="language-plaintext highlighter-rouge">USR2</code> signal to the Unicorn master process, it will launch a
+new master process which will immediately begin spawning new workers with the
+updated code from your application.</p>
+
+<p>The following piece of configuration makes each new worker send a <code class="language-plaintext highlighter-rouge">TTOU</code> signal
+to the old Unicorn master process, which will kill off one of its workers. The
+last of the 5 new workers to start will send a <code class="language-plaintext highlighter-rouge">QUIT</code> signal to the old master
+process, gracefully shutting it down.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># This allows a new master process to incrementally</span>
+<span class="c1"># phase out the old master process with SIGTTOU to avoid</span>
+<span class="c1"># a thundering herd (especially in the "preload_app false"</span>
+<span class="c1"># case) when doing a transparent upgrade.  The last worker</span>
+<span class="c1"># spawned will then kill off the old master process with a</span>
+<span class="c1"># SIGQUIT.</span>
+<span class="n">old_pid</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">server</span><span class="p">.</span><span class="nf">config</span><span class="p">[</span><span class="ss">:pid</span><span class="p">]</span><span class="si">}</span><span class="s2">.oldbin"</span>
+<span class="k">if</span> <span class="n">old_pid</span> <span class="o">!=</span> <span class="n">server</span><span class="p">.</span><span class="nf">pid</span>
+  <span class="k">begin</span>
+    <span class="n">sig</span> <span class="o">=</span>
+      <span class="p">(</span><span class="n">worker</span><span class="p">.</span><span class="nf">nr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">server</span><span class="p">.</span><span class="nf">worker_processes</span> <span class="p">?</span>
+        <span class="ss">:QUIT</span> <span class="p">:</span> <span class="ss">:TTOU</span>
+    <span class="no">Process</span><span class="p">.</span><span class="nf">kill</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="no">File</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="n">old_pid</span><span class="p">).</span><span class="nf">to_i</span><span class="p">)</span>
+  <span class="k">rescue</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ENOENT</span><span class="p">,</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ESRCH</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>As opposed to completely stopping and re-starting your Unicorn processes, this
+technique will gradually replace workers and kill the old master process with no
+interruption for your users, as there are always 5 workers that are ready to
+respond.</p>
+
+<p>Of course, you will still need downtime for database migrations, unless you can
+adapt your application code to handle the old and new database schemas at the
+same time.</p>
+
+<h3 id="running-unicorn">Running Unicorn</h3>
+
+<p>You can manually run Unicorn as a daemon with this configuration like this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>unicorn <span class="nt">-c</span> config/unicorn.rb <span class="nt">-E</span> production <span class="nt">-D</span>
+</code></pre></div></div>
+
+<p>Stop it by sending a <code class="language-plaintext highlighter-rouge">QUIT</code> signal to the master process. See <a href="http://unicorn.bogomips.org/SIGNALS.html">Unicorn
+Signals</a> for more information.</p>
+
+<p><a name="god"></a></p>
+
+<h2 id="god-configuration">God Configuration</h2>
+
+<p>On occasion, I’ve had Unicorn-powered applications die on me due to bugs or
+memory issues. My favorite solution is to use God to restart them when that
+happens. God will watch the Unicorn master process, start it when it’s not
+running, restart it when certain conditions are met, and allow you to easily
+stop/restart when needed.</p>
+
+<p>The following configuration manages this and notifies me by mail when anything
+goes wrong. I initially had trouble understanding the God transition syntax, so
+I added more comments for clarification.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rails_root</span> <span class="o">=</span> <span class="s2">"/path/to/app"</span>
+<span class="n">config_file</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">rails_root</span><span class="si">}</span><span class="s2">/config/unicorn.rb"</span>
+<span class="n">pid_file</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">rails_root</span><span class="si">}</span><span class="s2">/tmp/pids/unicorn.pid"</span>
+
+<span class="c1"># Notification e-mail configuration. Check out the godrb</span>
+<span class="c1"># website for more notification options.</span>
+<span class="no">God</span><span class="o">::</span><span class="no">Contacts</span><span class="o">::</span><span class="no">Email</span><span class="p">.</span><span class="nf">defaults</span> <span class="k">do</span> <span class="o">|</span><span class="n">d</span><span class="o">|</span>
+  <span class="n">d</span><span class="p">.</span><span class="nf">from_email</span> <span class="o">=</span> <span class="s2">"god@example.com"</span>
+  <span class="n">d</span><span class="p">.</span><span class="nf">from_name</span> <span class="o">=</span> <span class="s2">"God"</span>
+  <span class="n">d</span><span class="p">.</span><span class="nf">delivery_method</span> <span class="o">=</span> <span class="ss">:sendmail</span>
+<span class="k">end</span>
+
+<span class="c1"># You can define several people to notify. Each</span>
+<span class="c1"># transition can be configured to send a notification</span>
+<span class="c1"># to one person (name) or an entire group (group).</span>
+<span class="no">God</span><span class="p">.</span><span class="nf">contact</span> <span class="ss">:email</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+  <span class="n">c</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"You"</span>
+  <span class="n">c</span><span class="p">.</span><span class="nf">group</span> <span class="o">=</span> <span class="s2">"developers"</span>
+  <span class="n">c</span><span class="p">.</span><span class="nf">to_email</span> <span class="o">=</span> <span class="s2">"you@example.com"</span>
+<span class="k">end</span>
+
+<span class="no">God</span><span class="p">.</span><span class="nf">watch</span> <span class="k">do</span> <span class="o">|</span><span class="n">w</span><span class="o">|</span>
+
+  <span class="c1"># The name of the process. You can then use it with</span>
+  <span class="c1"># god commands such as start/stop/restart.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"myapp-unicorn"</span>
+
+  <span class="c1"># Use the process group if you want to</span>
+  <span class="c1"># start/stop/restart multiple processes at once.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">group</span> <span class="o">=</span> <span class="s2">"myapp"</span>
+
+  <span class="c1"># Environment variables to set before starting the</span>
+  <span class="c1"># process.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">env</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">'RAILS_ENV'</span> <span class="o">=&gt;</span> <span class="s1">'production'</span> <span class="p">}</span>
+
+  <span class="c1"># Start, stop and restart commands for the process.</span>
+  <span class="c1"># Here, we use unicorn to start the app and send</span>
+  <span class="c1"># signals to stop and restart.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">start</span> <span class="o">=</span> <span class="s2">"unicorn -c </span><span class="si">#{</span><span class="n">config_file</span><span class="si">}</span><span class="s2"> -E production -D"</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">stop</span> <span class="o">=</span> <span class="s2">"kill -QUIT `cat </span><span class="si">#{</span><span class="n">pid_file</span><span class="si">}</span><span class="s2">`"</span>
+
+  <span class="c1"># Hot deploy.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">restart</span> <span class="o">=</span> <span class="s2">"kill -USR2 `cat </span><span class="si">#{</span><span class="n">pid_file</span><span class="si">}</span><span class="s2">`"</span>
+
+  <span class="c1"># Working directory where commands will be run.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">dir</span> <span class="o">=</span> <span class="n">rails_root</span>
+
+  <span class="c1"># Where unicorn stores its PID file. God uses this</span>
+  <span class="c1"># to track the process.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">pid_file</span> <span class="o">=</span> <span class="n">pid_file</span>
+
+  <span class="c1"># Clean stale PID files before starting.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">behavior</span> <span class="ss">:clean_pid_file</span>
+
+  <span class="c1"># How often God will check the process. All</span>
+  <span class="c1"># transitions defined below are checked at this</span>
+  <span class="c1"># frequency.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">interval</span> <span class="o">=</span> <span class="mi">30</span><span class="p">.</span><span class="nf">seconds</span>
+
+  <span class="c1"># Wait 15 seconds before checking if Unicorn has</span>
+  <span class="c1"># started or restarted successfully.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">start_grace</span> <span class="o">=</span> <span class="mi">15</span><span class="p">.</span><span class="nf">seconds</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">restart_grace</span> <span class="o">=</span> <span class="mi">15</span><span class="p">.</span><span class="nf">seconds</span>
+
+  <span class="c1"># Determine the state on startup. When God starts,</span>
+  <span class="c1"># the watch is in the init state. This and all</span>
+  <span class="c1"># further transitions are checked every interval to</span>
+  <span class="c1"># determine whether the state has changed.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">transition</span><span class="p">(</span><span class="ss">:init</span><span class="p">,</span> <span class="p">{</span><span class="kp">true</span> <span class="o">=&gt;</span> <span class="ss">:up</span><span class="p">,</span> <span class="kp">false</span> <span class="o">=&gt;</span> <span class="ss">:start</span><span class="p">})</span> <span class="k">do</span> <span class="o">|</span><span class="n">on</span><span class="o">|</span>
+
+    <span class="c1"># Transition from the init state to the up state</span>
+    <span class="c1"># if the process is already running, or to the</span>
+    <span class="c1"># start state if it's not.</span>
+    <span class="n">on</span><span class="p">.</span><span class="nf">condition</span><span class="p">(</span><span class="ss">:process_running</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">running</span> <span class="o">=</span> <span class="kp">true</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Determine when the process has finished starting:</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">transition</span><span class="p">([</span><span class="ss">:start</span><span class="p">,</span> <span class="ss">:restart</span><span class="p">],</span> <span class="ss">:up</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">on</span><span class="o">|</span>
+
+    <span class="c1"># Transition from the start or restart state</span>
+    <span class="c1"># to the up state if the process is running.</span>
+    <span class="n">on</span><span class="p">.</span><span class="nf">condition</span><span class="p">(</span><span class="ss">:process_running</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">running</span> <span class="o">=</span> <span class="kp">true</span>
+    <span class="k">end</span>
+
+    <span class="c1"># Try checking the process 3 times then</span>
+    <span class="c1"># transition to the start state again if it</span>
+    <span class="c1"># hasn't started.</span>
+    <span class="n">on</span><span class="p">.</span><span class="nf">condition</span><span class="p">(</span><span class="ss">:tries</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">times</span> <span class="o">=</span> <span class="mi">3</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">transition</span> <span class="o">=</span> <span class="ss">:start</span>
+    <span class="k">end</span>
+
+    <span class="c1"># With the previous configuration, this will start</span>
+    <span class="c1"># checking whether the process has started 15</span>
+    <span class="c1"># seconds after running the start/restart command</span>
+    <span class="c1"># (start grace). After the first check, it will</span>
+    <span class="c1"># try checking two more times over 60 seconds</span>
+    <span class="c1"># (twice the interval), then transition to the</span>
+    <span class="c1"># start state if the process hasn't started.</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Start the process if it's not running.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">transition</span><span class="p">(</span><span class="ss">:up</span><span class="p">,</span> <span class="ss">:start</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">on</span><span class="o">|</span>
+
+    <span class="c1"># If the process isn't running, notify developers</span>
+    <span class="c1"># and transition from the up to the start state.</span>
+    <span class="n">on</span><span class="p">.</span><span class="nf">condition</span><span class="p">(</span><span class="ss">:process_running</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">running</span> <span class="o">=</span> <span class="kp">false</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">notify</span> <span class="o">=</span> <span class="s1">'developers'</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Restart if memory or cpu is too high.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">restart_if</span> <span class="k">do</span> <span class="o">|</span><span class="n">restart</span><span class="o">|</span>
+
+    <span class="n">restart</span><span class="p">.</span><span class="nf">condition</span><span class="p">(</span><span class="ss">:memory_usage</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">above</span> <span class="o">=</span> <span class="mi">150</span><span class="p">.</span><span class="nf">megabytes</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">times</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="c1"># 3 out of 5 intervals</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">notify</span> <span class="o">=</span> <span class="s1">'developers'</span>
+    <span class="k">end</span>
+
+    <span class="n">restart</span><span class="p">.</span><span class="nf">condition</span><span class="p">(</span><span class="ss">:cpu_usage</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">above</span> <span class="o">=</span> <span class="mi">50</span><span class="p">.</span><span class="nf">percent</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">times</span> <span class="o">=</span> <span class="mi">5</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">notify</span> <span class="o">=</span> <span class="s1">'developers'</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Safeguard against multiple restarts.</span>
+  <span class="n">w</span><span class="p">.</span><span class="nf">lifecycle</span> <span class="k">do</span> <span class="o">|</span><span class="n">on</span><span class="o">|</span>
+
+    <span class="n">on</span><span class="p">.</span><span class="nf">condition</span><span class="p">(</span><span class="ss">:flapping</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">notify</span> <span class="o">=</span> <span class="s1">'developers'</span>
+
+      <span class="c1"># If the process transitions to the start or</span>
+      <span class="c1"># restart state 5 times within 30 minutes,</span>
+      <span class="c1"># notify developers and transition to the</span>
+      <span class="c1"># unmonitored state.</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">to_state</span> <span class="o">=</span> <span class="p">[</span><span class="ss">:start</span><span class="p">,</span> <span class="ss">:restart</span><span class="p">]</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">times</span> <span class="o">=</span> <span class="mi">5</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">within</span> <span class="o">=</span> <span class="mi">30</span><span class="p">.</span><span class="nf">minutes</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">transition</span> <span class="o">=</span> <span class="ss">:unmonitored</span>
+
+      <span class="c1"># Retry monitoring in 10 minutes.</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">retry_in</span> <span class="o">=</span> <span class="mi">10</span><span class="p">.</span><span class="nf">minutes</span>
+
+      <span class="c1"># If flapping is detected 5 times within</span>
+      <span class="c1"># 10 hours, notify developers and give up</span>
+      <span class="c1"># (the process will have to be restarted</span>
+      <span class="c1"># manually).</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">retry_times</span> <span class="o">=</span> <span class="mi">5</span>
+      <span class="n">c</span><span class="p">.</span><span class="nf">retry_within</span> <span class="o">=</span> <span class="mi">10</span><span class="p">.</span><span class="nf">hours</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>In this configuration, I check whether the process has died and needs to be
+restarted with polling. But God also has native support for kqueue/netlink
+events on BSD/Darwin/Linux systems. Instead of using the process_running
+condition to poll for the status of the process, you can use the process_exits
+condition that will be notified immediately upon the exit of the process. This
+means less load on your system and shorter downtime after a crash.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Start if the process is not running.</span>
+<span class="n">w</span><span class="p">.</span><span class="nf">transition</span><span class="p">(</span><span class="ss">:up</span><span class="p">,</span> <span class="ss">:start</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">on</span><span class="o">|</span>
+  <span class="n">on</span><span class="p">.</span><span class="nf">condition</span><span class="p">(</span><span class="ss">:process_exits</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>To do this, you must run God as root. In my case, I needed to run God as an
+unprivileged user so it wasn’t an option.</p>
+
+<p>You can run god as a daemon with this configuration like this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>god <span class="nt">-c</span> config/god.rb <span class="nt">-l</span> tmp/logs/god.log <span class="nt">-P</span> tmp/pids/god.pid
+</code></pre></div></div>
+
+<p><a name="nginx"></a></p>
+
+<h2 id="nginx-configuration">Nginx Configuration</h2>
+
+<p>Once you’ve launched God and it’s started your app with Unicorn, you need to
+expose it to the world. Unicorn is best at serving local clients, so we’ll put
+Nginx in front of it. Nginx will take care of buffering the request and response
+between Unicorn and slows clients.</p>
+
+<p>The following is a complete Nginx configuration with a server definition for the
+application.</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">user</span> <span class="s">nginx</span><span class="p">;</span>
+<span class="k">worker_processes</span> <span class="mi">5</span><span class="p">;</span>
+
+<span class="k">events</span> <span class="p">{</span>
+  <span class="kn">worker_connections</span> <span class="mi">1024</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">http</span> <span class="p">{</span>
+  <span class="kn">include</span> <span class="s">mime.types</span><span class="p">;</span>
+  <span class="kn">default_type</span> <span class="nc">application/octet-stream</span><span class="p">;</span>
+
+  <span class="kn">sendfile</span> <span class="no">on</span><span class="p">;</span>
+
+  <span class="kn">keepalive_timeout</span> <span class="mi">65</span><span class="p">;</span>
+
+  <span class="c1"># Unicorn cluster. This is simply the path to the socket.</span>
+  <span class="c1"># Load balancing is done entirely by the operating system</span>
+  <span class="c1"># kernel.</span>
+  <span class="kn">upstream</span> <span class="s">myapp_cluster</span> <span class="p">{</span>
+    <span class="kn">server</span> <span class="s">unix:/path/to/app/tmp/sockets/unicorn.sock</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1"># Serve the app with support for a maintenance page and</span>
+  <span class="c1"># caching.</span>
+  <span class="kn">server</span> <span class="p">{</span>
+
+    <span class="c1"># SSL configuration.</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span><span class="p">;</span>
+    <span class="kn">ssl_certificate</span> <span class="n">/path/to/server.crt</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="n">/path/to/server.key</span><span class="p">;</span>
+
+    <span class="kn">server_name</span> <span class="s">example.com</span><span class="p">;</span>
+    <span class="kn">root</span> <span class="n">/path/to/app/public</span><span class="p">;</span>
+
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+
+      <span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
+      <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span>
+        <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+      <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="s">https</span><span class="p">;</span>
+      <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$http_host</span><span class="p">;</span>
+      <span class="kn">proxy_redirect</span> <span class="no">off</span><span class="p">;</span>
+
+      <span class="c1"># Set maintenance mode if maintenance directory</span>
+      <span class="c1"># exists...</span>
+      <span class="kn">if</span> <span class="s">(-d</span> <span class="nv">$document_root</span><span class="n">/maintenance</span><span class="s">)</span> <span class="p">{</span>
+        <span class="kn">set</span> <span class="nv">$maintenance</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="c1"># But serve everything under the public maintenance</span>
+      <span class="c1"># directory...</span>
+      <span class="kn">if</span> <span class="s">(</span> <span class="nv">$uri</span> <span class="p">~</span> <span class="sr">^/maintenance/</span> <span class="s">)</span> <span class="p">{</span>
+        <span class="kn">set</span> <span class="nv">$maintenance</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="c1"># And serve everything to users with the</span>
+      <span class="c1"># bypass_maintenance cookie (use this to be able to</span>
+      <span class="c1"># access the application during maintenance).</span>
+      <span class="kn">if</span> <span class="s">(</span> <span class="nv">$http_cookie</span> <span class="p">~</span><span class="sr">*</span> <span class="s">"bypass_maintenance"</span> <span class="s">)</span> <span class="p">{</span>
+        <span class="kn">set</span> <span class="nv">$maintenance</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="c1"># If maintenance mode is set, serve the maintenance</span>
+      <span class="c1"># page.</span>
+      <span class="kn">if</span> <span class="s">(</span> <span class="nv">$maintenance</span> <span class="s">)</span> <span class="p">{</span>
+        <span class="kn">rewrite</span> <span class="s">(.*)</span> <span class="n">/maintenance/index.html</span> <span class="s">last</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="c1"># Serve cached index if it exists.</span>
+      <span class="kn">if</span> <span class="s">(-f</span> <span class="s">cache/</span><span class="nv">$request_filename</span><span class="n">/index.html</span><span class="s">)</span> <span class="p">{</span>
+        <span class="kn">rewrite</span> <span class="s">(.*)</span> <span class="nv">$1</span><span class="n">/index.html</span> <span class="s">break</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="c1"># Serve cached page if it exists.</span>
+      <span class="kn">if</span> <span class="s">(-f</span> <span class="s">cache/</span><span class="nv">$request_filename</span><span class="s">.html)</span> <span class="p">{</span>
+        <span class="kn">rewrite</span> <span class="s">(.*)</span> <span class="nv">$1</span><span class="s">.html</span> <span class="s">break</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="c1"># Pass request to unicorn.</span>
+      <span class="kn">if</span> <span class="s">(!-f</span> <span class="nv">$request_filename</span><span class="s">)</span> <span class="p">{</span>
+        <span class="kn">proxy_pass</span> <span class="s">http://myapp_cluster</span><span class="p">;</span>
+        <span class="kn">break</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+  </div>
+
+  <!-- Language versions (if available) --><div class="flex flex-wrap justify-evenly space-x-8 mt-16">
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-yellow-300 group hover:text-blue-400"
+  href="http://godrb.com"
+><div class="flex flex-col">
+    <span class="font-mono no-underline text-yellow-300 group-hover:text-blue-400">
+      God
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">0.13.2</code>
+  </div>
+</a>
+
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-gray-400 group hover:text-blue-400"
+  href="http://unicorn.bogomips.org"
+><div class="flex flex-col">
+    <span class="font-mono no-underline text-gray-400 group-hover:text-blue-400">
+      Unicorn
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">4.6.2</code>
+  </div>
+</a>
+
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-green-500 group hover:text-blue-400"
+  href="https://www.nginx.com"
+><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Nginx</title>
+  <path d="M12 0L1.605 6v12L12 24l10.395-6V6L12 0zm6 16.59c0 .705-.646 1.29-1.529 1.29-.631 0-1.351-.255-1.801-.81l-6-7.141v6.66c0 .721-.57 1.29-1.274 1.29H7.32c-.721 0-1.29-.6-1.29-1.29V7.41c0-.705.63-1.29 1.5-1.29.646 0 1.38.255 1.83.81l5.97 7.141V7.41c0-.721.6-1.29 1.29-1.29h.075c.72 0 1.29.6 1.29 1.29v9.18H18z"/>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-green-500 group-hover:text-blue-400">
+      Nginx
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">1.4.1</code>
+  </div>
+</a>
+
+      
+    </div><a class="u-url" href="/2013/06/god-unicorns-and-nginx/" hidden></a>
+</article>
+
+      </main><footer class="max-w-prose mt-24 mb-12 mx-auto p-4 font-body text-gray-500 text-sm">
+
+  <div class="flex justify-between items-center">
+    <!-- Subscribe to feed -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="/feed.xml">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>RSS icon</title>
+        <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"/>
+      </svg>
+      <span>Subscribe</span>
+    </a>
+
+    <!-- Email -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="mailto:%63%6F%6E%74%61%63%74@%61%6C%70%68%61%68%79%64%72%61%65.%63%6F%6D">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>Email icon</title>
+        <path fill-rule="evenodd" d="M1.75 3A1.75 1.75 0 000 4.75v14c0 .966.784 1.75 1.75 1.75h20.5A1.75 1.75 0 0024 18.75v-14A1.75 1.75 0 0022.25 3H1.75zM1.5 4.75a.25.25 0 01.25-.25h20.5a.25.25 0 01.25.25v.852l-10.36 7a.25.25 0 01-.28 0l-10.36-7V4.75zm0 2.662V18.75c0 .138.112.25.25.25h20.5a.25.25 0 00.25-.25V7.412l-9.52 6.433c-.592.4-1.368.4-1.96 0L1.5 7.412z"></path>
+      </svg>
+      <span>Email</span>
+    </a>
+
+    <!-- License -->
+    <span>&copy; 2012-2021</span>
+  </div>
+
+  <div class="flex flex-col items-center mt-8 px-8 space-y-2 text-center text-xs">
+    <a class="opacity-80 hover:opacity-100" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
+    </a>
+    <p>
+      Unless otherwise specified, this work is licensed under a
+      <a class="text-blue-400 hover:underline" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+        Creative Commons Attribution-ShareAlike 4.0 International License
+      </a>.
+    </p>
+  </div>
+
+  <!-- Attribution -->
+  <div class="mt-4 text-center text-xs">
+    Fonts by <a class="text-blue-400 hover:underline" href="https://fonts.google.com">Google Fonts</a>,
+    brands by <a class="text-blue-400 hover:underline" href="https://simpleicons.org">Simple Icons</a>,
+    other icons by <a class="text-blue-400 hover:underline" href="https://primer.style/octicons/">Octicons</a>.
+  </div>
+
+</footer>
+</div>
+
+  </body>
+
+</html>

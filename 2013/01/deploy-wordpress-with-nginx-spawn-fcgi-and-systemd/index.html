@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Deploy WordPress with nginx, spawn-fcgi and systemd | AlphaHydrae</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Deploy WordPress with nginx, spawn-fcgi and systemd" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="It’s a bit weird to post this now that I’ve switched to Octopress, but this is how I deployed the previous WordPress version of this blog." />
+<meta property="og:description" content="It’s a bit weird to post this now that I’ve switched to Octopress, but this is how I deployed the previous WordPress version of this blog." />
+<link rel="canonical" href="https://alphahydrae.com/2013/01/deploy-wordpress-with-nginx-spawn-fcgi-and-systemd/" />
+<meta property="og:url" content="https://alphahydrae.com/2013/01/deploy-wordpress-with-nginx-spawn-fcgi-and-systemd/" />
+<meta property="og:site_name" content="AlphaHydrae" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2013-01-27T21:19:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Deploy WordPress with nginx, spawn-fcgi and systemd" />
+<script type="application/ld+json">
+{"url":"https://alphahydrae.com/2013/01/deploy-wordpress-with-nginx-spawn-fcgi-and-systemd/","headline":"Deploy WordPress with nginx, spawn-fcgi and systemd","dateModified":"2013-01-27T21:19:00+01:00","datePublished":"2013-01-27T21:19:00+01:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://alphahydrae.com/2013/01/deploy-wordpress-with-nginx-spawn-fcgi-and-systemd/"},"description":"It’s a bit weird to post this now that I’ve switched to Octopress, but this is how I deployed the previous WordPress version of this blog.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://alphahydrae.com/feed.xml" title="AlphaHydrae" /></head>
+<body class="bg-gray-900 flex flex-col h-screen m-0 p-0 text-gray-300"><header>
+  <nav class="bg-gray-700 w-full">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="relative flex items-center justify-between h-16">
+
+        <div class="flex items-center">
+          <!-- Brand -->
+          <a href="/" class="text-white px-3 py-2 space-x-3 text-sm font-medium flex items-center">
+            <img class="h-8 w-8 rounded-full" src="/assets/avatar.jpg" alt="GitHub">
+            <span class="font-body text-xl">AlphaHydrae</span>
+          </a>
+
+          <!-- Page links -->
+          <div class="hidden md:block ml-8 font-body text-sm">
+            <a class="hover:text-blue-400 hover:underline" href="/posts">Posts</a>
+          </div>
+        </div>
+
+        <!-- Profile dropdown -->
+        <div class="flex space-x-3 text-gray-300">
+          <!-- RSS -->
+          <a href="/feed.xml" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">Subscribe</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>RSS icon</title>
+              <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"/>
+            </svg>
+          </a>
+          <!-- Linked In -->
+          <a href="https://www.linkedin.com/in/simonoulevay" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">LinkedIn</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>LinkedIn icon</title>
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <!-- GitHub -->
+          <a href="https://github.com/AlphaHydrae" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">GitHub</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>GitHub icon</title>
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="flex-1 overflow-y-auto">
+      <main class="font-body px-6 lg:px-0" aria-label="Content">
+        
+
+<article class="max-w-prose mx-auto" itemscope itemtype="https://schema.org/BlogPosting">
+  <header class="mt-24 mb-20">
+    <!-- Category --><!-- Title -->
+    <h1 itemprop="name headline">Deploy WordPress with nginx, spawn-fcgi and systemd</h1>
+
+    <!-- Metadata -->
+    <p class="flex flex-wrap justify-center space-x-5 text-gray-400">
+
+      <!-- Publication date -->
+      
+
+<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="2013-01-27T21:19:00+01:00" itemprop="datePublished">
+  <svg width="16" height="16" class="octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 0a.75.75 0 01.75.75V2h5V.75a.75.75 0 011.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 16H2.75A1.75 1.75 0 011 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 014.75 0zm0 3.5h8.5a.25.25 0 01.25.25V6h-11V3.75a.25.25 0 01.25-.25h2zm-2.25 4v6.75c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V7.5h-11z"></path></svg>
+  <span class="font-mono whitespace-nowrap">2013-01-27</span>
+</span>
+
+
+      <!-- Last modification date (if available) --><!-- Categories -->
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+          <svg width="16" height="16" class="octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z"></path></svg>
+          <span class="font-mono">sysadmin</span>
+        </span>
+      
+
+      <!-- Languages (if available) -->
+      
+        
+
+
+<a
+  class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:text-blue-500 hover:underline"
+  href="https://wordpress.com"
+>
+  <span class="w-4 h-4   fill-current">
+  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>WordPress</title>
+  <path d="M21.469 6.825c.84 1.537 1.318 3.3 1.318 5.175 0 3.979-2.156 7.456-5.363 9.325l3.295-9.527c.615-1.54.82-2.771.82-3.864 0-.405-.026-.78-.07-1.11m-7.981.105c.647-.03 1.232-.105 1.232-.105.582-.075.514-.93-.067-.899 0 0-1.755.135-2.88.135-1.064 0-2.85-.15-2.85-.15-.585-.03-.661.855-.075.885 0 0 .54.061 1.125.09l1.68 4.605-2.37 7.08L5.354 6.9c.649-.03 1.234-.1 1.234-.1.585-.075.516-.93-.065-.896 0 0-1.746.138-2.874.138-.2 0-.438-.008-.69-.015C4.911 3.15 8.235 1.215 12 1.215c2.809 0 5.365 1.072 7.286 2.833-.046-.003-.091-.009-.141-.009-1.06 0-1.812.923-1.812 1.914 0 .89.513 1.643 1.06 2.531.411.72.89 1.643.89 2.977 0 .915-.354 1.994-.821 3.479l-1.075 3.585-3.9-11.61.001.014zM12 22.784c-1.059 0-2.081-.153-3.048-.437l3.237-9.406 3.315 9.087c.024.053.05.101.078.149-1.12.393-2.325.609-3.582.609M1.211 12c0-1.564.336-3.05.935-4.39L7.29 21.709C3.694 19.96 1.212 16.271 1.211 12M12 0C5.385 0 0 5.385 0 12s5.385 12 12 12 12-5.385 12-12S18.615 0 12 0"/>
+</svg>
+
+</span>
+
+  <span class="font-mono">wordpress</span>
+</a>
+
+      
+        
+
+
+<a
+  class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:text-indigo-400 hover:underline"
+  href="https://www.php.net"
+>
+  <span class="w-4 h-4   fill-current">
+  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>PHP</title>
+  <path d="M7.01 10.207h-.944l-.515 2.648h.838c.556 0 .97-.105 1.242-.314.272-.21.455-.559.55-1.049.092-.47.05-.802-.124-.995-.175-.193-.523-.29-1.047-.29zM12 5.688C5.373 5.688 0 8.514 0 12s5.373 6.313 12 6.313S24 15.486 24 12c0-3.486-5.373-6.312-12-6.312zm-3.26 7.451c-.261.25-.575.438-.917.551-.336.108-.765.164-1.285.164H5.357l-.327 1.681H3.652l1.23-6.326h2.65c.797 0 1.378.209 1.744.628.366.418.476 1.002.33 1.752a2.836 2.836 0 0 1-.305.847c-.143.255-.33.49-.561.703zm4.024.715l.543-2.799c.063-.318.039-.536-.068-.651-.107-.116-.336-.174-.687-.174H11.46l-.704 3.625H9.388l1.23-6.327h1.367l-.327 1.682h1.218c.767 0 1.295.134 1.586.401s.378.7.263 1.299l-.572 2.944h-1.389zm7.597-2.265a2.782 2.782 0 0 1-.305.847c-.143.255-.33.49-.561.703a2.44 2.44 0 0 1-.917.551c-.336.108-.765.164-1.286.164h-1.18l-.327 1.682h-1.378l1.23-6.326h2.649c.797 0 1.378.209 1.744.628.366.417.477 1.001.331 1.751zM17.766 10.207h-.943l-.516 2.648h.838c.557 0 .971-.105 1.242-.314.272-.21.455-.559.551-1.049.092-.47.049-.802-.125-.995s-.524-.29-1.047-.29z"/>
+</svg>
+
+</span>
+
+  <span class="font-mono">php</span>
+</a>
+
+      
+        
+
+
+<a
+  class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:text-green-500 hover:underline"
+  href="https://www.nginx.com"
+>
+  <span class="w-4 h-4   fill-current">
+  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Nginx</title>
+  <path d="M12 0L1.605 6v12L12 24l10.395-6V6L12 0zm6 16.59c0 .705-.646 1.29-1.529 1.29-.631 0-1.351-.255-1.801-.81l-6-7.141v6.66c0 .721-.57 1.29-1.274 1.29H7.32c-.721 0-1.29-.6-1.29-1.29V7.41c0-.705.63-1.29 1.5-1.29.646 0 1.38.255 1.83.81l5.97 7.141V7.41c0-.721.6-1.29 1.29-1.29h.075c.72 0 1.29.6 1.29 1.29v9.18H18z"/>
+</svg>
+
+</span>
+
+  <span class="font-mono">nginx</span>
+</a>
+
+      
+
+      <!-- Tags -->
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+  <span class="font-mono">fcgi</span>
+</span>
+
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+  <span class="font-mono">systemd</span>
+</span>
+
+      
+    </p>
+  </header>
+
+  <!-- Post content -->
+  <div class="text-lg" itemprop="articleBody">
+    <p>It’s a bit weird to post this now that I’ve switched to Octopress, but this is
+how I deployed the previous WordPress version of this blog.</p>
+
+<!-- more -->
+
+<p>I’m assuming you have <a href="https://www.nginx.com">Nginx</a>, <a href="https://www.php.net">PHP</a> and <a href="https://linux.die.net/man/1/spawn-fcgi">spawn-fcgi</a>
+installed and set up (you can install all of them with <a href="http://yum.baseurl.org">Yum</a>); and of
+course, <a href="https://wordpress.com">WordPress</a> and <a href="https://www.mysql.com">MySQL</a> (read <a href="https://wordpress.org/support/article/how-to-install-wordpress/"><em>How to install
+WordPress</em></a> for instructions).</p>
+
+<p>The first thing we need is to spawn PHP processes that we can hook nginx to. We
+also want those processes to automatically start on boot, so we’ll create a
+systemd service file. You need the following information:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">/path/to/wordpress</code>: the path to your WordPress installation.</li>
+  <li><code class="language-plaintext highlighter-rouge">wordpressUser</code>: the system user that you want the processes to run as.</li>
+  <li><code class="language-plaintext highlighter-rouge">wordpressGroup</code>: the system group that you want the processes to run as.</li>
+  <li><code class="language-plaintext highlighter-rouge">/path/to/pid/file.pid</code>: where you want to put the PID file.</li>
+  <li><code class="language-plaintext highlighter-rouge">/path/to/socket/file.pid</code>: where you want to put the socket file.</li>
+  <li>The number of processes you want to spawn (I used 3).</li>
+</ul>
+
+<p>Note that the name of the file determines the name of the service. That’s the
+name you’ll have to use with the <code class="language-plaintext highlighter-rouge">systemctl</code> command to control the service. I
+chose <code class="language-plaintext highlighter-rouge">wordpress.service</code>.</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: /etc/systemd/system/wordpress.service
+</span>[<span class="n">Unit</span>]
+<span class="n">Description</span>=<span class="n">Wordpress</span> <span class="n">Blog</span>
+<span class="n">After</span>=<span class="n">syslog</span>.<span class="n">target</span>
+
+[<span class="n">Service</span>]
+<span class="n">Type</span>=<span class="n">forking</span>
+<span class="n">PIDFile</span>=/<span class="n">path</span>/<span class="n">to</span>/<span class="n">pid</span>/<span class="n">file</span>.<span class="n">pid</span>
+<span class="c"># Clean PID file on startup. Note the -f:
+# don't fail if there is no PID file.
+</span><span class="n">ExecStartPre</span>=/<span class="n">bin</span>/<span class="n">rm</span> -<span class="n">f</span> /<span class="n">path</span>/<span class="n">to</span>/<span class="n">pid</span>/<span class="n">file</span>.<span class="n">pid</span>
+<span class="c"># Spawn 3 processes (-F 3) with spawn-fcgi.
+</span><span class="n">ExecStart</span>=/<span class="n">bin</span>/<span class="n">spawn</span>-<span class="n">fcgi</span> -<span class="n">u</span> <span class="n">wordpressUser</span> -<span class="n">g</span> <span class="n">wordpressGroup</span> -<span class="n">F</span> <span class="m">3</span> -<span class="n">d</span> /<span class="n">path</span>/<span class="n">to</span>/<span class="n">wordpress</span> -<span class="n">s</span> /<span class="n">path</span>/<span class="n">to</span>/<span class="n">socket</span>/<span class="n">file</span>.<span class="n">sock</span> -<span class="n">M</span> <span class="m">0770</span> -<span class="n">P</span> /<span class="n">path</span>/<span class="n">to</span>/<span class="n">pid</span>/<span class="n">file</span>.<span class="n">pid</span> -- /<span class="n">bin</span>/<span class="n">php</span>-<span class="n">cgi</span>
+<span class="n">Restart</span>=<span class="n">on</span>-<span class="n">abort</span>
+
+[<span class="n">Install</span>]
+<span class="n">WantedBy</span>=<span class="n">multi</span>-<span class="n">user</span>.<span class="n">target</span>
+</code></pre></div></div>
+
+<p>You can now enable your service to start on boot and start it with:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl <span class="nb">enable </span>wordpress.service
+systemctl start wordpress.service
+</code></pre></div></div>
+
+<p>If you check your processes with <code class="language-plaintext highlighter-rouge">ps -ef</code> or <code class="language-plaintext highlighter-rouge">systemctl status
+wordpress.service</code>, you should see 3 <code class="language-plaintext highlighter-rouge">php-cgi</code> processes running. Then all you
+need to do is point nginx to your WordPress path and socket file. This was my
+configuration:</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># File: /etc/nginx/conf.d/wordpress.conf</span>
+
+<span class="c1"># Upstream to backend connection(s) for php</span>
+<span class="k">upstream</span> <span class="s">wordpress</span> <span class="p">{</span>
+  <span class="kn">server</span> <span class="s">unix:/path/to/socket/file.sock</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">server</span> <span class="p">{</span>
+  <span class="kn">listen</span> <span class="s">*:80</span><span class="p">;</span>
+  <span class="kn">server_name</span> <span class="s">example.com</span><span class="p">;</span>
+
+  <span class="kn">root</span> <span class="n">/path/to/wordpress</span><span class="p">;</span>
+
+  <span class="c1"># This should be in your http block and if</span>
+  <span class="c1"># it is, it's not needed here.</span>
+  <span class="kn">index</span> <span class="s">index.php</span><span class="p">;</span>
+
+  <span class="kn">location</span> <span class="p">=</span> <span class="n">/favicon.ico</span> <span class="p">{</span>
+    <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+    <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kn">location</span> <span class="p">=</span> <span class="n">/robots.txt</span> <span class="p">{</span>
+    <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
+    <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+    <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+    <span class="c1"># This is cool because no php is touched</span>
+    <span class="c1"># for static content.</span>
+    <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri</span><span class="n">/</span> <span class="n">/index.php</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.php$</span> <span class="p">{</span>
+    <span class="c1"># You should have "cgi.fix_pathinfo = 0;" in "php.ini".</span>
+    <span class="kn">include</span> <span class="s">fastcgi.conf</span><span class="p">;</span>
+    <span class="kn">fastcgi_intercept_errors</span> <span class="no">on</span><span class="p">;</span>
+    <span class="kn">fastcgi_pass</span> <span class="s">wordpress</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kn">location</span> <span class="p">~</span><span class="sr">*</span> <span class="err">\</span><span class="s">.(js|css|png|jpg|jpeg|gif|ico)</span>$ <span class="p">{</span>
+    <span class="kn">expires</span> <span class="s">max</span><span class="p">;</span>
+    <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If your main nginx configuration doesn’t already load everything in
+<code class="language-plaintext highlighter-rouge">/etc/nginx/conf.d</code>, add a line to include the new configuration.</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># File: /etc/nginx/nginx.conf</span>
+<span class="k">http</span> <span class="p">{</span>
+  <span class="c1"># ...</span>
+  <span class="kn">include</span> <span class="n">/etc/nginx/conf.d/wordpress.conf</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Be forewarned!</strong> My PHP processes regularly died about twice a month and I do
+not know whether that was due to the above configurations or to something else.
+I did not have enough time to investigate the issue and now that I’ve switched
+to Octopress, I’ll probably never know.</p>
+
+<p>Enjoy.</p>
+
+
+  </div>
+
+  <!-- Language versions (if available) --><div class="flex flex-wrap justify-evenly space-x-8 mt-16">
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-blue-600 group hover:text-blue-400"
+  href="https://getfedora.org"
+><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Fedora</title>
+  <path d="M12.005.001C7.29-.064 2.744 2.962.957 7.317c-.885 1.953-1 4.116-.946 6.225.01 2.666-.02 5.335.015 7.999.113 1.542 1.654 2.614 3.134 2.44 3.257-.02 6.514.044 9.77-.034 4.79-.303 9.155-3.796 10.527-8.39 1.4-4.345.03-9.413-3.39-12.443A11.968 11.967 0 0012.005.001zm3.52 2.842c.406-.01.807.032 1.197.117.557.286.945.826.902 1.383-.058.75-.587 1.247-1.38 1.246a2.95 2.95 0 00-.72-.09c-1.725-.053-3.167 1.61-2.97 3.305.024.796-.044 1.601.033 2.392.333.457.987.18 1.475.256.276 0 .562.007.85.008a.134.134 0 00.042.008 1.29 1.29 0 011.29 1.295 1.29 1.29 0 01-1.298 1.295.14.14 0 00-.06.013c-.777.003-1.553 0-2.33.002-.066 1.616.197 3.276-.31 4.84-.865 2.706-3.97 4.337-6.685 3.62-.537-.284-.91-.79-.868-1.334.062-.796.656-1.308 1.532-1.24.075.006.113.012.168.02.716.14 1.477.034 2.107-.391 1.127-.645 1.502-1.977 1.396-3.193-.02-.687.043-1.384-.033-2.066-.333-.456-.984-.18-1.472-.256h-.8a.137.137 0 00-.066-.015 1.29 1.29 0 01-1.298-1.295c0-.72.574-1.29 1.29-1.295a.136.136 0 00.063-.016h2.316c.06-1.507-.159-3.046.213-4.523.648-2.376 2.952-4.12 5.415-4.086zm.705.052l.13.024zm1.224.28c1.444.543 2.636 1.706 3.25 3.12a81.141 81.136 0 01-2.903-2.592 1.762 1.762 0 00-.346-.527zm.45.935a86.96 86.954 0 002.966 2.596c-.014-.044-.033-.087-.049-.13.166.448.265.918.301 1.402a77.847 77.842 0 01-3.39-2.975l.015-.033c.088-.182.143-.386.16-.606a1.393 1.393 0 000-.197c0-.019-.002-.038-.004-.057zm.02.196c-.058.516-.058.516 0 0zm-.314.894a85.347 85.341 0 003.53 3.06c0 .071.015.14.013.21a4.94 4.94 0 01-.06.814A78.528 78.523 0 0117.011 5.7a1.56 1.56 0 00.6-.5zm.526 1.83c.898.8 1.856 1.623 2.918 2.485a5.215 5.215 0 01-.242.863 74.032 74.027 0 01-2.307-1.963l.002.055c0 .076-.004.152-.01.226.703.612 1.44 1.237 2.24 1.885-.109.26-.234.512-.38.752a73.605 73.6 0 01-2.06-1.752 3.13 3.13 0 00-.16-2.55zm.068 2.758c.644.56 1.32 1.131 2.043 1.72a5.868 5.867 0 01-.5.651 74.24 74.235 0 01-1.99-1.705c.185-.2.332-.425.447-.666zm-.603.816a82.545 82.54 0 002.005 1.71c-.19.2-.392.385-.607.556a75.858 75.853 0 01-2.043-1.77c.203-.108.396-.247.572-.425.027-.022.047-.047.073-.07zm-.86.594a84.37 84.365 0 002.088 1.8c-.23.17-.48.311-.734.444a79.06 79.054 0 01-2.256-2.005c-.024.002-.05.001-.074.003l-.026-.015a3.506 3.506 0 001.002-.227zm-10.046.248l-.02.014h-.013l.004.004a1.573 1.573 0 00-.51.55l-.45-.427a5.38 5.38 0 01.99-.14zm-.994.14l-.127.032.127-.03zm-.27.075l.622.592a1.55 1.55 0 00.008 1.045c-.468-.444-.94-.893-1.432-1.348.26-.118.529-.21.803-.289zm-1.03.4c.72.674 1.425 1.347 2.134 2.03a2.68 2.68 0 00-.826.242c-.64-.61-1.3-1.23-1.998-1.865a5.98 5.98 0 01.69-.406zm12.022.204c.473.42.958.846 1.474 1.285a5.37 5.37 0 01-.908.342l-.617-.498a1.55 1.55 0 00.05-1.13zm-12.901.345a140.01 140.01 0 011.958 1.844 3.158 3.158 0 00-1.527 2.332A98.329 98.323 0 001.777 14.8a5.574 5.573 0 00-.091.22c.777.698 1.522 1.391 2.252 2.087.002.284.042.57.14.848.053.19.13.366.22.533a107.243 107.236 0 00-2.86-2.635c.027-.108.04-.217.074-.323.137-.518.366-.998.65-1.44.69.621 1.35 1.241 2.002 1.86a2.98 2.98 0 01.107-.232 99.457 99.45 0 00-1.986-1.819c.15-.214.31-.42.49-.613A109.76 109.76 0 014.7 15.088c.054-.06.11-.122.168-.178a98.104 98.104 0 00-1.94-1.79 5.82 5.82 0 01.592-.509zm12.719.153l-.027.265zm1.733.754l-.05.023.05-.023zm-1.72.091l.44.354c-.287.06-.582.096-.88.103h-.016a1.56 1.56 0 00.457-.457zM1.386 16.101c1.32 1.189 2.532 2.357 3.78 3.559l.175.166c-.237.107-.44.266-.594.465A125.942 125.935 0 001.3 17.076a5.176 5.176 0 01.086-.976zm-.07 1.29A154.286 154.276 0 014.61 20.5c-.11.2-.18.428-.2.677a1.406 1.406 0 000 .166c-.92-.884-1.856-1.78-2.88-2.71a5.65 5.65 0 01-.215-1.243zm.378 1.714c.943.876 1.852 1.748 2.778 2.64l.02.02c.07.195.186.372.327.532-1.445-.56-2.562-1.767-3.125-3.192zm3.352.264c.179.14.374.26.58.358l-.025.005-.018-.015a3.014 3.014 0 01-.537-.348zm1.047 3.252l.15.025zm.228.04s.09.007.274.025a33.671 33.669 0 00-.274-.026z"/>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-blue-600 group-hover:text-blue-400">
+      Fedora
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">17</code>
+  </div>
+</a>
+
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-indigo-400 group hover:text-blue-400"
+  href="https://www.php.net"
+><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>PHP</title>
+  <path d="M7.01 10.207h-.944l-.515 2.648h.838c.556 0 .97-.105 1.242-.314.272-.21.455-.559.55-1.049.092-.47.05-.802-.124-.995-.175-.193-.523-.29-1.047-.29zM12 5.688C5.373 5.688 0 8.514 0 12s5.373 6.313 12 6.313S24 15.486 24 12c0-3.486-5.373-6.312-12-6.312zm-3.26 7.451c-.261.25-.575.438-.917.551-.336.108-.765.164-1.285.164H5.357l-.327 1.681H3.652l1.23-6.326h2.65c.797 0 1.378.209 1.744.628.366.418.476 1.002.33 1.752a2.836 2.836 0 0 1-.305.847c-.143.255-.33.49-.561.703zm4.024.715l.543-2.799c.063-.318.039-.536-.068-.651-.107-.116-.336-.174-.687-.174H11.46l-.704 3.625H9.388l1.23-6.327h1.367l-.327 1.682h1.218c.767 0 1.295.134 1.586.401s.378.7.263 1.299l-.572 2.944h-1.389zm7.597-2.265a2.782 2.782 0 0 1-.305.847c-.143.255-.33.49-.561.703a2.44 2.44 0 0 1-.917.551c-.336.108-.765.164-1.286.164h-1.18l-.327 1.682h-1.378l1.23-6.326h2.649c.797 0 1.378.209 1.744.628.366.417.477 1.001.331 1.751zM17.766 10.207h-.943l-.516 2.648h.838c.557 0 .971-.105 1.242-.314.272-.21.455-.559.551-1.049.092-.47.049-.802-.125-.995s-.524-.29-1.047-.29z"/>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-indigo-400 group-hover:text-blue-400">
+      PHP
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">5.4.6</code>
+  </div>
+</a>
+
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-blue-500 group hover:text-blue-400"
+  href="https://wordpress.com"
+><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>WordPress</title>
+  <path d="M21.469 6.825c.84 1.537 1.318 3.3 1.318 5.175 0 3.979-2.156 7.456-5.363 9.325l3.295-9.527c.615-1.54.82-2.771.82-3.864 0-.405-.026-.78-.07-1.11m-7.981.105c.647-.03 1.232-.105 1.232-.105.582-.075.514-.93-.067-.899 0 0-1.755.135-2.88.135-1.064 0-2.85-.15-2.85-.15-.585-.03-.661.855-.075.885 0 0 .54.061 1.125.09l1.68 4.605-2.37 7.08L5.354 6.9c.649-.03 1.234-.1 1.234-.1.585-.075.516-.93-.065-.896 0 0-1.746.138-2.874.138-.2 0-.438-.008-.69-.015C4.911 3.15 8.235 1.215 12 1.215c2.809 0 5.365 1.072 7.286 2.833-.046-.003-.091-.009-.141-.009-1.06 0-1.812.923-1.812 1.914 0 .89.513 1.643 1.06 2.531.411.72.89 1.643.89 2.977 0 .915-.354 1.994-.821 3.479l-1.075 3.585-3.9-11.61.001.014zM12 22.784c-1.059 0-2.081-.153-3.048-.437l3.237-9.406 3.315 9.087c.024.053.05.101.078.149-1.12.393-2.325.609-3.582.609M1.211 12c0-1.564.336-3.05.935-4.39L7.29 21.709C3.694 19.96 1.212 16.271 1.211 12M12 0C5.385 0 0 5.385 0 12s5.385 12 12 12 12-5.385 12-12S18.615 0 12 0"/>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-blue-500 group-hover:text-blue-400">
+      WordPress
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">3.x</code>
+  </div>
+</a>
+
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-green-500 group hover:text-blue-400"
+  href="https://www.nginx.com"
+><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Nginx</title>
+  <path d="M12 0L1.605 6v12L12 24l10.395-6V6L12 0zm6 16.59c0 .705-.646 1.29-1.529 1.29-.631 0-1.351-.255-1.801-.81l-6-7.141v6.66c0 .721-.57 1.29-1.274 1.29H7.32c-.721 0-1.29-.6-1.29-1.29V7.41c0-.705.63-1.29 1.5-1.29.646 0 1.38.255 1.83.81l5.97 7.141V7.41c0-.721.6-1.29 1.29-1.29h.075c.72 0 1.29.6 1.29 1.29v9.18H18z"/>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-green-500 group-hover:text-blue-400">
+      Nginx
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">1.0.15</code>
+  </div>
+</a>
+
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-gray-400 group hover:text-blue-400"
+  href="https://linux.die.net/man/1/spawn-fcgi"
+><div class="flex flex-col">
+    <span class="font-mono no-underline text-gray-400 group-hover:text-blue-400">
+      spawn-fcgi
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">1.6.3</code>
+  </div>
+</a>
+
+      
+    </div><a class="u-url" href="/2013/01/deploy-wordpress-with-nginx-spawn-fcgi-and-systemd/" hidden></a>
+</article>
+
+      </main><footer class="max-w-prose mt-24 mb-12 mx-auto p-4 font-body text-gray-500 text-sm">
+
+  <div class="flex justify-between items-center">
+    <!-- Subscribe to feed -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="/feed.xml">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>RSS icon</title>
+        <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"/>
+      </svg>
+      <span>Subscribe</span>
+    </a>
+
+    <!-- Email -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="mailto:%63%6F%6E%74%61%63%74@%61%6C%70%68%61%68%79%64%72%61%65.%63%6F%6D">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>Email icon</title>
+        <path fill-rule="evenodd" d="M1.75 3A1.75 1.75 0 000 4.75v14c0 .966.784 1.75 1.75 1.75h20.5A1.75 1.75 0 0024 18.75v-14A1.75 1.75 0 0022.25 3H1.75zM1.5 4.75a.25.25 0 01.25-.25h20.5a.25.25 0 01.25.25v.852l-10.36 7a.25.25 0 01-.28 0l-10.36-7V4.75zm0 2.662V18.75c0 .138.112.25.25.25h20.5a.25.25 0 00.25-.25V7.412l-9.52 6.433c-.592.4-1.368.4-1.96 0L1.5 7.412z"></path>
+      </svg>
+      <span>Email</span>
+    </a>
+
+    <!-- License -->
+    <span>&copy; 2012-2021</span>
+  </div>
+
+  <div class="flex flex-col items-center mt-8 px-8 space-y-2 text-center text-xs">
+    <a class="opacity-80 hover:opacity-100" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
+    </a>
+    <p>
+      Unless otherwise specified, this work is licensed under a
+      <a class="text-blue-400 hover:underline" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+        Creative Commons Attribution-ShareAlike 4.0 International License
+      </a>.
+    </p>
+  </div>
+
+  <!-- Attribution -->
+  <div class="mt-4 text-center text-xs">
+    Fonts by <a class="text-blue-400 hover:underline" href="https://fonts.google.com">Google Fonts</a>,
+    brands by <a class="text-blue-400 hover:underline" href="https://simpleicons.org">Simple Icons</a>,
+    other icons by <a class="text-blue-400 hover:underline" href="https://primer.style/octicons/">Octicons</a>.
+  </div>
+
+</footer>
+</div>
+
+  </body>
+
+</html>

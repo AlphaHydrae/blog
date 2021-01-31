@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>PostgreSQL with peer authentication | AlphaHydrae</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="PostgreSQL with peer authentication" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Tales of a programmer" />
+<meta property="og:description" content="Tales of a programmer" />
+<link rel="canonical" href="https://alphahydrae.com/2012/08/postgresql-with-peer-authentication/" />
+<meta property="og:url" content="https://alphahydrae.com/2012/08/postgresql-with-peer-authentication/" />
+<meta property="og:site_name" content="AlphaHydrae" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2012-08-27T09:22:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="PostgreSQL with peer authentication" />
+<script type="application/ld+json">
+{"url":"https://alphahydrae.com/2012/08/postgresql-with-peer-authentication/","headline":"PostgreSQL with peer authentication","dateModified":"2012-08-27T09:22:00+02:00","datePublished":"2012-08-27T09:22:00+02:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://alphahydrae.com/2012/08/postgresql-with-peer-authentication/"},"description":"Tales of a programmer","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://alphahydrae.com/feed.xml" title="AlphaHydrae" /></head>
+<body class="bg-gray-900 flex flex-col h-screen m-0 p-0 text-gray-300"><header>
+  <nav class="bg-gray-700 w-full">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="relative flex items-center justify-between h-16">
+
+        <div class="flex items-center">
+          <!-- Brand -->
+          <a href="/" class="text-white px-3 py-2 space-x-3 text-sm font-medium flex items-center">
+            <img class="h-8 w-8 rounded-full" src="/assets/avatar.jpg" alt="GitHub">
+            <span class="font-body text-xl">AlphaHydrae</span>
+          </a>
+
+          <!-- Page links -->
+          <div class="hidden md:block ml-8 font-body text-sm">
+            <a class="hover:text-blue-400 hover:underline" href="/posts">Posts</a>
+          </div>
+        </div>
+
+        <!-- Profile dropdown -->
+        <div class="flex space-x-3 text-gray-300">
+          <!-- RSS -->
+          <a href="/feed.xml" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">Subscribe</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>RSS icon</title>
+              <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"/>
+            </svg>
+          </a>
+          <!-- Linked In -->
+          <a href="https://www.linkedin.com/in/simonoulevay" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">LinkedIn</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>LinkedIn icon</title>
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <!-- GitHub -->
+          <a href="https://github.com/AlphaHydrae" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">GitHub</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>GitHub icon</title>
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="flex-1 overflow-y-auto">
+      <main class="font-body px-6 lg:px-0" aria-label="Content">
+        
+
+<article class="max-w-prose mx-auto" itemscope itemtype="https://schema.org/BlogPosting">
+  <header class="mt-24 mb-20">
+    <!-- Category --><!-- Title -->
+    <h1 itemprop="name headline">PostgreSQL with peer authentication</h1>
+
+    <!-- Metadata -->
+    <p class="flex flex-wrap justify-center space-x-5 text-gray-400">
+
+      <!-- Publication date -->
+      
+
+<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="2012-08-27T09:22:00+02:00" itemprop="datePublished">
+  <svg width="16" height="16" class="octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 0a.75.75 0 01.75.75V2h5V.75a.75.75 0 011.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 16H2.75A1.75 1.75 0 011 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 014.75 0zm0 3.5h8.5a.25.25 0 01.25.25V6h-11V3.75a.25.25 0 01.25-.25h2zm-2.25 4v6.75c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V7.5h-11z"></path></svg>
+  <span class="font-mono whitespace-nowrap">2012-08-27</span>
+</span>
+
+
+      <!-- Last modification date (if available) --><!-- Categories -->
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+          <svg width="16" height="16" class="octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z"></path></svg>
+          <span class="font-mono">sysadmin</span>
+        </span>
+      
+
+      <!-- Languages (if available) -->
+      
+        
+
+
+<a
+  class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:text-blue-300 hover:underline"
+  href="https://www.postgresql.org"
+>
+  <span class="w-4 h-4   fill-current">
+  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>PostgreSQL</title>
+  <path d="M17.086 0a10.134 10.134 0 00-2.755.403l-.063.02a10.922 10.922 0 00-1.71-.165C11.38.238 10.368.524 9.552 1 8.748.721 7.08.24 5.322.336c-1.224.067-2.56.44-3.55 1.484C.785 2.865.262 4.482.372 6.682c.03.607.204 1.597.49 2.88.288 1.281.69 2.782 1.194 4.151.503 1.37 1.054 2.6 1.915 3.436.43.42 1.022.771 1.72.742.49-.02.933-.235 1.315-.552.186.245.385.352.566.451.228.125.45.21.68.266.413.103 1.12.241 1.948.1.282-.047.579-.139.875-.27.01.33.024.653.037.98.04 1.036.067 1.993.378 2.832.05.137.187.843.727 1.466.54.624 1.598 1.013 2.803.755.85-.182 1.93-.51 2.649-1.532.71-1.01 1.03-2.459 1.093-4.809a4.73 4.73 0 01.055-.336l.169.015h.02c.907.041 1.89-.088 2.713-.47.728-.337 1.279-.678 1.68-1.283.1-.15.21-.33.24-.643.03-.312-.15-.8-.446-1.025-.595-.452-.97-.28-1.37-.197a6.27 6.27 0 01-1.202.146c1.156-1.947 1.985-4.015 2.458-5.845.28-1.08.437-2.076.45-2.947.013-.87-.058-1.642-.58-2.309C21.318.6 19.025.024 17.25.004c-.055 0-.11-.002-.165 0zm-.047.64c1.678-.016 3.822.455 5.36 2.422.347.442.45 1.088.438 1.884-.013.795-.16 1.747-.43 2.79-.521 2.02-1.507 4.375-2.896 6.488a.756.756 0 00.158.086c.29.12.95.223 2.27-.048.332-.07.575-.117.827.075a.52.52 0 01.183.425.704.704 0 01-.13.336c-.255.383-.758.746-1.403 1.045-.571.266-1.39.405-2.116.413-.364.004-.7-.024-.985-.113l-.018-.007c-.11 1.06-.363 3.153-.528 4.108-.132.77-.363 1.382-.804 1.84-.44.458-1.063.734-1.901.914-1.038.223-1.795-.017-2.283-.428-.487-.41-.71-.954-.844-1.287-.092-.23-.14-.528-.186-.926-.046-.398-.08-.885-.103-1.434a51.426 51.426 0 01-.03-2.523 3.061 3.061 0 01-1.552.76c-.69.117-1.304.002-1.671-.09a2.276 2.276 0 01-.52-.2c-.17-.092-.332-.195-.44-.398a.56.56 0 01-.057-.38.61.61 0 01.218-.332c.198-.16.46-.25.855-.333.719-.148.97-.249 1.123-.37.13-.104.277-.314.537-.622a1.16 1.16 0 01-.003-.04 2.96 2.96 0 01-1.33-.359c-.15.158-.916.968-1.85 2.092-.393.47-.827.74-1.285.76-.458.02-.872-.212-1.224-.553-.703-.683-1.264-1.858-1.753-3.186-.488-1.328-.885-2.807-1.167-4.067-.283-1.26-.45-2.276-.474-2.766-.105-2.082.382-3.485 1.217-4.37.836-.885 1.982-1.22 3.099-1.284 2.005-.115 3.909.584 4.294.734.742-.504 1.698-.818 2.892-.798a7.39 7.39 0 011.68.218l.02-.009a6.854 6.854 0 01.74-.214 9.626 9.626 0 012.07-.25zm.152.67h-.146a8.74 8.74 0 00-1.704.192c1.246.552 2.187 1.402 2.85 2.25a8.44 8.44 0 011.132 1.92c.11.264.184.487.226.66.02.087.035.16.04.236a.44.44 0 01-.012.144c0 .003-.005.01-.006.013.03.876-.187 1.47-.213 2.306-.02.606.135 1.318.173 2.095.036.73-.052 1.532-.526 2.32.04.047.076.095.114.143 1.254-1.975 2.158-4.16 2.64-6.023.258-1.003.395-1.912.407-2.632.01-.72-.124-1.242-.295-1.46-1.342-1.716-3.158-2.153-4.68-2.165zm-4.79.256c-1.182.003-2.03.36-2.673.895-.663.553-1.108 1.31-1.4 2.085-.347.92-.466 1.81-.513 2.414l.013-.008c.357-.2.826-.4 1.328-.516.502-.115 1.043-.15 1.533.04s.895.636 1.042 1.314c.704 3.257-.22 4.468-.56 5.382a9.61 9.61 0 00-.33 1.013c.043-.01.086-.022.129-.026.24-.02.428.06.54.108.342.142.577.44.704.78.033.09.057.185.07.284a.336.336 0 01.02.127 55.14 55.14 0 00.014 3.738c.023.538.057 1.012.1 1.386.043.373.104.657.143.753.128.32.315.74.653 1.024.338.284.823.474 1.709.284.768-.165 1.242-.394 1.559-.723.316-.329.505-.787.626-1.488.18-1.05.545-4.095.589-4.668-.02-.432.044-.764.182-1.017.142-.26.362-.419.552-.505.095-.043.184-.072.257-.093a5.956 5.956 0 00-.243-.325 4.456 4.456 0 01-.666-1.099 8.296 8.296 0 00-.257-.483c-.133-.24-.301-.54-.477-.877-.352-.675-.735-1.493-.934-2.29-.198-.796-.227-1.62.28-2.2.45-.517 1.24-.73 2.427-.61-.035-.106-.056-.193-.115-.333a7.817 7.817 0 00-1.041-1.764c-1.005-1.285-2.632-2.559-5.146-2.6H12.4zm-6.642.052c-.127 0-.254.004-.38.011-1.01.058-1.965.351-2.648 1.075-.684.724-1.134 1.911-1.036 3.876.019.372.18 1.414.459 2.652.277 1.238.67 2.695 1.142 3.982.473 1.287 1.046 2.407 1.59 2.937.274.265.512.372.728.363.217-.01.478-.135.797-.518a43.244 43.244 0 011.81-2.048 3.497 3.497 0 01-1.167-3.15c.103-.739.117-1.43.105-1.976-.012-.532-.05-.886-.05-1.107a.336.336 0 010-.019v-.005l-.001-.006A9.893 9.893 0 017.7 4.307c.28-.744.697-1.5 1.322-2.112-.614-.202-1.704-.51-2.884-.568a7.603 7.603 0 00-.38-.01zM18.157 6.9c-.68.01-1.06.184-1.26.413-.283.325-.31.895-.134 1.597.175.703.537 1.49.877 2.142.17.327.335.621.468.86.134.24.232.41.292.555.055.134.116.252.178.362.263-.555.31-1.1.283-1.668-.035-.703-.198-1.422-.174-2.15.027-.85.195-1.405.21-2.063a5.793 5.793 0 00-.74-.048zm-8.234.115a2.82 2.82 0 00-.616.074 4.665 4.665 0 00-1.153.45 2.417 2.417 0 00-.35.227l-.021.02c.006.146.035.5.047 1.021.012.57-.002 1.297-.112 2.084-.24 1.71 1.002 3.126 2.46 3.128.085-.35.225-.707.365-1.082.406-1.094 1.205-1.892.532-5.006-.11-.51-.328-.716-.628-.832a1.474 1.474 0 00-.524-.084zm7.917.204h.05a.878.878 0 01.18.022c.054.012.1.03.138.055a.164.164 0 01.075.11l-.001.008a.24.24 0 01-.035.135.668.668 0 01-.11.15.677.677 0 01-.386.212.59.59 0 01-.41-.103.608.608 0 01-.13-.118.26.26 0 01-.063-.127.17.17 0 01.042-.128.384.384 0 01.117-.09c.096-.054.226-.094.373-.116.055-.008.109-.012.16-.013zm-7.82.168c.053 0 .109.005.166.013.153.021.289.062.393.122a.446.446 0 01.133.106.223.223 0 01.054.17.302.302 0 01-.075.154.649.649 0 01-.143.13.64.64 0 01-.448.113.728.728 0 01-.42-.228.71.71 0 01-.118-.164.28.28 0 01-.041-.177c.015-.108.104-.164.19-.195a.866.866 0 01.308-.04zm9.06 7.343l-.003.001c-.147.053-.268.075-.37.12a.452.452 0 00-.24.214c-.062.115-.116.32-.1.666a.51.51 0 00.148.07c.17.052.458.086.778.081.638-.007 1.423-.156 1.84-.35a3.95 3.95 0 00.943-.615h-.001c-1.393.288-2.18.211-2.663.012a1.315 1.315 0 01-.332-.2zm-8.031.094h-.021c-.053.005-.13.023-.28.188-.347.39-.47.635-.756.864-.287.228-.66.35-1.405.503a1.918 1.918 0 00-.461.144c.029.024.026.03.07.053.109.06.249.113.362.142.32.08.846.173 1.395.08.549-.094 1.12-.357 1.607-1.04.084-.118.093-.292.024-.479-.07-.187-.223-.348-.331-.393a.653.653 0 00-.204-.06z"/>
+</svg>
+
+</span>
+
+  <span class="font-mono">postgresql</span>
+</a>
+
+      
+
+      <!-- Tags -->
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewBox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+  <span class="font-mono">auth</span>
+</span>
+
+      
+    </p>
+  </header>
+
+  <!-- Post content -->
+  <div class="text-lg" itemprop="articleBody">
+    <p><a href="http://www.postgresql.org"><img class="right" src="/assets/contents/postgresql/logo.png" width="200" /></a></p>
+
+<p>PostgreSQL has always been my favorite SQL database, especially compared to
+MySQL which I’ve always found a pain to configure for my uses. Peer
+authentication allows to map OS user names to database user names for local
+connections. It can be used for password-less database access in a multi-user
+environment.</p>
+
+<p>This guide shows how to install PostgreSQL and configure peer authentication on
+Fedora.</p>
+
+<!--more-->
+
+<h2 id="installation">Installation</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Install and run PostgreSQL.</span>
+yum <span class="nb">install </span>postgresql postgresql-devel <span class="se">\</span>
+            postgresql-server postgresql-contrib
+
+<span class="c"># Initialize the database cluster.</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> /var/lib/pgsql/data
+<span class="nb">chown</span> <span class="nt">-R</span> postgres:postgres /var/lib/pgsql/data
+su postgres
+  initdb <span class="nt">-D</span> /var/lib/pgsql/data <span class="nt">-E</span> UTF8 <span class="nt">--locale</span><span class="o">=</span>en_US.UTF8
+</code></pre></div></div>
+
+<p>If you install at a location other than <code class="language-plaintext highlighter-rouge">/var/lib/pgsql/data</code>, create this file
+to tell the PostgreSQL service where to look:</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: /etc/systemd/system/postgresql.service
+</span>.<span class="n">include</span> /<span class="n">lib</span>/<span class="n">systemd</span>/<span class="n">system</span>/<span class="n">postgresql</span>.<span class="n">service</span>
+[<span class="n">Service</span>]
+<span class="n">Environment</span>=<span class="n">PGDATA</span>=/<span class="n">path</span>/<span class="n">to</span>/<span class="n">pgsql</span>/<span class="n">data</span>
+</code></pre></div></div>
+
+<p>The package provides a systemd service which you can enable on boot and start
+like this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl <span class="nb">enable </span>postgresql.service
+systemctl start postgresql.service
+</code></pre></div></div>
+
+<h2 id="peer-authentication">Peer Authentication</h2>
+
+<p>By default, peer authentication allows each system user to authenticate as the
+database user with the same name, but that’s usually not sufficient for my
+purposes. For example, I also want my <code class="language-plaintext highlighter-rouge">root</code> system user to be able to
+authenticate as <code class="language-plaintext highlighter-rouge">postgres</code> (the godlike database user).</p>
+
+<p>To do this, you must edit <code class="language-plaintext highlighter-rouge">pg_ident.conf</code> in the PostgreSQL data directory. Here
+you can create user name maps like this one:</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># MAPNAME    SYSTEM-USERNAME  PG-USERNAME
+</span>  <span class="n">adminmap</span>   <span class="n">postgres</span>         <span class="n">postgres</span>
+  <span class="n">adminmap</span>   <span class="n">root</span>             <span class="n">postgres</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">SYSTEM-USERNAME</code> is the user name detected by the operating system.
+<code class="language-plaintext highlighter-rouge">PG-USERNAME</code> is the database user name that this user should have. You must
+group user name pairs under a <code class="language-plaintext highlighter-rouge">MAPNAME</code> which you will user later in the
+authentication configuration. The map above defines that both the <code class="language-plaintext highlighter-rouge">postgres</code> and
+<code class="language-plaintext highlighter-rouge">root</code> system users can connect as the <code class="language-plaintext highlighter-rouge">postgres</code> database user.</p>
+
+<p>Once you have created your user name maps, you can use them in <code class="language-plaintext highlighter-rouge">pg_hba.conf</code>,
+the authentication configuration file. Here is an example:</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># TYPE   DATABASE  USER      ADDRESS  METHOD
+</span>  <span class="n">local</span>  <span class="n">all</span>       <span class="n">postgres</span>           <span class="n">peer</span>    <span class="n">map</span>=<span class="n">adminmap</span>
+</code></pre></div></div>
+
+<p>This defines that the <code class="language-plaintext highlighter-rouge">postgres</code> database user can access all databases. Notice
+that we selected the peer authentication method and that we reference
+<code class="language-plaintext highlighter-rouge">adminmap</code>, the user name map we created earlier. Therefore, with this
+configuration both the <code class="language-plaintext highlighter-rouge">postgres</code> and <code class="language-plaintext highlighter-rouge">root</code> system users can connect to all
+databases as <code class="language-plaintext highlighter-rouge">postgres</code>.</p>
+
+<p>Now go forth and multiply the user name maps.</p>
+
+
+  </div>
+
+  <!-- Language versions (if available) --><div class="flex flex-wrap justify-evenly space-x-8 mt-16">
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-blue-300 group hover:text-blue-400"
+  href="https://www.postgresql.org"
+><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>PostgreSQL</title>
+  <path d="M17.086 0a10.134 10.134 0 00-2.755.403l-.063.02a10.922 10.922 0 00-1.71-.165C11.38.238 10.368.524 9.552 1 8.748.721 7.08.24 5.322.336c-1.224.067-2.56.44-3.55 1.484C.785 2.865.262 4.482.372 6.682c.03.607.204 1.597.49 2.88.288 1.281.69 2.782 1.194 4.151.503 1.37 1.054 2.6 1.915 3.436.43.42 1.022.771 1.72.742.49-.02.933-.235 1.315-.552.186.245.385.352.566.451.228.125.45.21.68.266.413.103 1.12.241 1.948.1.282-.047.579-.139.875-.27.01.33.024.653.037.98.04 1.036.067 1.993.378 2.832.05.137.187.843.727 1.466.54.624 1.598 1.013 2.803.755.85-.182 1.93-.51 2.649-1.532.71-1.01 1.03-2.459 1.093-4.809a4.73 4.73 0 01.055-.336l.169.015h.02c.907.041 1.89-.088 2.713-.47.728-.337 1.279-.678 1.68-1.283.1-.15.21-.33.24-.643.03-.312-.15-.8-.446-1.025-.595-.452-.97-.28-1.37-.197a6.27 6.27 0 01-1.202.146c1.156-1.947 1.985-4.015 2.458-5.845.28-1.08.437-2.076.45-2.947.013-.87-.058-1.642-.58-2.309C21.318.6 19.025.024 17.25.004c-.055 0-.11-.002-.165 0zm-.047.64c1.678-.016 3.822.455 5.36 2.422.347.442.45 1.088.438 1.884-.013.795-.16 1.747-.43 2.79-.521 2.02-1.507 4.375-2.896 6.488a.756.756 0 00.158.086c.29.12.95.223 2.27-.048.332-.07.575-.117.827.075a.52.52 0 01.183.425.704.704 0 01-.13.336c-.255.383-.758.746-1.403 1.045-.571.266-1.39.405-2.116.413-.364.004-.7-.024-.985-.113l-.018-.007c-.11 1.06-.363 3.153-.528 4.108-.132.77-.363 1.382-.804 1.84-.44.458-1.063.734-1.901.914-1.038.223-1.795-.017-2.283-.428-.487-.41-.71-.954-.844-1.287-.092-.23-.14-.528-.186-.926-.046-.398-.08-.885-.103-1.434a51.426 51.426 0 01-.03-2.523 3.061 3.061 0 01-1.552.76c-.69.117-1.304.002-1.671-.09a2.276 2.276 0 01-.52-.2c-.17-.092-.332-.195-.44-.398a.56.56 0 01-.057-.38.61.61 0 01.218-.332c.198-.16.46-.25.855-.333.719-.148.97-.249 1.123-.37.13-.104.277-.314.537-.622a1.16 1.16 0 01-.003-.04 2.96 2.96 0 01-1.33-.359c-.15.158-.916.968-1.85 2.092-.393.47-.827.74-1.285.76-.458.02-.872-.212-1.224-.553-.703-.683-1.264-1.858-1.753-3.186-.488-1.328-.885-2.807-1.167-4.067-.283-1.26-.45-2.276-.474-2.766-.105-2.082.382-3.485 1.217-4.37.836-.885 1.982-1.22 3.099-1.284 2.005-.115 3.909.584 4.294.734.742-.504 1.698-.818 2.892-.798a7.39 7.39 0 011.68.218l.02-.009a6.854 6.854 0 01.74-.214 9.626 9.626 0 012.07-.25zm.152.67h-.146a8.74 8.74 0 00-1.704.192c1.246.552 2.187 1.402 2.85 2.25a8.44 8.44 0 011.132 1.92c.11.264.184.487.226.66.02.087.035.16.04.236a.44.44 0 01-.012.144c0 .003-.005.01-.006.013.03.876-.187 1.47-.213 2.306-.02.606.135 1.318.173 2.095.036.73-.052 1.532-.526 2.32.04.047.076.095.114.143 1.254-1.975 2.158-4.16 2.64-6.023.258-1.003.395-1.912.407-2.632.01-.72-.124-1.242-.295-1.46-1.342-1.716-3.158-2.153-4.68-2.165zm-4.79.256c-1.182.003-2.03.36-2.673.895-.663.553-1.108 1.31-1.4 2.085-.347.92-.466 1.81-.513 2.414l.013-.008c.357-.2.826-.4 1.328-.516.502-.115 1.043-.15 1.533.04s.895.636 1.042 1.314c.704 3.257-.22 4.468-.56 5.382a9.61 9.61 0 00-.33 1.013c.043-.01.086-.022.129-.026.24-.02.428.06.54.108.342.142.577.44.704.78.033.09.057.185.07.284a.336.336 0 01.02.127 55.14 55.14 0 00.014 3.738c.023.538.057 1.012.1 1.386.043.373.104.657.143.753.128.32.315.74.653 1.024.338.284.823.474 1.709.284.768-.165 1.242-.394 1.559-.723.316-.329.505-.787.626-1.488.18-1.05.545-4.095.589-4.668-.02-.432.044-.764.182-1.017.142-.26.362-.419.552-.505.095-.043.184-.072.257-.093a5.956 5.956 0 00-.243-.325 4.456 4.456 0 01-.666-1.099 8.296 8.296 0 00-.257-.483c-.133-.24-.301-.54-.477-.877-.352-.675-.735-1.493-.934-2.29-.198-.796-.227-1.62.28-2.2.45-.517 1.24-.73 2.427-.61-.035-.106-.056-.193-.115-.333a7.817 7.817 0 00-1.041-1.764c-1.005-1.285-2.632-2.559-5.146-2.6H12.4zm-6.642.052c-.127 0-.254.004-.38.011-1.01.058-1.965.351-2.648 1.075-.684.724-1.134 1.911-1.036 3.876.019.372.18 1.414.459 2.652.277 1.238.67 2.695 1.142 3.982.473 1.287 1.046 2.407 1.59 2.937.274.265.512.372.728.363.217-.01.478-.135.797-.518a43.244 43.244 0 011.81-2.048 3.497 3.497 0 01-1.167-3.15c.103-.739.117-1.43.105-1.976-.012-.532-.05-.886-.05-1.107a.336.336 0 010-.019v-.005l-.001-.006A9.893 9.893 0 017.7 4.307c.28-.744.697-1.5 1.322-2.112-.614-.202-1.704-.51-2.884-.568a7.603 7.603 0 00-.38-.01zM18.157 6.9c-.68.01-1.06.184-1.26.413-.283.325-.31.895-.134 1.597.175.703.537 1.49.877 2.142.17.327.335.621.468.86.134.24.232.41.292.555.055.134.116.252.178.362.263-.555.31-1.1.283-1.668-.035-.703-.198-1.422-.174-2.15.027-.85.195-1.405.21-2.063a5.793 5.793 0 00-.74-.048zm-8.234.115a2.82 2.82 0 00-.616.074 4.665 4.665 0 00-1.153.45 2.417 2.417 0 00-.35.227l-.021.02c.006.146.035.5.047 1.021.012.57-.002 1.297-.112 2.084-.24 1.71 1.002 3.126 2.46 3.128.085-.35.225-.707.365-1.082.406-1.094 1.205-1.892.532-5.006-.11-.51-.328-.716-.628-.832a1.474 1.474 0 00-.524-.084zm7.917.204h.05a.878.878 0 01.18.022c.054.012.1.03.138.055a.164.164 0 01.075.11l-.001.008a.24.24 0 01-.035.135.668.668 0 01-.11.15.677.677 0 01-.386.212.59.59 0 01-.41-.103.608.608 0 01-.13-.118.26.26 0 01-.063-.127.17.17 0 01.042-.128.384.384 0 01.117-.09c.096-.054.226-.094.373-.116.055-.008.109-.012.16-.013zm-7.82.168c.053 0 .109.005.166.013.153.021.289.062.393.122a.446.446 0 01.133.106.223.223 0 01.054.17.302.302 0 01-.075.154.649.649 0 01-.143.13.64.64 0 01-.448.113.728.728 0 01-.42-.228.71.71 0 01-.118-.164.28.28 0 01-.041-.177c.015-.108.104-.164.19-.195a.866.866 0 01.308-.04zm9.06 7.343l-.003.001c-.147.053-.268.075-.37.12a.452.452 0 00-.24.214c-.062.115-.116.32-.1.666a.51.51 0 00.148.07c.17.052.458.086.778.081.638-.007 1.423-.156 1.84-.35a3.95 3.95 0 00.943-.615h-.001c-1.393.288-2.18.211-2.663.012a1.315 1.315 0 01-.332-.2zm-8.031.094h-.021c-.053.005-.13.023-.28.188-.347.39-.47.635-.756.864-.287.228-.66.35-1.405.503a1.918 1.918 0 00-.461.144c.029.024.026.03.07.053.109.06.249.113.362.142.32.08.846.173 1.395.08.549-.094 1.12-.357 1.607-1.04.084-.118.093-.292.024-.479-.07-.187-.223-.348-.331-.393a.653.653 0 00-.204-.06z"/>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-blue-300 group-hover:text-blue-400">
+      PostgreSQL
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">9.1.4</code>
+  </div>
+</a>
+
+      
+        
+        
+        
+
+
+<a
+  class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-blue-600 group hover:text-blue-400"
+  href="https://getfedora.org"
+><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Fedora</title>
+  <path d="M12.005.001C7.29-.064 2.744 2.962.957 7.317c-.885 1.953-1 4.116-.946 6.225.01 2.666-.02 5.335.015 7.999.113 1.542 1.654 2.614 3.134 2.44 3.257-.02 6.514.044 9.77-.034 4.79-.303 9.155-3.796 10.527-8.39 1.4-4.345.03-9.413-3.39-12.443A11.968 11.967 0 0012.005.001zm3.52 2.842c.406-.01.807.032 1.197.117.557.286.945.826.902 1.383-.058.75-.587 1.247-1.38 1.246a2.95 2.95 0 00-.72-.09c-1.725-.053-3.167 1.61-2.97 3.305.024.796-.044 1.601.033 2.392.333.457.987.18 1.475.256.276 0 .562.007.85.008a.134.134 0 00.042.008 1.29 1.29 0 011.29 1.295 1.29 1.29 0 01-1.298 1.295.14.14 0 00-.06.013c-.777.003-1.553 0-2.33.002-.066 1.616.197 3.276-.31 4.84-.865 2.706-3.97 4.337-6.685 3.62-.537-.284-.91-.79-.868-1.334.062-.796.656-1.308 1.532-1.24.075.006.113.012.168.02.716.14 1.477.034 2.107-.391 1.127-.645 1.502-1.977 1.396-3.193-.02-.687.043-1.384-.033-2.066-.333-.456-.984-.18-1.472-.256h-.8a.137.137 0 00-.066-.015 1.29 1.29 0 01-1.298-1.295c0-.72.574-1.29 1.29-1.295a.136.136 0 00.063-.016h2.316c.06-1.507-.159-3.046.213-4.523.648-2.376 2.952-4.12 5.415-4.086zm.705.052l.13.024zm1.224.28c1.444.543 2.636 1.706 3.25 3.12a81.141 81.136 0 01-2.903-2.592 1.762 1.762 0 00-.346-.527zm.45.935a86.96 86.954 0 002.966 2.596c-.014-.044-.033-.087-.049-.13.166.448.265.918.301 1.402a77.847 77.842 0 01-3.39-2.975l.015-.033c.088-.182.143-.386.16-.606a1.393 1.393 0 000-.197c0-.019-.002-.038-.004-.057zm.02.196c-.058.516-.058.516 0 0zm-.314.894a85.347 85.341 0 003.53 3.06c0 .071.015.14.013.21a4.94 4.94 0 01-.06.814A78.528 78.523 0 0117.011 5.7a1.56 1.56 0 00.6-.5zm.526 1.83c.898.8 1.856 1.623 2.918 2.485a5.215 5.215 0 01-.242.863 74.032 74.027 0 01-2.307-1.963l.002.055c0 .076-.004.152-.01.226.703.612 1.44 1.237 2.24 1.885-.109.26-.234.512-.38.752a73.605 73.6 0 01-2.06-1.752 3.13 3.13 0 00-.16-2.55zm.068 2.758c.644.56 1.32 1.131 2.043 1.72a5.868 5.867 0 01-.5.651 74.24 74.235 0 01-1.99-1.705c.185-.2.332-.425.447-.666zm-.603.816a82.545 82.54 0 002.005 1.71c-.19.2-.392.385-.607.556a75.858 75.853 0 01-2.043-1.77c.203-.108.396-.247.572-.425.027-.022.047-.047.073-.07zm-.86.594a84.37 84.365 0 002.088 1.8c-.23.17-.48.311-.734.444a79.06 79.054 0 01-2.256-2.005c-.024.002-.05.001-.074.003l-.026-.015a3.506 3.506 0 001.002-.227zm-10.046.248l-.02.014h-.013l.004.004a1.573 1.573 0 00-.51.55l-.45-.427a5.38 5.38 0 01.99-.14zm-.994.14l-.127.032.127-.03zm-.27.075l.622.592a1.55 1.55 0 00.008 1.045c-.468-.444-.94-.893-1.432-1.348.26-.118.529-.21.803-.289zm-1.03.4c.72.674 1.425 1.347 2.134 2.03a2.68 2.68 0 00-.826.242c-.64-.61-1.3-1.23-1.998-1.865a5.98 5.98 0 01.69-.406zm12.022.204c.473.42.958.846 1.474 1.285a5.37 5.37 0 01-.908.342l-.617-.498a1.55 1.55 0 00.05-1.13zm-12.901.345a140.01 140.01 0 011.958 1.844 3.158 3.158 0 00-1.527 2.332A98.329 98.323 0 001.777 14.8a5.574 5.573 0 00-.091.22c.777.698 1.522 1.391 2.252 2.087.002.284.042.57.14.848.053.19.13.366.22.533a107.243 107.236 0 00-2.86-2.635c.027-.108.04-.217.074-.323.137-.518.366-.998.65-1.44.69.621 1.35 1.241 2.002 1.86a2.98 2.98 0 01.107-.232 99.457 99.45 0 00-1.986-1.819c.15-.214.31-.42.49-.613A109.76 109.76 0 014.7 15.088c.054-.06.11-.122.168-.178a98.104 98.104 0 00-1.94-1.79 5.82 5.82 0 01.592-.509zm12.719.153l-.027.265zm1.733.754l-.05.023.05-.023zm-1.72.091l.44.354c-.287.06-.582.096-.88.103h-.016a1.56 1.56 0 00.457-.457zM1.386 16.101c1.32 1.189 2.532 2.357 3.78 3.559l.175.166c-.237.107-.44.266-.594.465A125.942 125.935 0 001.3 17.076a5.176 5.176 0 01.086-.976zm-.07 1.29A154.286 154.276 0 014.61 20.5c-.11.2-.18.428-.2.677a1.406 1.406 0 000 .166c-.92-.884-1.856-1.78-2.88-2.71a5.65 5.65 0 01-.215-1.243zm.378 1.714c.943.876 1.852 1.748 2.778 2.64l.02.02c.07.195.186.372.327.532-1.445-.56-2.562-1.767-3.125-3.192zm3.352.264c.179.14.374.26.58.358l-.025.005-.018-.015a3.014 3.014 0 01-.537-.348zm1.047 3.252l.15.025zm.228.04s.09.007.274.025a33.671 33.669 0 00-.274-.026z"/>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-blue-600 group-hover:text-blue-400">
+      Fedora
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">17</code>
+  </div>
+</a>
+
+      
+    </div><a class="u-url" href="/2012/08/postgresql-with-peer-authentication/" hidden></a>
+</article>
+
+      </main><footer class="max-w-prose mt-24 mb-12 mx-auto p-4 font-body text-gray-500 text-sm">
+
+  <div class="flex justify-between items-center">
+    <!-- Subscribe to feed -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="/feed.xml">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>RSS icon</title>
+        <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"/>
+      </svg>
+      <span>Subscribe</span>
+    </a>
+
+    <!-- Email -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="mailto:%63%6F%6E%74%61%63%74@%61%6C%70%68%61%68%79%64%72%61%65.%63%6F%6D">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>Email icon</title>
+        <path fill-rule="evenodd" d="M1.75 3A1.75 1.75 0 000 4.75v14c0 .966.784 1.75 1.75 1.75h20.5A1.75 1.75 0 0024 18.75v-14A1.75 1.75 0 0022.25 3H1.75zM1.5 4.75a.25.25 0 01.25-.25h20.5a.25.25 0 01.25.25v.852l-10.36 7a.25.25 0 01-.28 0l-10.36-7V4.75zm0 2.662V18.75c0 .138.112.25.25.25h20.5a.25.25 0 00.25-.25V7.412l-9.52 6.433c-.592.4-1.368.4-1.96 0L1.5 7.412z"></path>
+      </svg>
+      <span>Email</span>
+    </a>
+
+    <!-- License -->
+    <span>&copy; 2012-2021</span>
+  </div>
+
+  <div class="flex flex-col items-center mt-8 px-8 space-y-2 text-center text-xs">
+    <a class="opacity-80 hover:opacity-100" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
+    </a>
+    <p>
+      Unless otherwise specified, this work is licensed under a
+      <a class="text-blue-400 hover:underline" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+        Creative Commons Attribution-ShareAlike 4.0 International License
+      </a>.
+    </p>
+  </div>
+
+  <!-- Attribution -->
+  <div class="mt-4 text-center text-xs">
+    Fonts by <a class="text-blue-400 hover:underline" href="https://fonts.google.com">Google Fonts</a>,
+    brands by <a class="text-blue-400 hover:underline" href="https://simpleicons.org">Simple Icons</a>,
+    other icons by <a class="text-blue-400 hover:underline" href="https://primer.style/octicons/">Octicons</a>.
+  </div>
+
+</footer>
+</div>
+
+  </body>
+
+</html>
