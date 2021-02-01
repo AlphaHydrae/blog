@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+set -e
+
+bold=1
+red=31
+green=32
+yellow=33
+magenta=35
+cyan=36
+
+root="$( cd "$( dirname "$( dirname "$0" )" )" >/dev/null 2>&1; pwd -P )"
+
+tmp_dir=$( mktemp -d -t git-build-n-deploy.XXX )
+trap "local_cleanup $tmp_dir" EXIT
+
+echo_color() {
+  local color="$1"
+  shift
+  local message="$@"
+  echo -e "\033[${color}m${message}\033[0m"
+}
+
+echo_step() {
+  echo
+  echo_color "$bold" "$@"
+}
+
+echo_success() {
+  echo_color "$green" "$@"
+}
+
+fail() {
+  echo
+  >&2 echo_color "$red" "$@"
+  echo
+  exit 1
+}
+
+local_cleanup() {
+  local tmp_dir="$1"
+  test -n "$tmp_dir" && test -d "$tmp_dir" && rm -fr "$tmp_dir"
+}
+
+run_command() {
+  local command="$@"
+  echo_color "$yellow" "$@"
+  "$@"
+}
+
+run_command_to() {
+  local target_var="$1"
+  shift
+  local command="$@"
+  echo_color "$yellow" "$command"
+  printf -v "$target_var" "$( $command )"
+}
+
+command -v bundle &>/dev/null || fail "bundle command not found"
+command -v git &>/dev/null || fail "git command not found"
+
+target_remote=origin
+target_branch=gh-pages
+
+[ "$#" -le 2 ] || fail "This script takes at most 2 arguments: the remote and branch to deploy to"
+[ "$#" -ge 1 ] && [[ "$1" != "$target_remote" ]] && target_remote="$1" && target_branch=
+[ "$#" -eq 2 ] && target_branch="$2"
+
+echo_step "Getting remote URL..."
+run_command_to remote_url git remote get-url "$target_remote"
+echo_success "$remote_url"
+
+cd "$tmp_dir"
+
+if test -z "$target_branch"; then
+  echo_step "No target branch specified. Getting default branch from remote..."
+  run_command_to target_branch git ls-remote --symref "$remote_url"
+  target_branch="$( echo $target_branch | awk '/^ref:/ {sub(/refs\/heads\//, "", $2); print $2}' )"
+  echo_success "$target_branch"
+fi
+
+echo_step "Initializing deployment repository..."
+echo "Target branch: $( echo_color "$cyan" "$target_branch")"
+
+run_command git init
+run_command git remote add origin "$remote_url"
+run_command git fetch origin "$target_branch"
+run_command git branch --track "$target_branch" "origin/$target_branch"
+
+echo_step "Building..."
+run_command cd "$root"
+run_command bundle exec jekyll build --config _config.yml,_config.draft.yml --destination "$tmp_dir" --drafts --future
+
+cd "$tmp_dir"
+
+echo_step "Cleaning up..."
+run_command rm -f CNAME
+
+echo_step "Deploying..."
+run_command git reset --soft "$target_branch" --
+run_command git add --all .
+run_command git commit -m "Deploy static build on $(date)"
+# run_command git push origin "$target_branch"
