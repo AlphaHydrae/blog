@@ -19,7 +19,7 @@ layout: default
 
       {%- if posts_count >= 1 -%}
         <div class="flex flex-col space-y-4">
-          {% for post in posts %}
+          {% for post in posts reversed %}
             {% include post_card.html post=post title='disabled' %}
           {% endfor %}
         </div>

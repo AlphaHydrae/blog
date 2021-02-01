@@ -1,5 +1,6 @@
 # TODO
 
+* Add subscribe/linkedin/github to home page at the bottom
 * Redirect www
 * Disqus
 * Attribute emojis
