@@ -79,7 +79,7 @@ if test -z "$target_branch"; then
 fi
 
 echo_step "Initializing deployment repository..."
-echo "Target branch: $( echo_color "$cyan" "$target_branch")"
+echo "Target branch: $( echo_color "$cyan" "$target_branch" )"
 
 run_command git init
 run_command git remote add origin "$remote_url"
