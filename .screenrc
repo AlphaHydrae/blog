@@ -5,5 +5,5 @@ stuff "bundle exec jekyll serve --drafts --livereload\012"
 screen -t shell 1
 stuff "bundle exec jekyll doctor\012"
 screen -t deploy 2
-stuff "bundle exec jekyll build"
+stuff "deploy draft"
 select shell
