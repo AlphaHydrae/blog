@@ -87,8 +87,13 @@ run_command git fetch origin "$target_branch"
 
 echo_step "Building..."
 run_command cd "$root"
+
+config_files=_config.yml
+test -f "_config.$target_remote.yml" && config_files="$config_files,_config.$target_remote.yml"
+test -f "_config.$target_branch.yml" && config_files="$config_files,_config.$target_branch.yml"
+
 export JEKYLL_ENV=production
-run_command bundle exec jekyll build --config _config.yml,_config.draft.yml --destination "$tmp_dir" --drafts --future
+run_command bundle exec jekyll build --config "$config_files" --destination "$tmp_dir" --drafts --future
 
 cd "$tmp_dir"
 
