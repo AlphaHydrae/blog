@@ -88,6 +88,7 @@ run_command git branch --track "$target_branch" "origin/$target_branch"
 
 echo_step "Building..."
 run_command cd "$root"
+export JEKYLL_ENV=production
 run_command bundle exec jekyll build --config _config.yml,_config.draft.yml --destination "$tmp_dir" --drafts --future
 
 cd "$tmp_dir"
