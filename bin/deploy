@@ -84,7 +84,6 @@ echo "Target branch: $( echo_color "$cyan" "$target_branch" )"
 run_command git init
 run_command git remote add origin "$remote_url"
 run_command git fetch origin "$target_branch"
-run_command git branch --track "$target_branch" "origin/$target_branch"
 
 echo_step "Building..."
 run_command cd "$root"
@@ -97,7 +96,8 @@ echo_step "Cleaning up..."
 run_command rm -f CNAME
 
 echo_step "Deploying..."
-run_command git reset --soft "$target_branch" --
+run_command git branch --track "$target_branch" "origin/$target_branch"
+run_command git symbolic-ref HEAD "refs/heads/$target_branch"
 run_command git add --all .
 run_command git commit -m "Deploy static build on $(date)"
-# run_command git push origin "$target_branch"
+run_command git push origin "$target_branch"
