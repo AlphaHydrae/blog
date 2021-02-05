@@ -1,2 +1,13 @@
-url: https://alphahydrae.github.io # Base hostname & protocol
-baseurl: "/blog-draft/" # Subpath
+# https://jekyllrb.com/docs/configuration/options/
+
+# Base hostname & protocol.
+url: https://alphahydrae.github.io
+
+# Subpath.
+baseurl: "/blog-draft/"
+
+# Publish posts or collection documents with a future date.
+future: true
+
+# Process and render draft posts.
+show_drafts: true

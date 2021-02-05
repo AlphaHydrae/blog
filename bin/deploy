@@ -93,7 +93,7 @@ test -f "_config.$target_remote.yml" && config_files="$config_files,_config.$tar
 test -f "_config.$target_branch.yml" && config_files="$config_files,_config.$target_branch.yml"
 
 export JEKYLL_ENV=production
-run_command bundle exec jekyll build --config "$config_files" --destination "$tmp_dir" --drafts --future
+run_command bundle exec jekyll build --config "$config_files" --destination "$tmp_dir"
 
 cd "$tmp_dir"
 
