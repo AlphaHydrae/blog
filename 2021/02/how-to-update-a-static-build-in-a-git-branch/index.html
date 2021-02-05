@@ -3,21 +3,21 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Git: how to commit often and still push | AlphaHydrae</title>
+<title>How to update a static build in a Git branch | AlphaHydrae</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Git: how to commit often and still push" />
+<meta property="og:title" content="How to update a static build in a Git branch" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="I usually like to rewrite my commit history since I commit a lot. It makes it look more organized. But I also want to push my “dirty commits” to a server so I don’t have to worry about my laptop burning; it’s a cheap backup." />
-<meta property="og:description" content="I usually like to rewrite my commit history since I commit a lot. It makes it look more organized. But I also want to push my “dirty commits” to a server so I don’t have to worry about my laptop burning; it’s a cheap backup." />
-<link rel="canonical" href="https://alphahydrae.com/2012/08/git-how-to-commit-often-and-still-push/" />
-<meta property="og:url" content="https://alphahydrae.com/2012/08/git-how-to-commit-often-and-still-push/" />
+<meta name="description" content="Static site generators like Jekyll or Hugo ingest Markdown and other such files and data to produce a static site that you can then host wherever you want. One free deployment option is GitHub Pages. You just commit the static files to a branch, push to GitHub, and GitHub Pages serves them for you either under *.github.io or under a custom domain if you have one." />
+<meta property="og:description" content="Static site generators like Jekyll or Hugo ingest Markdown and other such files and data to produce a static site that you can then host wherever you want. One free deployment option is GitHub Pages. You just commit the static files to a branch, push to GitHub, and GitHub Pages serves them for you either under *.github.io or under a custom domain if you have one." />
+<link rel="canonical" href="https://alphahydrae.com/2021/02/how-to-update-a-static-build-in-a-git-branch/" />
+<meta property="og:url" content="https://alphahydrae.com/2021/02/how-to-update-a-static-build-in-a-git-branch/" />
 <meta property="og:site_name" content="AlphaHydrae" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2012-08-14T09:03:00+02:00" />
+<meta property="article:published_time" content="2021-02-03T21:59:00+01:00" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Git: how to commit often and still push" />
+<meta property="twitter:title" content="How to update a static build in a Git branch" />
 <script type="application/ld+json">
-{"url":"https://alphahydrae.com/2012/08/git-how-to-commit-often-and-still-push/","headline":"Git: how to commit often and still push","dateModified":"2012-08-14T09:03:00+02:00","datePublished":"2012-08-14T09:03:00+02:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://alphahydrae.com/2012/08/git-how-to-commit-often-and-still-push/"},"description":"I usually like to rewrite my commit history since I commit a lot. It makes it look more organized. But I also want to push my “dirty commits” to a server so I don’t have to worry about my laptop burning; it’s a cheap backup.","@context":"https://schema.org"}</script>
+{"url":"https://alphahydrae.com/2021/02/how-to-update-a-static-build-in-a-git-branch/","headline":"How to update a static build in a Git branch","dateModified":"2021-02-03T21:59:00+01:00","datePublished":"2021-02-03T21:59:00+01:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://alphahydrae.com/2021/02/how-to-update-a-static-build-in-a-git-branch/"},"description":"Static site generators like Jekyll or Hugo ingest Markdown and other such files and data to produce a static site that you can then host wherever you want. One free deployment option is GitHub Pages. You just commit the static files to a branch, push to GitHub, and GitHub Pages serves them for you either under *.github.io or under a custom domain if you have one.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet"> 
@@ -79,8 +79,10 @@
 
 <article class="max-w-prose mx-auto" itemscope itemtype="https://schema.org/BlogPosting">
   <header class="mt-24 mb-20">
-    <!-- Category --><!-- Title -->
-    <h1 itemprop="name headline">Git: how to commit often and still push</h1>
+    <!-- Category --><em class="block font-body mb-3 text-3xl text-center text-white">
+        <img class="emoji" title=":books:" alt=":books:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4da.png" height="20" width="20">
+         Today I Learned</em><!-- Title -->
+    <h1 itemprop="name headline">How to update a static build in a Git branch</h1>
 
     <!-- Metadata -->
     <p class="flex flex-wrap justify-center space-x-5 text-gray-400">
@@ -88,16 +90,16 @@
       <!-- Publication date -->
       
 
-<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="2012-08-14T09:03:00+02:00" itemprop="datePublished">
-  <svg width="16" height="16" class="octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 0a.75.75 0 01.75.75V2h5V.75a.75.75 0 011.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 16H2.75A1.75 1.75 0 011 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 014.75 0zm0 3.5h8.5a.25.25 0 01.25.25V6h-11V3.75a.25.25 0 01.25-.25h2zm-2.25 4v6.75c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V7.5h-11z"></path></svg>
-  <span class="font-mono whitespace-nowrap">2012-08-14</span>
+<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="2021-02-03T21:59:00+01:00" itemprop="datePublished">
+  <svg width="16" height="16" class="octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 0a.75.75 0 01.75.75V2h5V.75a.75.75 0 011.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 16H2.75A1.75 1.75 0 011 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 014.75 0zm0 3.5h8.5a.25.25 0 01.25.25V6h-11V3.75a.25.25 0 01.25-.25h2zm-2.25 4v6.75c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V7.5h-11z"></path></svg>
+  <span class="font-mono whitespace-nowrap">2021-02-03</span>
 </span>
 
 
       <!-- Last modification date (if available) --><!-- Categories -->
       
         <span class="flex items-center space-x-2 mb-2 text-gray-500">
-          <svg width="16" height="16" class="octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z"></path></svg>
+          <svg width="16" height="16" class="octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z"></path></svg>
           <span class="font-mono">programming</span>
         </span>
       
@@ -123,80 +125,106 @@
 
       <!-- Tags -->
       
-        <span class="flex items-center space-x-2 mb-2 text-gray-500">
-  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
-  <span class="font-mono">workflow</span>
-</span>
-
-      
     </p>
   </header>
 
   <!-- Post content -->
   <div class="text-lg" itemprop="articleBody">
-    <p>I usually like to <a href="https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History">rewrite my commit history</a> since I
-commit a lot. It makes it look more organized. But I also want to push my “dirty
-commits” to a server so I don’t have to worry about my laptop burning; it’s a
-cheap backup.</p>
+    <p><a href="https://jamstack.org/generators/">Static site generators</a> like <a href="https://jekyllrb.com">Jekyll</a> or
+<a href="https://gohugo.io">Hugo</a> ingest Markdown and other such files and data to produce a static
+site that you can then host wherever you want. One free deployment option is
+<a href="https://pages.github.com">GitHub Pages</a>. You just commit the static files to a branch, push
+to GitHub, and GitHub Pages serves them for you either under <code class="language-plaintext highlighter-rouge">*.github.io</code> or
+under a custom domain if you have one.</p>
 
-<p>Git doesn’t normally let you rebase commits that have already been pushed. It’s
-because rewriting a public branch is nothing but a good way to make enemies. But
-I still want to do both: push for backup and then rewrite history.</p>
+<!-- more -->
 
-<!--more-->
+<p>This procedure explains a convoluted way of updating your branch when you have a
+new version of your static site to deploy. Because why do things the easy way
+when you can do them the hard way?</p>
 
-<h2 id="here-be-dragons">Here Be Dragons</h2>
+<ol>
+  <li>
+    <p>Initialize an empty repository somewhere:</p>
 
-<p>My solution is to work with both a public and a private Git server.</p>
+    <div class="language-bash highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /path/to/example
+git init
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Add the GitHub Pages repository as a remote and fetch, <em>but do not checkout</em>,
+the deployed branch:</p>
 
-<p>The idea is to work with a commit-often workflow on your private server that
-nobody can see. These are the dirty commits. Once you have something that works
-that you can push to the public server, you can rewrite your dirty commits into
-a clean branch and push that.</p>
+    <div class="language-bash highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>git remote add origin git@github.com:you/example.git
+git fetch origin gh-pages
+</code></pre></div>    </div>
 
-<p>Let’s start by adding our remotes. Read my article about <a href="/2012/08/set-up-your-own-git-server/"><em>setting up your own
-Git server</em></a> if you don’t know how to do it.</p>
+    <p>This avoids a checkout of all files for nothing, which is a somewhat
+expensive Git operation depending on the number of files in the repository.</p>
+  </li>
+  <li>
+    <p>Build your static site into the repository (this example assumes a Jekyll
+site):</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git remote add origin git@github.com:myuser/myrepo.git
-git remote add dirty git@myserver.com:myrepo.git
-</code></pre></div></div>
+    <div class="language-bash highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /path/to/site
+bundle <span class="nb">exec </span>jekyll build <span class="nt">--destination</span> /path/to/example
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Go back to the repository and create a local branch that points to the latest
+commit, but <em>without switching to the branch</em> to avoid a checkout:</p>
 
-<p>Now you can set up a dirty branch to play in.</p>
+    <div class="language-bash highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>git branch <span class="nt">--track</span> gh-pages origin/gh-pages
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><em>This is where the Git magic happens.</em> Change the <code class="language-plaintext highlighter-rouge">HEAD</code> to point to the new
+local branch, but do it with the <a href="https://git-scm.com/docs/git-symbolic-ref"><code class="language-plaintext highlighter-rouge">symbolic-ref</code> Git plumbing
+command</a>:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout develop
-git checkout <span class="nt">-b</span> ohyeah
-git push dirty ohyeah
-</code></pre></div></div>
+    <div class="language-bash highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>git symbolic-ref HEAD refs/heads/gh-pages
+</code></pre></div>    </div>
 
-<p>After some time you will want to transform your haphazard pile of changes into a
-beautiful and well-documented commit. Say you want to interactively rebase the
-dirty branch so you can squash some commits together. Assuming you branched from
-develop, you can do this:</p>
+    <p>This switches to the <code class="language-plaintext highlighter-rouge">gh-pages</code> branch which becomes the current branch, but
+<em>without touching either the working tree or the index</em> of the repository.
+This means that the index remains in the same state as the latest commit on
+<code class="language-plaintext highlighter-rouge">origin/gh-pages</code>, and the working tree contains your fresh static build with
+your latest changes.</p>
+  </li>
+  <li>
+    <p>Stage all additions, modifications and deletions:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git rebase <span class="nt">-i</span> develop ohyeah
-</code></pre></div></div>
+    <div class="language-bash highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>git add <span class="nb">.</span>
+</code></pre></div>    </div>
 
-<p>Your branch is now clean. You can push it to the public server, or merge it to
-develop and push that. If you want to create a new clean branch and keep the
-dirty one.</p>
+    <p>Any file which was present in the previous version but is no longer present
+in the newest build of your static site will be automatically marked as
+deleted by Git.</p>
+  </li>
+  <li>
+    <p>Commit all changes:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Switch to your dirty branch.</span>
-git checkout ohyeah
+    <div class="language-bash highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>git commit <span class="nt">-m</span> <span class="s2">"Deploy on </span><span class="si">$(</span><span class="nb">date</span><span class="si">)</span><span class="s2">"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Push the new build:</p>
 
-<span class="c"># Create the to-be-cleaned branch.</span>
-git checkout <span class="nt">-b</span> myFeature
+    <div class="language-bash highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>git push origin gh-pages
+</code></pre></div>    </div>
+  </li>
+</ol>
 
-<span class="c"># Rebase (assuming you branched ohyeah from develop).</span>
-git rebase <span class="nt">-i</span> develop myFeature
-
-<span class="c"># You now have a clean myFeature branch.</span>
-</code></pre></div></div>
-
-<p>Just be careful with this last solution. Once you’ve rewritten your new branch,
-it can’t share any new commits with the dirty one, since they now have a
-different history.</p>
-
-<p>Enjoy.</p>
+<p>You can say you used a <a href="https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain#ch10-git-internals">Git plumbing command</a> at your next
+meeting.</p>
 
 
   </div>
@@ -218,13 +246,13 @@ different history.</p>
     <span class="font-mono no-underline text-red-500 group-hover:text-blue-400">
       Git
     </span>
-    <code class="text-gray-500 group-hover:text-blue-400">1.x</code>
+    <code class="text-gray-500 group-hover:text-blue-400">2.30.0</code>
   </div>
 </a>
 
       
     </div>
-<a class="u-url" href="/2012/08/git-how-to-commit-often-and-still-push/" hidden></a>
+<a class="u-url" href="/2021/02/how-to-update-a-static-build-in-a-git-branch/" hidden></a>
 </article>
 
       </main><footer class="max-w-prose mt-24 mb-12 mx-auto p-4 font-body text-gray-500 text-sm">

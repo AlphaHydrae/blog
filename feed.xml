@@ -1,4 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-02-01T10:26:15+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">How to generate and enrich pages in a Jekyll blog</title><link href="https://alphahydrae.com/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog/" rel="alternate" type="text/html" title="How to generate and enrich pages in a Jekyll blog" /><published>2021-01-30T22:09:49+01:00</published><updated>2021-01-30T22:09:49+01:00</updated><id>https://alphahydrae.com/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog</id><content type="html" xml:base="https://alphahydrae.com/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog/">&lt;p&gt;This site is made with &lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt;, a blog-aware &lt;a href=&quot;https://jamstack.org/generators/&quot;&gt;static site
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-02-05T22:31:39+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">How to update a static build in a Git branch</title><link href="https://alphahydrae.com/2021/02/how-to-update-a-static-build-in-a-git-branch/" rel="alternate" type="text/html" title="How to update a static build in a Git branch" /><published>2021-02-03T21:59:00+01:00</published><updated>2021-02-03T21:59:00+01:00</updated><id>https://alphahydrae.com/2021/02/how-to-update-a-static-build-in-a-git-branch</id><content type="html" xml:base="https://alphahydrae.com/2021/02/how-to-update-a-static-build-in-a-git-branch/">&lt;p&gt;&lt;a href=&quot;https://jamstack.org/generators/&quot;&gt;Static site generators&lt;/a&gt; like &lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt; or
+&lt;a href=&quot;https://gohugo.io&quot;&gt;Hugo&lt;/a&gt; ingest Markdown and other such files and data to produce a static
+site that you can then host wherever you want. One free deployment option is
+&lt;a href=&quot;https://pages.github.com&quot;&gt;GitHub Pages&lt;/a&gt;. You just commit the static files to a branch, push
+to GitHub, and GitHub Pages serves them for you either under &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*.github.io&lt;/code&gt; or
+under a custom domain if you have one.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;This procedure explains a convoluted way of updating your branch when you have a
+new version of your static site to deploy. Because why do things the easy way
+when you can do them the hard way?&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Initialize an empty repository somewhere:&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /path/to/example
+git init
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Add the GitHub Pages repository as a remote and fetch, &lt;em&gt;but do not checkout&lt;/em&gt;,
+the deployed branch:&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git remote add origin git@github.com:you/example.git
+git fetch origin gh-pages
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;This avoids a checkout of all files for nothing, which is a somewhat
+expensive Git operation depending on the number of files in the repository.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Build your static site into the repository (this example assumes a Jekyll
+site):&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /path/to/site
+bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll build &lt;span class=&quot;nt&quot;&gt;--destination&lt;/span&gt; /path/to/example
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Go back to the repository and create a local branch that points to the latest
+commit, but &lt;em&gt;without switching to the branch&lt;/em&gt; to avoid a checkout:&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git branch &lt;span class=&quot;nt&quot;&gt;--track&lt;/span&gt; gh-pages origin/gh-pages
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;This is where the Git magic happens.&lt;/em&gt; Change the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HEAD&lt;/code&gt; to point to the new
+local branch, but do it with the &lt;a href=&quot;https://git-scm.com/docs/git-symbolic-ref&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;symbolic-ref&lt;/code&gt; Git plumbing
+command&lt;/a&gt;:&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git symbolic-ref HEAD refs/heads/gh-pages
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;This switches to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gh-pages&lt;/code&gt; branch which becomes the current branch, but
+&lt;em&gt;without touching either the working tree or the index&lt;/em&gt; of the repository.
+This means that the index remains in the same state as the latest commit on
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;origin/gh-pages&lt;/code&gt;, and the working tree contains your fresh static build with
+your latest changes.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Stage all additions, modifications and deletions:&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git add &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;Any file which was present in the previous version but is no longer present
+in the newest build of your static site will be automatically marked as
+deleted by Git.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Commit all changes:&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git commit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Deploy on &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Push the new build:&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git push origin gh-pages
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;You can say you used a &lt;a href=&quot;https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain#ch10-git-internals&quot;&gt;Git plumbing command&lt;/a&gt; at your next
+meeting.&lt;/p&gt;</content><author><name></name></author><category term="programming" /><category term="git" /><summary type="html">Static site generators like Jekyll or Hugo ingest Markdown and other such files and data to produce a static site that you can then host wherever you want. One free deployment option is GitHub Pages. You just commit the static files to a branch, push to GitHub, and GitHub Pages serves them for you either under *.github.io or under a custom domain if you have one.</summary></entry><entry><title type="html">How to generate and enrich pages in a Jekyll blog</title><link href="https://alphahydrae.com/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog/" rel="alternate" type="text/html" title="How to generate and enrich pages in a Jekyll blog" /><published>2021-01-30T22:09:49+01:00</published><updated>2021-01-30T22:09:49+01:00</updated><id>https://alphahydrae.com/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog</id><content type="html" xml:base="https://alphahydrae.com/2021/01/how-to-generate-and-enrich-pages-in-a-jekyll-blog/">&lt;p&gt;This site is made with &lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt;, a blog-aware &lt;a href=&quot;https://jamstack.org/generators/&quot;&gt;static site
 generator&lt;/a&gt; written in &lt;a href=&quot;https://www.ruby-lang.org&quot;&gt;Ruby&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Jekyll takes the Markdown files in a directory and turns them into HTML pages.
