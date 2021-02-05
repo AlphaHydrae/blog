@@ -24,6 +24,7 @@ plugins:
 
 exclude:
   - bin
+  - CNAME
   - docker-compose.yml
   - Dockerfile
   - Gemfile

@@ -1,0 +1,4 @@
+# https://jekyllrb.com/docs/configuration/options/
+
+include:
+  - CNAME

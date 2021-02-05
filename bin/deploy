@@ -97,9 +97,6 @@ run_command bundle exec jekyll build --config "$config_files" --destination "$tm
 
 cd "$tmp_dir"
 
-echo_step "Cleaning up..."
-run_command rm -f CNAME
-
 echo_step "Deploying..."
 run_command git branch --track "$target_branch" "origin/$target_branch"
 run_command git symbolic-ref HEAD "refs/heads/$target_branch"
