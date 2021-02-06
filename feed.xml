@@ -1,4 +1,81 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-02-05T22:31:39+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">How to update a static build in a Git branch</title><link href="https://alphahydrae.com/2021/02/how-to-update-a-static-build-in-a-git-branch/" rel="alternate" type="text/html" title="How to update a static build in a Git branch" /><published>2021-02-03T21:59:00+01:00</published><updated>2021-02-03T21:59:00+01:00</updated><id>https://alphahydrae.com/2021/02/how-to-update-a-static-build-in-a-git-branch</id><content type="html" xml:base="https://alphahydrae.com/2021/02/how-to-update-a-static-build-in-a-git-branch/">&lt;p&gt;&lt;a href=&quot;https://jamstack.org/generators/&quot;&gt;Static site generators&lt;/a&gt; like &lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt; or
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-02-06T17:52:29+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">How to create a temporary directory in a shell script</title><link href="https://alphahydrae.com/2021/02/how-to-create-a-temporary-directory-in-a-shell-script/" rel="alternate" type="text/html" title="How to create a temporary directory in a shell script" /><published>2021-02-06T14:11:43+01:00</published><updated>2021-02-06T14:11:43+01:00</updated><id>https://alphahydrae.com/2021/02/how-to-create-a-temporary-directory-in-a-shell-script</id><content type="html" xml:base="https://alphahydrae.com/2021/02/how-to-create-a-temporary-directory-in-a-shell-script/">&lt;p&gt;Sometimes when you write a shell script, you need to temporarily save files
+somewhere, temporarily clone a Git repo, etc. This temporary data should be
+deleted once the script has completed.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;create-a-temporary-directory&quot;&gt;Create a temporary directory&lt;/h2&gt;
+
+&lt;p&gt;You can use &lt;a href=&quot;https://linux.die.net/man/1/mktemp&quot;&gt;the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mktemp&lt;/code&gt; command&lt;/a&gt; to create a temporary file or
+directory in the appropriate location depending on the operating system:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;mktemp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; my-script
+/var/folders/a0/8alqx_yap8dl30000ap/T/my-script.J3Fv0NWl
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-d&lt;/code&gt; option creates a directory instead of a file (the default).&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-t &amp;lt;prefix&amp;gt;&lt;/code&gt; option specifies a prefix so that your temporary directory is
+named after your script and with a random suffix. It will be created in your
+operating system’s standard location for temporary files (defined by &lt;a href=&quot;https://en.wikipedia.org/wiki/TMPDIR&quot;&gt;the
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$TMPDIR&lt;/code&gt; environment variable&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;The directory is created with mode &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0700&lt;/code&gt; by default, meaning it should only be
+accessible by you:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-la&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$tmp_dir&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+total 0
+drwx------   2 you  your-group    64 Feb  6 17:19 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+drwx------@ 98 you  your-group  3136 Feb  6 17:19 ..
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can store this temporary directory in a variable:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;tmp_dir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;mktemp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; my-script &lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;define-a-cleanup-function&quot;&gt;Define a cleanup function&lt;/h2&gt;
+
+&lt;p&gt;This function will clean up the temporary directory, making sure it exists first
+(in case the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mktemp&lt;/code&gt; command failed):&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;clean_up&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$tmp_dir&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-fr&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$tmp_dir&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;automatically-clean-up-on-exit&quot;&gt;Automatically clean up on exit&lt;/h2&gt;
+
+&lt;p&gt;You don’t want to call this cleanup function manually. Your script could fail
+before it is completed. It could receive a signal and exit.&lt;/p&gt;
+
+&lt;p&gt;However, you can use &lt;a href=&quot;https://man7.org/linux/man-pages/man1/trap.1p.html&quot;&gt;Bash’s built-in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;trap&lt;/code&gt; command&lt;/a&gt; to catch the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;EXIT&lt;/code&gt;
+pseudo-signal. Your script will receive this signal when it closes, whether
+successfully, unsuccessfully or due to an interrupt (e.g. the user hitting
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ctrl-C&lt;/code&gt;).&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;trap&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;clean_up &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$tmp_dir&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; EXIT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;do-the-magic&quot;&gt;Do the magic&lt;/h2&gt;
+
+&lt;p&gt;You can now write the rest of your script and put whatever you want in the
+temporary directory, safe in the knowledge that it will be automatically cleaned
+up at the end.&lt;/p&gt;
+
+&lt;p&gt;Here’s the complete version:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env bash&lt;/span&gt;
+
+clean_up&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$tmp_dir&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-fr&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$tmp_dir&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;tmp_dir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;mktemp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; my-script &lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;trap&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;clean_up &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$tmp_dir&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; EXIT
+
+&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;Do the magic...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="programming" /><category term="bash" /><category term="shell" /><summary type="html">Sometimes when you write a shell script, you need to temporarily save files somewhere, temporarily clone a Git repo, etc. This temporary data should be deleted once the script has completed.</summary></entry><entry><title type="html">How to update a static build in a Git branch</title><link href="https://alphahydrae.com/2021/02/how-to-update-a-static-build-in-a-git-branch/" rel="alternate" type="text/html" title="How to update a static build in a Git branch" /><published>2021-02-03T21:59:00+01:00</published><updated>2021-02-03T21:59:00+01:00</updated><id>https://alphahydrae.com/2021/02/how-to-update-a-static-build-in-a-git-branch</id><content type="html" xml:base="https://alphahydrae.com/2021/02/how-to-update-a-static-build-in-a-git-branch/">&lt;p&gt;&lt;a href=&quot;https://jamstack.org/generators/&quot;&gt;Static site generators&lt;/a&gt; like &lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt; or
 &lt;a href=&quot;https://gohugo.io&quot;&gt;Hugo&lt;/a&gt; ingest Markdown and other such files and data to produce a static
 site that you can then host wherever you want. One free deployment option is
 &lt;a href=&quot;https://pages.github.com&quot;&gt;GitHub Pages&lt;/a&gt;. You just commit the static files to a branch, push

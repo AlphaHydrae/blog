@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>How to create a temporary directory in a shell script | AlphaHydrae</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="How to create a temporary directory in a shell script" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Sometimes when you write a shell script, you need to temporarily save files somewhere, temporarily clone a Git repo, etc. This temporary data should be deleted once the script has completed." />
+<meta property="og:description" content="Sometimes when you write a shell script, you need to temporarily save files somewhere, temporarily clone a Git repo, etc. This temporary data should be deleted once the script has completed." />
+<link rel="canonical" href="https://alphahydrae.com/2021/02/how-to-create-a-temporary-directory-in-a-shell-script/" />
+<meta property="og:url" content="https://alphahydrae.com/2021/02/how-to-create-a-temporary-directory-in-a-shell-script/" />
+<meta property="og:site_name" content="AlphaHydrae" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-06T14:11:43+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="How to create a temporary directory in a shell script" />
+<script type="application/ld+json">
+{"url":"https://alphahydrae.com/2021/02/how-to-create-a-temporary-directory-in-a-shell-script/","headline":"How to create a temporary directory in a shell script","dateModified":"2021-02-06T14:11:43+01:00","datePublished":"2021-02-06T14:11:43+01:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://alphahydrae.com/2021/02/how-to-create-a-temporary-directory-in-a-shell-script/"},"description":"Sometimes when you write a shell script, you need to temporarily save files somewhere, temporarily clone a Git repo, etc. This temporary data should be deleted once the script has completed.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://alphahydrae.com/feed.xml" title="AlphaHydrae" /></head>
+<body class="bg-gray-900 flex flex-col h-screen m-0 p-0 text-gray-300"><header>
+  <nav class="bg-gray-700 w-full">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="relative flex items-center justify-between h-16">
+
+        <div class="flex items-center">
+          <!-- Brand -->
+          <a href="/" class="text-white px-3 py-2 space-x-3 text-sm font-medium flex items-center">
+            <img class="h-8 w-8 rounded-full" src="/assets/avatar.jpg" alt="GitHub">
+            <span class="font-body text-xl">AlphaHydrae</span>
+          </a>
+
+          <!-- Page links -->
+          <div class="hidden md:block ml-8 font-body text-sm">
+            <a class="hover:text-blue-400 hover:underline" href="/posts">Posts</a>
+          </div>
+        </div>
+
+        <!-- Profile dropdown -->
+        <div class="flex space-x-3 text-gray-300">
+          <!-- RSS -->
+          <a href="/feed.xml" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">Subscribe</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>RSS icon</title>
+              <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"></path>
+            </svg>
+          </a>
+          <!-- Linked In -->
+          <a href="https://www.linkedin.com/in/simonoulevay" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">LinkedIn</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>LinkedIn icon</title>
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path>
+            </svg>
+          </a>
+          <!-- GitHub -->
+          <a href="https://github.com/AlphaHydrae" class="bg-gray-700 flex text-sm hover:text-white">
+            <span class="sr-only">GitHub</span>
+            <svg class="w-6 h-6 fill-current" role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <title>GitHub icon</title>
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="flex-1 overflow-y-auto">
+      <main class="font-body px-6 lg:px-0" aria-label="Content">
+        
+
+<article class="max-w-prose mx-auto" itemscope itemtype="https://schema.org/BlogPosting">
+  <header class="mt-24 mb-20">
+    <!-- Category --><em class="block font-body mb-3 text-3xl text-center text-white">
+        <img class="emoji" title=":books:" alt=":books:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4da.png" height="20" width="20">
+         A While Ago I Learned</em><!-- Title -->
+    <h1 itemprop="name headline">How to create a temporary directory in a shell script</h1>
+
+    <!-- Metadata -->
+    <p class="flex flex-wrap justify-center space-x-5 text-gray-400">
+
+      <!-- Publication date -->
+      
+
+<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="2021-02-06T14:11:43+01:00" itemprop="datePublished">
+  <svg width="16" height="16" class="octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 0a.75.75 0 01.75.75V2h5V.75a.75.75 0 011.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 16H2.75A1.75 1.75 0 011 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 014.75 0zm0 3.5h8.5a.25.25 0 01.25.25V6h-11V3.75a.25.25 0 01.25-.25h2zm-2.25 4v6.75c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V7.5h-11z"></path></svg>
+  <span class="font-mono whitespace-nowrap">2021-02-06</span>
+</span>
+
+
+      <!-- Last modification date (if available) --><!-- Categories -->
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+          <svg width="16" height="16" class="octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z"></path></svg>
+          <span class="font-mono">programming</span>
+        </span>
+      
+
+      <!-- Languages (if available) -->
+      
+        
+
+
+<a class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:text-green-500 hover:underline" href="https://www.gnu.org/software/bash/">
+  <span class="w-4 h-4   fill-current">
+  <svg role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>GNU Bash</title>
+  <path d="M21.038,4.9l-7.577-4.498C13.009,0.134,12.505,0,12,0c-0.505,0-1.009,0.134-1.462,0.403L2.961,4.9 C2.057,5.437,1.5,6.429,1.5,7.503v8.995c0,1.073,0.557,2.066,1.462,2.603l7.577,4.497C10.991,23.866,11.495,24,12,24 c0.505,0,1.009-0.134,1.461-0.402l7.577-4.497c0.904-0.537,1.462-1.529,1.462-2.603V7.503C22.5,6.429,21.943,5.437,21.038,4.9z M15.17,18.946l0.013,0.646c0.001,0.078-0.05,0.167-0.111,0.198l-0.383,0.22c-0.061,0.031-0.111-0.007-0.112-0.085L14.57,19.29 c-0.328,0.136-0.66,0.169-0.872,0.084c-0.04-0.016-0.057-0.075-0.041-0.142l0.139-0.584c0.011-0.046,0.036-0.092,0.069-0.121 c0.012-0.011,0.024-0.02,0.036-0.026c0.022-0.011,0.043-0.014,0.062-0.006c0.229,0.077,0.521,0.041,0.802-0.101 c0.357-0.181,0.596-0.545,0.592-0.907c-0.003-0.328-0.181-0.465-0.613-0.468c-0.55,0.001-1.064-0.107-1.072-0.917 c-0.007-0.667,0.34-1.361,0.889-1.8l-0.007-0.652c-0.001-0.08,0.048-0.168,0.111-0.2l0.37-0.236 c0.061-0.031,0.111,0.007,0.112,0.087l0.006,0.653c0.273-0.109,0.511-0.138,0.726-0.088c0.047,0.012,0.067,0.076,0.048,0.151 l-0.144,0.578c-0.011,0.044-0.036,0.088-0.065,0.116c-0.012,0.012-0.025,0.021-0.038,0.028c-0.019,0.01-0.038,0.013-0.057,0.009 c-0.098-0.022-0.332-0.073-0.699,0.113c-0.385,0.195-0.52,0.53-0.517,0.778c0.003,0.297,0.155,0.387,0.681,0.396 c0.7,0.012,1.003,0.318,1.01,1.023C16.105,17.747,15.736,18.491,15.17,18.946z M19.143,17.859c0,0.06-0.008,0.116-0.058,0.145 l-1.916,1.164c-0.05,0.029-0.09,0.004-0.09-0.056v-0.494c0-0.06,0.037-0.093,0.087-0.122l1.887-1.129 c0.05-0.029,0.09-0.004,0.09,0.056V17.859z M20.459,6.797l-7.168,4.427c-0.894,0.523-1.553,1.109-1.553,2.187v8.833 c0,0.645,0.26,1.063,0.66,1.184c-0.131,0.023-0.264,0.039-0.398,0.039c-0.42,0-0.833-0.114-1.197-0.33L3.226,18.64 c-0.741-0.44-1.201-1.261-1.201-2.142V7.503c0-0.881,0.46-1.702,1.201-2.142l7.577-4.498c0.363-0.216,0.777-0.33,1.197-0.33 c0.419,0,0.833,0.114,1.197,0.33l7.577,4.498c0.624,0.371,1.046,1.013,1.164,1.732C21.686,6.557,21.12,6.411,20.459,6.797z"></path>
+</svg>
+
+</span>
+
+  <span class="font-mono">bash</span>
+</a>
+
+      
+
+      <!-- Tags -->
+      
+        <span class="flex items-center space-x-2 mb-2 text-gray-500">
+  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+  <span class="font-mono">shell</span>
+</span>
+
+      
+    </p>
+  </header>
+
+  <!-- Post content -->
+  <div class="text-lg" itemprop="articleBody">
+    <p>Sometimes when you write a shell script, you need to temporarily save files
+somewhere, temporarily clone a Git repo, etc. This temporary data should be
+deleted once the script has completed.</p>
+
+<!-- more -->
+
+<h2 id="create-a-temporary-directory">Create a temporary directory</h2>
+
+<p>You can use <a href="https://linux.die.net/man/1/mktemp">the <code class="language-plaintext highlighter-rouge">mktemp</code> command</a> to create a temporary file or
+directory in the appropriate location depending on the operating system:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> <span class="nb">mktemp</span> <span class="nt">-d</span> <span class="nt">-t</span> my-script
+/var/folders/a0/8alqx_yap8dl30000ap/T/my-script.J3Fv0NWl
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">-d</code> option creates a directory instead of a file (the default).</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">-t &lt;prefix&gt;</code> option specifies a prefix so that your temporary directory is
+named after your script and with a random suffix. It will be created in your
+operating system’s standard location for temporary files (defined by <a href="https://en.wikipedia.org/wiki/TMPDIR">the
+<code class="language-plaintext highlighter-rouge">$TMPDIR</code> environment variable</a>).</p>
+
+<p>The directory is created with mode <code class="language-plaintext highlighter-rouge">0700</code> by default, meaning it should only be
+accessible by you:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> <span class="nb">ls</span> <span class="nt">-la</span> <span class="s2">"</span><span class="nv">$tmp_dir</span><span class="s2">"</span>
+total 0
+drwx------   2 you  your-group    64 Feb  6 17:19 <span class="nb">.</span>
+drwx------@ 98 you  your-group  3136 Feb  6 17:19 ..
+</code></pre></div></div>
+
+<p>You can store this temporary directory in a variable:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">tmp_dir</span><span class="o">=</span><span class="si">$(</span> <span class="nb">mktemp</span> <span class="nt">-d</span> <span class="nt">-t</span> my-script <span class="si">)</span>
+</code></pre></div></div>
+
+<h2 id="define-a-cleanup-function">Define a cleanup function</h2>
+
+<p>This function will clean up the temporary directory, making sure it exists first
+(in case the <code class="language-plaintext highlighter-rouge">mktemp</code> command failed):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>clean_up<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">test</span> <span class="nt">-d</span> <span class="s2">"</span><span class="nv">$tmp_dir</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-fr</span> <span class="s2">"</span><span class="nv">$tmp_dir</span><span class="s2">"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="automatically-clean-up-on-exit">Automatically clean up on exit</h2>
+
+<p>You don’t want to call this cleanup function manually. Your script could fail
+before it is completed. It could receive a signal and exit.</p>
+
+<p>However, you can use <a href="https://man7.org/linux/man-pages/man1/trap.1p.html">Bash’s built-in <code class="language-plaintext highlighter-rouge">trap</code> command</a> to catch the <code class="language-plaintext highlighter-rouge">EXIT</code>
+pseudo-signal. Your script will receive this signal when it closes, whether
+successfully, unsuccessfully or due to an interrupt (e.g. the user hitting
+<code class="language-plaintext highlighter-rouge">Ctrl-C</code>).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">trap</span> <span class="s2">"clean_up </span><span class="nv">$tmp_dir</span><span class="s2">"</span> EXIT
+</code></pre></div></div>
+
+<h2 id="do-the-magic">Do the magic</h2>
+
+<p>You can now write the rest of your script and put whatever you want in the
+temporary directory, safe in the knowledge that it will be automatically cleaned
+up at the end.</p>
+
+<p>Here’s the complete version:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+
+clean_up<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">test</span> <span class="nt">-d</span> <span class="s2">"</span><span class="nv">$tmp_dir</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-fr</span> <span class="s2">"</span><span class="nv">$tmp_dir</span><span class="s2">"</span>
+<span class="o">}</span>
+
+<span class="nv">tmp_dir</span><span class="o">=</span><span class="si">$(</span> <span class="nb">mktemp</span> <span class="nt">-d</span> <span class="nt">-t</span> my-script <span class="si">)</span>
+<span class="nb">trap</span> <span class="s2">"clean_up </span><span class="nv">$tmp_dir</span><span class="s2">"</span> EXIT
+
+<span class="nb">echo </span>Do the magic...
+</code></pre></div></div>
+
+
+  </div>
+
+  <!-- Language versions (if available) --><div class="flex flex-wrap justify-evenly space-x-8 mt-16">
+      
+        
+        
+        
+
+
+<a class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-green-500 group hover:text-blue-400" href="https://www.gnu.org/software/bash/"><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>GNU Bash</title>
+  <path d="M21.038,4.9l-7.577-4.498C13.009,0.134,12.505,0,12,0c-0.505,0-1.009,0.134-1.462,0.403L2.961,4.9 C2.057,5.437,1.5,6.429,1.5,7.503v8.995c0,1.073,0.557,2.066,1.462,2.603l7.577,4.497C10.991,23.866,11.495,24,12,24 c0.505,0,1.009-0.134,1.461-0.402l7.577-4.497c0.904-0.537,1.462-1.529,1.462-2.603V7.503C22.5,6.429,21.943,5.437,21.038,4.9z M15.17,18.946l0.013,0.646c0.001,0.078-0.05,0.167-0.111,0.198l-0.383,0.22c-0.061,0.031-0.111-0.007-0.112-0.085L14.57,19.29 c-0.328,0.136-0.66,0.169-0.872,0.084c-0.04-0.016-0.057-0.075-0.041-0.142l0.139-0.584c0.011-0.046,0.036-0.092,0.069-0.121 c0.012-0.011,0.024-0.02,0.036-0.026c0.022-0.011,0.043-0.014,0.062-0.006c0.229,0.077,0.521,0.041,0.802-0.101 c0.357-0.181,0.596-0.545,0.592-0.907c-0.003-0.328-0.181-0.465-0.613-0.468c-0.55,0.001-1.064-0.107-1.072-0.917 c-0.007-0.667,0.34-1.361,0.889-1.8l-0.007-0.652c-0.001-0.08,0.048-0.168,0.111-0.2l0.37-0.236 c0.061-0.031,0.111,0.007,0.112,0.087l0.006,0.653c0.273-0.109,0.511-0.138,0.726-0.088c0.047,0.012,0.067,0.076,0.048,0.151 l-0.144,0.578c-0.011,0.044-0.036,0.088-0.065,0.116c-0.012,0.012-0.025,0.021-0.038,0.028c-0.019,0.01-0.038,0.013-0.057,0.009 c-0.098-0.022-0.332-0.073-0.699,0.113c-0.385,0.195-0.52,0.53-0.517,0.778c0.003,0.297,0.155,0.387,0.681,0.396 c0.7,0.012,1.003,0.318,1.01,1.023C16.105,17.747,15.736,18.491,15.17,18.946z M19.143,17.859c0,0.06-0.008,0.116-0.058,0.145 l-1.916,1.164c-0.05,0.029-0.09,0.004-0.09-0.056v-0.494c0-0.06,0.037-0.093,0.087-0.122l1.887-1.129 c0.05-0.029,0.09-0.004,0.09,0.056V17.859z M20.459,6.797l-7.168,4.427c-0.894,0.523-1.553,1.109-1.553,2.187v8.833 c0,0.645,0.26,1.063,0.66,1.184c-0.131,0.023-0.264,0.039-0.398,0.039c-0.42,0-0.833-0.114-1.197-0.33L3.226,18.64 c-0.741-0.44-1.201-1.261-1.201-2.142V7.503c0-0.881,0.46-1.702,1.201-2.142l7.577-4.498c0.363-0.216,0.777-0.33,1.197-0.33 c0.419,0,0.833,0.114,1.197,0.33l7.577,4.498c0.624,0.371,1.046,1.013,1.164,1.732C21.686,6.557,21.12,6.411,20.459,6.797z"></path>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-green-500 group-hover:text-blue-400">
+      Bash
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">3.2.57</code>
+  </div>
+</a>
+
+      
+        
+        
+        
+
+
+<a class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-white group hover:text-blue-400" href="https://www.apple.com"><span class="logo w-12 h-12 fill-current">
+      <svg role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>macOS</title>
+  <path d="M0 14.727h.941v-2.453c0-.484.318-.835.771-.835.439 0 .71.276.71.722v2.566h.915V12.25c0-.48.31-.812.764-.812.46 0 .718.28.718.77v2.518h.94v-2.748c0-.801-.517-1.334-1.307-1.334-.578 0-1.054.31-1.247.805h-.023c-.147-.514-.552-.805-1.118-.805-.545 0-.968.306-1.142.771H.903v-.695H0v4.006zm7.82-.646c-.408 0-.68-.208-.68-.537 0-.318.26-.522.714-.552l.926-.057v.307c0 .483-.427.839-.96.839zm-.284.71c.514 0 1.017-.268 1.248-.703h.018v.639h.908v-2.76c0-.804-.647-1.33-1.64-1.33-1.021 0-1.66.537-1.701 1.285h.873c.06-.332.344-.548.79-.548.464 0 .748.242.748.662v.287l-1.058.06c-.976.061-1.524.488-1.524 1.199 0 .721.564 1.209 1.338 1.209zm6.305-2.642c-.065-.843-.719-1.512-1.777-1.512-1.164 0-1.92.805-1.92 2.087 0 1.3.756 2.082 1.928 2.082 1.005 0 1.697-.59 1.772-1.485h-.888c-.087.453-.397.725-.873.725-.597 0-.982-.483-.982-1.322 0-.824.381-1.323.975-1.323.502 0 .8.321.876.748h.889zm2.906-2.967c-1.591 0-2.589 1.085-2.589 2.82 0 1.735.998 2.816 2.59 2.816 1.586 0 2.584-1.081 2.584-2.816 0-1.735-.997-2.82-2.585-2.82zm0 .832c.971 0 1.591.77 1.591 1.988 0 1.213-.62 1.984-1.59 1.984-.976 0-1.592-.77-1.592-1.984 0-1.217.616-1.988 1.591-1.988zm2.982 3.178c.042 1.006.866 1.626 2.12 1.626 1.32 0 2.151-.65 2.151-1.686 0-.813-.469-1.27-1.576-1.523l-.627-.144c-.67-.158-.945-.37-.945-.733 0-.453.415-.756 1.032-.756.623 0 1.05.306 1.096.817h.93c-.023-.96-.817-1.61-2.019-1.61-1.187 0-2.03.653-2.03 1.62 0 .78.477 1.263 1.482 1.494l.707.166c.688.163.967.39.967.782 0 .454-.457.779-1.115.779-.665 0-1.167-.329-1.228-.832h-.945z"></path>
+</svg>
+
+    </span><div class="flex flex-col">
+    <span class="font-mono no-underline text-white group-hover:text-blue-400">
+      macOS
+    </span>
+    <code class="text-gray-500 group-hover:text-blue-400">10.14.6</code>
+  </div>
+</a>
+
+      
+    </div>
+<a class="u-url" href="/2021/02/how-to-create-a-temporary-directory-in-a-shell-script/" hidden></a>
+</article>
+
+      </main><footer class="max-w-prose mt-24 mb-12 mx-auto p-4 font-body text-gray-500 text-sm">
+
+  <div class="flex justify-between items-center">
+    <!-- Subscribe to feed -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="/feed.xml">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>RSS icon</title>
+        <path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"></path>
+      </svg>
+      <span>Subscribe</span>
+    </a>
+
+    <!-- Email -->
+    <a class="flex items-center space-x-2 hover:text-blue-400 hover:underline" href="mailto:%63%6F%6E%74%61%63%74@%61%6C%70%68%61%68%79%64%72%61%65.%63%6F%6D">
+      <svg class="inline w-4 h-4 fill-current" role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <title>Email icon</title>
+        <path fill-rule="evenodd" d="M1.75 3A1.75 1.75 0 000 4.75v14c0 .966.784 1.75 1.75 1.75h20.5A1.75 1.75 0 0024 18.75v-14A1.75 1.75 0 0022.25 3H1.75zM1.5 4.75a.25.25 0 01.25-.25h20.5a.25.25 0 01.25.25v.852l-10.36 7a.25.25 0 01-.28 0l-10.36-7V4.75zm0 2.662V18.75c0 .138.112.25.25.25h20.5a.25.25 0 00.25-.25V7.412l-9.52 6.433c-.592.4-1.368.4-1.96 0L1.5 7.412z"></path>
+      </svg>
+      <span>Email</span>
+    </a>
+
+    <!-- License -->
+    <span>© 2012-2021</span>
+  </div>
+
+  <div class="flex flex-col items-center mt-8 px-8 space-y-2 text-center text-xs">
+    <a class="opacity-80 hover:opacity-100" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png">
+    </a>
+    <p>
+      Unless otherwise specified, this work is licensed under a
+      <a class="text-blue-400 hover:underline" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+        Creative Commons Attribution-ShareAlike 4.0 International License
+      </a>.
+    </p>
+  </div>
+
+  <!-- Attribution -->
+  <div class="mt-4 text-center text-xs">
+    Fonts by <a class="text-blue-400 hover:underline" href="https://fonts.google.com">Google Fonts</a>,
+    brands by <a class="text-blue-400 hover:underline" href="https://simpleicons.org">Simple Icons</a>,
+    other icons by <a class="text-blue-400 hover:underline" href="https://primer.style/octicons/">Octicons</a>.
+  </div>
+
+  <div class="flex justify-center mt-4">
+    <span class="w-6 h-6 mt-2"><span class="w-6 h-6 emoji-container"><img class="emoji" title=":cat2:" alt=":cat2:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f408.png" height="20" width="20"></span>
+</span>
+    <span class="w-6 h-6 mt-2"><span class="w-6 h-6 emoji-container"><img class="emoji" title=":beetle:" alt=":beetle:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f41e.png" height="20" width="20"></span>
+</span>
+  </div>
+
+</footer>
+</div>
+
+  </body>
+
+</html>
