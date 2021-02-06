@@ -22,12 +22,18 @@ module PostsPagePlugin
       @ext = '.html'
       @name = 'index.html'
 
-      all_posts = site.posts.docs
+      all_posts = site.posts.docs.reverse
+
       today = all_posts.reduce({}) do |memo,post|
         if today_type = post.data.fetch('today', {})['type']
           memo[today_type] ||= []
+
+          # Only feature 3 today items in each category.
+          next memo if memo[today_type].length >= 3
+
           memo[today_type] << post
         end
+
         memo
       end
 

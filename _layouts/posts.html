@@ -12,14 +12,16 @@ layout: default
       {%- assign section_extra_classes = '' -%}
     {%- endif -%}
 
+    <h2 class="sr-only">Featured Posts</h2>
+
     <section class="{{ section_extra_classes }} lg:order-none">
-      <h1 class="mb-8 text-2xl text-white">:{{ emoji }}: {{ title }}</h1>
+      <h3 class="mb-8 text-2xl text-white">:{{ emoji }}: {{ title }}</h3>
       {%- assign posts = page.today[today_type] -%}
       {%- assign posts_count = posts | size -%}
 
       {%- if posts_count >= 1 -%}
         <div class="flex flex-col space-y-4">
-          {% for post in posts reversed %}
+          {% for post in posts %}
             {% include post_card.html post=post title='disabled' %}
           {% endfor %}
         </div>
@@ -30,11 +32,15 @@ layout: default
   {% endfor %}
 </div>
 
+<div class="max-w-4xl mx-auto mt-8 text-center">
+  <h2 class="font-display text-2xl text-gray-100">Older Posts</h2>
+</div>
+
 {%- assign remaining_posts_count = page.remaining_posts | size -%}
 {%- if remaining_posts_count >= 1 -%}
   {%- assign remaining_posts_count_modulo2 = remaining_posts_count | modulo: 2 -%}
 
-  <div class="grid grid-cols-1 col-start-1 md:grid-cols-4 max-w-2xl mx-auto mt-24 mb-20 space-x-2 text-center">
+  <div class="grid grid-cols-1 col-start-1 md:grid-cols-4 max-w-2xl mx-auto mt-8 mb-20 space-x-2 text-center">
     {% for post in page.remaining_posts %}
       {%- if forloop.first and remaining_posts_count_modulo2 == 1 -%}
         {%- assign post_extra_classes = 'md:col-start-2 md:col-span-2' -%}
