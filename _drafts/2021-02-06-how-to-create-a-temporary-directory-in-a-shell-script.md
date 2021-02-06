@@ -19,7 +19,7 @@ deleted once the script has completed.
 
 <!-- more -->
 
-## Creating a temporary directory
+## Create a temporary directory
 
 You can use [the `mktemp` command][mktemp] to create a temporary file or
 directory in the appropriate location depending on the operating system:
