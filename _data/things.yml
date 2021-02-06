@@ -22,6 +22,12 @@ fedora:
   website: https://getfedora.org
   color_class: text-blue-600
 
+mac-os:
+  type: os
+  title: macOS
+  website: https://www.apple.com
+  color_class: text-white
+
 os-x:
   type: os
   title: Mac OS X
@@ -91,6 +97,12 @@ backbone:
   title: Backbone.js
   website: https://backbonejs.org
   color_class: text-blue-600
+
+bash:
+  type: tool
+  title: Bash
+  website: https://www.gnu.org/software/bash/
+  color_class: text-green-500
 
 bundler:
   type: tool
