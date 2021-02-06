@@ -4,9 +4,11 @@ FROM ruby:3.0.0-alpine3.13 as builder
 
 LABEL maintainer="docker@alphahydrae.com"
 
+ENV JEKYLL_ENV=production
+
 WORKDIR /usr/src/app
 
-RUN apk add --no-cache g++ make nodejs npm && \
+RUN apk add --no-cache bash g++ make nodejs npm && \
     node --version && \
     addgroup -S blog && \
     adduser -D -g blog -S blog && \
@@ -26,9 +28,6 @@ RUN npm ci
 
 COPY --chown=blog:blog ./ /usr/src/app/
 
-USER root:root
-RUN apk add --no-cache bash
-USER blog:blog
 RUN bundle exec jekyll build
 
 # Production image
@@ -37,4 +36,4 @@ FROM nginx:1.19.6-alpine
 
 WORKDIR /usr/share/nginx/html
 
-COPY --chown=www-data:www-data --from=builder /usr/src/app/_site/ /usr/share/nginx/html/
+COPY --chown=nobody:nobody --from=builder /usr/src/app/_site/ /usr/share/nginx/html/
