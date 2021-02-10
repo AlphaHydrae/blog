@@ -11,8 +11,8 @@ versions:
   postgresql: 13.1
 ---
 
-You know this cool data sitting in a PostgreSQL database that you have always
-wanted to export to a JSON file?
+You know this data sitting in a PostgreSQL database that you have always wanted
+to export to a JSON file?
 
 ```sql
 SELECT *
