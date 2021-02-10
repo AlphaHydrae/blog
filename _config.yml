@@ -12,9 +12,6 @@ collections:
   archives:
     output: true
 
-disqus:
-  shortname: alphahydrae
-
 # Build settings
 plugins:
   - jekyll-email-protect

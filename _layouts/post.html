@@ -73,9 +73,3 @@ layout: default
 
   <a class="u-url" href="{{ post.url | relative_url }}" hidden></a>
 </article>
-
-{%- if site.disqus.shortname -%}
-  <div class="max-w-prose mx-auto mt-12">
-    {%- include disqus_comments.html -%}
-  </div>
-{%- endif -%}
