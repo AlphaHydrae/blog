@@ -1,18 +1,21 @@
 # TODO
 
-* Change background color of `<code>` in `<blockquote>`
-* Add subscribe/linkedin/github to home page at the bottom
-* Redirect www
-* Disqus
+* Validate front matter with json schema
 * Attribute emojis
 * Support today items in the past (a while ago)
-* Exact language colors
+* Improve theme
+  * Change background color of `<code>` in `<blockquote>`
+  * Exact language colors
+  * Brighten comments color, too dark on mobile
+  * Posts page top margin too big on mobile
+  * Not enough right margin in header next to GitHub logo
+  * Fix pre width in lists in mobile
+* Category & tag pages
+* Today pages
+* Language/tool pages
+* About page
+* Repos page
+* https://devhints.io page
 * Unit test Jekyll generators
 * Interested in: Deno, Haskell, Rust
 * Updates to archived posts
-* About page
-* Language/tool pages
-* Category & tag pages
-* Today pages
-* https://devhints.io page
-* Repos page
