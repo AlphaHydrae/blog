@@ -124,7 +124,7 @@ const incrementByOne = add(1, ?);
 incrementByOne(4); // 5
 ```
 
-This would interact very nicely with the previous-mentioned pipeline operator
+This would interact very nicely with the previously-mentioned pipeline operator
 proposal:
 
 ```js
