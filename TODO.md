@@ -1,5 +1,6 @@
 # TODO
 
+* Change background color of `<code>` in `<blockquote>`
 * Add subscribe/linkedin/github to home page at the bottom
 * Redirect www
 * Disqus
