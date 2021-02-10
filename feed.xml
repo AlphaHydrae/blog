@@ -1,4 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-02-06T21:23:06+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">How to create a temporary directory in a shell script</title><link href="https://alphahydrae.com/2021/02/how-to-create-a-temporary-directory-in-a-shell-script/" rel="alternate" type="text/html" title="How to create a temporary directory in a shell script" /><published>2021-02-06T14:11:43+01:00</published><updated>2021-02-06T14:11:43+01:00</updated><id>https://alphahydrae.com/2021/02/how-to-create-a-temporary-directory-in-a-shell-script</id><content type="html" xml:base="https://alphahydrae.com/2021/02/how-to-create-a-temporary-directory-in-a-shell-script/">&lt;p&gt;Sometimes when you write a shell script, you need to temporarily save files
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-02-10T21:06:51+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">How to export PostgreSQL data to a JSON file</title><link href="https://alphahydrae.com/2021/02/how-to-export-postgresql-data-to-a-json-file/" rel="alternate" type="text/html" title="How to export PostgreSQL data to a JSON file" /><published>2021-02-10T20:00:15+01:00</published><updated>2021-02-10T20:00:15+01:00</updated><id>https://alphahydrae.com/2021/02/how-to-export-postgresql-data-to-a-json-file</id><content type="html" xml:base="https://alphahydrae.com/2021/02/how-to-export-postgresql-data-to-a-json-file/">&lt;p&gt;You know this data sitting in a PostgreSQL database that you have always wanted
+to export to a JSON file?&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;meaning_of_life&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;--  id | name  | meaning_of_life&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- ----+-------+-----------------&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;--   1 | Alice |              42&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;--   2 | Bob   |              42&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- (2 rows)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Because PostgreSQL is awesome, it &lt;a href=&quot;https://www.postgresql.org/docs/13/datatype-json.html&quot;&gt;supports JSON&lt;/a&gt; and has &lt;a href=&quot;https://www.postgresql.org/docs/13/functions-json.html&quot;&gt;a
+lot of cool functions to work with JSON&lt;/a&gt;. Let’s start
+by converting those rows to JSON objects using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;row_to_json&lt;/code&gt; function:&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row_to_json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;meaning_of_life&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;--                  row_to_json&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- ----------------------------------------------&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;--  {&quot;id&quot;:1,&quot;name&quot;:&quot;Alice&quot;,&quot;meaning_of_life&quot;:42}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;--  {&quot;id&quot;:2,&quot;name&quot;:&quot;Bob&quot;,&quot;meaning_of_life&quot;:42}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- (2 rows)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can now aggregate these rows into a JSON array with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;json_agg&lt;/code&gt;
+&lt;a href=&quot;https://www.postgresql.org/docs/13/functions-aggregate.html&quot;&gt;aggregation-function&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;json_agg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row_to_json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;meaning_of_life&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;-- Note: the result is represented on two lines here&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- for readability, but it&apos;s really one long line of&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- JSON in a single row:&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;--                     json_agg&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- ------------------------------------------------&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;--  [{&quot;id&quot;:1,&quot;name&quot;:&quot;Alice&quot;,&quot;meaning_of_life&quot;:42},&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;--   {&quot;id&quot;:2,&quot;name&quot;:&quot;Bob&quot;,&quot;meaning_of_life&quot;:42}]&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- (1 row)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Finally, convert this data to text and dump it to a file using &lt;a href=&quot;https://www.postgresql.org/docs/13/sql-copy.html&quot;&gt;the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;COPY&lt;/code&gt;
+command&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;json_agg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row_to_json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;text&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;meaning_of_life&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;/path/to/some/file.json&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And your JSON file is ready:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Note: again, the contents of the file are represented&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# on two lines here, but there&apos;s only one line in it.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /path/to/some/file.json
+&lt;span class=&quot;o&quot;&gt;[{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;:1,&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;Alice&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;meaning_of_life&quot;&lt;/span&gt;:42&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
+ &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;:2,&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;Bob&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;meaning_of_life&quot;&lt;/span&gt;:42&lt;span class=&quot;o&quot;&gt;}]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Easy as pie.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note that you can convert multiple rows into a JSON array with just
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;json_agg&lt;/code&gt;, without using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;row_to_json&lt;/code&gt;, but for some reason converting that
+array to text will introduce line breaks into the resulting text, and the
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;COPY&lt;/code&gt; command will serialize those line breaks into literal &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\n&lt;/code&gt; characters
+instead of actual line breaks.&lt;/p&gt;
+
+  &lt;p&gt;To my knowledge there isn’t a configurable JSON stringification mechanism in
+PostgreSQL. It would be nice to have a function equivalent to
+&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JSON.stringify&lt;/code&gt;&lt;/a&gt; that allows you to specify what kind
+of whitespace you want.&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><category term="programming" /><category term="sql" /><category term="postgresql" /><summary type="html">You know this data sitting in a PostgreSQL database that you have always wanted to export to a JSON file?</summary></entry><entry><title type="html">How to create a temporary directory in a shell script</title><link href="https://alphahydrae.com/2021/02/how-to-create-a-temporary-directory-in-a-shell-script/" rel="alternate" type="text/html" title="How to create a temporary directory in a shell script" /><published>2021-02-06T14:11:43+01:00</published><updated>2021-02-06T14:11:43+01:00</updated><id>https://alphahydrae.com/2021/02/how-to-create-a-temporary-directory-in-a-shell-script</id><content type="html" xml:base="https://alphahydrae.com/2021/02/how-to-create-a-temporary-directory-in-a-shell-script/">&lt;p&gt;Sometimes when you write a shell script, you need to temporarily save files
 somewhere, temporarily clone a Git repo, etc. This temporary data should be
 deleted once the script has completed.&lt;/p&gt;
 

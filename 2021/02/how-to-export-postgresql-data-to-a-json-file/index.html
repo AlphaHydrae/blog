@@ -3,21 +3,21 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>PostgreSQL with peer authentication | AlphaHydrae</title>
+<title>How to export PostgreSQL data to a JSON file | AlphaHydrae</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="PostgreSQL with peer authentication" />
+<meta property="og:title" content="How to export PostgreSQL data to a JSON file" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Tales of a programmer" />
-<meta property="og:description" content="Tales of a programmer" />
-<link rel="canonical" href="https://alphahydrae.com/2012/08/postgresql-with-peer-authentication/" />
-<meta property="og:url" content="https://alphahydrae.com/2012/08/postgresql-with-peer-authentication/" />
+<meta name="description" content="You know this data sitting in a PostgreSQL database that you have always wanted to export to a JSON file?" />
+<meta property="og:description" content="You know this data sitting in a PostgreSQL database that you have always wanted to export to a JSON file?" />
+<link rel="canonical" href="https://alphahydrae.com/2021/02/how-to-export-postgresql-data-to-a-json-file/" />
+<meta property="og:url" content="https://alphahydrae.com/2021/02/how-to-export-postgresql-data-to-a-json-file/" />
 <meta property="og:site_name" content="AlphaHydrae" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2012-08-27T09:22:00+02:00" />
+<meta property="article:published_time" content="2021-02-10T20:00:15+01:00" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="PostgreSQL with peer authentication" />
+<meta property="twitter:title" content="How to export PostgreSQL data to a JSON file" />
 <script type="application/ld+json">
-{"url":"https://alphahydrae.com/2012/08/postgresql-with-peer-authentication/","headline":"PostgreSQL with peer authentication","dateModified":"2012-08-27T09:22:00+02:00","datePublished":"2012-08-27T09:22:00+02:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://alphahydrae.com/2012/08/postgresql-with-peer-authentication/"},"description":"Tales of a programmer","@context":"https://schema.org"}</script>
+{"url":"https://alphahydrae.com/2021/02/how-to-export-postgresql-data-to-a-json-file/","headline":"How to export PostgreSQL data to a JSON file","dateModified":"2021-02-10T20:00:15+01:00","datePublished":"2021-02-10T20:00:15+01:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://alphahydrae.com/2021/02/how-to-export-postgresql-data-to-a-json-file/"},"description":"You know this data sitting in a PostgreSQL database that you have always wanted to export to a JSON file?","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet"> 
@@ -79,8 +79,10 @@
 
 <article class="max-w-prose mx-auto" itemscope itemtype="https://schema.org/BlogPosting">
   <header class="mt-24 mb-20">
-    <!-- Category --><!-- Title -->
-    <h1 itemprop="name headline">PostgreSQL with peer authentication</h1>
+    <!-- Category --><em class="block font-body mb-3 text-3xl text-center text-white">
+        <img class="emoji" title=":books:" alt=":books:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4da.png" height="20" width="20">
+         Today I Learned</em><!-- Title -->
+    <h1 itemprop="name headline">How to export PostgreSQL data to a JSON file</h1>
 
     <!-- Metadata -->
     <p class="flex flex-wrap justify-center space-x-5 text-gray-400">
@@ -88,17 +90,17 @@
       <!-- Publication date -->
       
 
-<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="2012-08-27T09:22:00+02:00" itemprop="datePublished">
-  <svg width="16" height="16" class="octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 0a.75.75 0 01.75.75V2h5V.75a.75.75 0 011.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 16H2.75A1.75 1.75 0 011 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 014.75 0zm0 3.5h8.5a.25.25 0 01.25.25V6h-11V3.75a.25.25 0 01.25-.25h2zm-2.25 4v6.75c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V7.5h-11z"></path></svg>
-  <span class="font-mono whitespace-nowrap">2012-08-27</span>
+<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="2021-02-10T20:00:15+01:00" itemprop="datePublished">
+  <svg width="16" height="16" class="octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 0a.75.75 0 01.75.75V2h5V.75a.75.75 0 011.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 16H2.75A1.75 1.75 0 011 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 014.75 0zm0 3.5h8.5a.25.25 0 01.25.25V6h-11V3.75a.25.25 0 01.25-.25h2zm-2.25 4v6.75c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V7.5h-11z"></path></svg>
+  <span class="font-mono whitespace-nowrap">2021-02-10</span>
 </span>
 
 
       <!-- Last modification date (if available) --><!-- Categories -->
       
         <span class="flex items-center space-x-2 mb-2 text-gray-500">
-          <svg width="16" height="16" class="octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z"></path></svg>
-          <span class="font-mono">sysadmin</span>
+          <svg width="16" height="16" class="octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z"></path></svg>
+          <span class="font-mono">programming</span>
         </span>
       
 
@@ -124,8 +126,8 @@
       <!-- Tags -->
       
         <span class="flex items-center space-x-2 mb-2 text-gray-500">
-  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
-  <span class="font-mono">auth</span>
+  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+  <span class="font-mono">sql</span>
 </span>
 
       
@@ -134,83 +136,88 @@
 
   <!-- Post content -->
   <div class="text-lg" itemprop="articleBody">
-    <p><a href="http://www.postgresql.org"><img class="right" src="/assets/contents/postgresql/logo.png" width="200"></a></p>
+    <p>You know this data sitting in a PostgreSQL database that you have always wanted
+to export to a JSON file?</p>
 
-<p>PostgreSQL has always been my favorite SQL database, especially compared to
-MySQL which I’ve always found a pain to configure for my uses. Peer
-authentication allows to map OS user names to database user names for local
-connections. It can be used for password-less database access in a multi-user
-environment.</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span>
+<span class="k">FROM</span> <span class="n">people</span>
+<span class="k">WHERE</span> <span class="n">meaning_of_life</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
 
-<p>This guide shows how to install PostgreSQL and configure peer authentication on
-Fedora.</p>
-
-<!--more-->
-
-<h2 id="installation">Installation</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Install and run PostgreSQL.</span>
-yum <span class="nb">install </span>postgresql postgresql-devel <span class="se">\</span>
-            postgresql-server postgresql-contrib
-
-<span class="c"># Initialize the database cluster.</span>
-<span class="nb">mkdir</span> <span class="nt">-p</span> /var/lib/pgsql/data
-<span class="nb">chown</span> <span class="nt">-R</span> postgres:postgres /var/lib/pgsql/data
-su postgres
-  initdb <span class="nt">-D</span> /var/lib/pgsql/data <span class="nt">-E</span> UTF8 <span class="nt">--locale</span><span class="o">=</span>en_US.UTF8
+<span class="c1">--  id | name  | meaning_of_life</span>
+<span class="c1">-- ----+-------+-----------------</span>
+<span class="c1">--   1 | Alice |              42</span>
+<span class="c1">--   2 | Bob   |              42</span>
+<span class="c1">-- (2 rows)</span>
 </code></pre></div></div>
 
-<p>If you install at a location other than <code class="language-plaintext highlighter-rouge">/var/lib/pgsql/data</code>, create this file
-to tell the PostgreSQL service where to look:</p>
+<!-- more -->
 
-<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: /etc/systemd/system/postgresql.service
-</span>.<span class="n">include</span> /<span class="n">lib</span>/<span class="n">systemd</span>/<span class="n">system</span>/<span class="n">postgresql</span>.<span class="n">service</span>
-[<span class="n">Service</span>]
-<span class="n">Environment</span>=<span class="n">PGDATA</span>=/<span class="n">path</span>/<span class="n">to</span>/<span class="n">pgsql</span>/<span class="n">data</span>
+<p>Because PostgreSQL is awesome, it <a href="https://www.postgresql.org/docs/13/datatype-json.html">supports JSON</a> and has <a href="https://www.postgresql.org/docs/13/functions-json.html">a
+lot of cool functions to work with JSON</a>. Let’s start
+by converting those rows to JSON objects using the <code class="language-plaintext highlighter-rouge">row_to_json</code> function:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">row_to_json</span><span class="p">(</span><span class="n">people</span><span class="p">)</span>
+<span class="k">FROM</span> <span class="n">people</span>
+<span class="k">WHERE</span> <span class="n">meaning_of_life</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+
+<span class="c1">--                  row_to_json</span>
+<span class="c1">-- ----------------------------------------------</span>
+<span class="c1">--  {"id":1,"name":"Alice","meaning_of_life":42}</span>
+<span class="c1">--  {"id":2,"name":"Bob","meaning_of_life":42}</span>
+<span class="c1">-- (2 rows)</span>
 </code></pre></div></div>
 
-<p>The package provides a systemd service which you can enable on boot and start
-like this:</p>
+<p>You can now aggregate these rows into a JSON array with the <code class="language-plaintext highlighter-rouge">json_agg</code>
+<a href="https://www.postgresql.org/docs/13/functions-aggregate.html">aggregation-function</a>:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl <span class="nb">enable </span>postgresql.service
-systemctl start postgresql.service
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">json_agg</span><span class="p">(</span><span class="n">row_to_json</span><span class="p">(</span><span class="n">people</span><span class="p">))</span>
+<span class="k">FROM</span> <span class="n">people</span>
+<span class="k">WHERE</span> <span class="n">meaning_of_life</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+
+<span class="c1">-- Note: the result is represented on two lines here</span>
+<span class="c1">-- for readability, but it's really one long line of</span>
+<span class="c1">-- JSON in a single row:</span>
+
+<span class="c1">--                     json_agg</span>
+<span class="c1">-- ------------------------------------------------</span>
+<span class="c1">--  [{"id":1,"name":"Alice","meaning_of_life":42},</span>
+<span class="c1">--   {"id":2,"name":"Bob","meaning_of_life":42}]</span>
+<span class="c1">-- (1 row)</span>
 </code></pre></div></div>
 
-<h2 id="peer-authentication">Peer Authentication</h2>
+<p>Finally, convert this data to text and dump it to a file using <a href="https://www.postgresql.org/docs/13/sql-copy.html">the <code class="language-plaintext highlighter-rouge">COPY</code>
+command</a>:</p>
 
-<p>By default, peer authentication allows each system user to authenticate as the
-database user with the same name, but that’s usually not sufficient for my
-purposes. For example, I also want my <code class="language-plaintext highlighter-rouge">root</code> system user to be able to
-authenticate as <code class="language-plaintext highlighter-rouge">postgres</code> (the godlike database user).</p>
-
-<p>To do this, you must edit <code class="language-plaintext highlighter-rouge">pg_ident.conf</code> in the PostgreSQL data directory. Here
-you can create user name maps like this one:</p>
-
-<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># MAPNAME    SYSTEM-USERNAME  PG-USERNAME
-</span>  <span class="n">adminmap</span>   <span class="n">postgres</span>         <span class="n">postgres</span>
-  <span class="n">adminmap</span>   <span class="n">root</span>             <span class="n">postgres</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">COPY</span> <span class="p">(</span>
+  <span class="k">SELECT</span> <span class="n">json_agg</span><span class="p">(</span><span class="n">row_to_json</span><span class="p">(</span><span class="n">people</span><span class="p">))</span> <span class="p">::</span> <span class="nb">text</span>
+  <span class="k">FROM</span> <span class="n">people</span>
+  <span class="k">WHERE</span> <span class="n">meaning_of_life</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+<span class="p">)</span> <span class="k">to</span> <span class="s1">'/path/to/some/file.json'</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p><code class="language-plaintext highlighter-rouge">SYSTEM-USERNAME</code> is the user name detected by the operating system.
-<code class="language-plaintext highlighter-rouge">PG-USERNAME</code> is the database user name that this user should have. You must
-group user name pairs under a <code class="language-plaintext highlighter-rouge">MAPNAME</code> which you will user later in the
-authentication configuration. The map above defines that both the <code class="language-plaintext highlighter-rouge">postgres</code> and
-<code class="language-plaintext highlighter-rouge">root</code> system users can connect as the <code class="language-plaintext highlighter-rouge">postgres</code> database user.</p>
+<p>And your JSON file is ready:</p>
 
-<p>Once you have created your user name maps, you can use them in <code class="language-plaintext highlighter-rouge">pg_hba.conf</code>,
-the authentication configuration file. Here is an example:</p>
-
-<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># TYPE   DATABASE  USER      ADDRESS  METHOD
-</span>  <span class="n">local</span>  <span class="n">all</span>       <span class="n">postgres</span>           <span class="n">peer</span>    <span class="n">map</span>=<span class="n">adminmap</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Note: again, the contents of the file are represented</span>
+<span class="c"># on two lines here, but there's only one line in it.</span>
+<span class="nv">$&gt;</span> <span class="nb">cat</span> /path/to/some/file.json
+<span class="o">[{</span><span class="s2">"id"</span>:1,<span class="s2">"name"</span>:<span class="s2">"Alice"</span>,<span class="s2">"meaning_of_life"</span>:42<span class="o">}</span>,
+ <span class="o">{</span><span class="s2">"id"</span>:2,<span class="s2">"name"</span>:<span class="s2">"Bob"</span>,<span class="s2">"meaning_of_life"</span>:42<span class="o">}]</span>
 </code></pre></div></div>
 
-<p>This defines that the <code class="language-plaintext highlighter-rouge">postgres</code> database user can access all databases. Notice
-that we selected the peer authentication method and that we reference
-<code class="language-plaintext highlighter-rouge">adminmap</code>, the user name map we created earlier. Therefore, with this
-configuration both the <code class="language-plaintext highlighter-rouge">postgres</code> and <code class="language-plaintext highlighter-rouge">root</code> system users can connect to all
-databases as <code class="language-plaintext highlighter-rouge">postgres</code>.</p>
+<p>Easy as pie.</p>
 
-<p>Now go forth and multiply the user name maps.</p>
+<blockquote>
+  <p>Note that you can convert multiple rows into a JSON array with just
+<code class="language-plaintext highlighter-rouge">json_agg</code>, without using <code class="language-plaintext highlighter-rouge">row_to_json</code>, but for some reason converting that
+array to text will introduce line breaks into the resulting text, and the
+<code class="language-plaintext highlighter-rouge">COPY</code> command will serialize those line breaks into literal <code class="language-plaintext highlighter-rouge">\n</code> characters
+instead of actual line breaks.</p>
+
+  <p>To my knowledge there isn’t a configurable JSON stringification mechanism in
+PostgreSQL. It would be nice to have a function equivalent to
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify"><code class="language-plaintext highlighter-rouge">JSON.stringify</code></a> that allows you to specify what kind
+of whitespace you want.</p>
+</blockquote>
 
 
   </div>
@@ -232,33 +239,13 @@ databases as <code class="language-plaintext highlighter-rouge">postgres</code>.
     <span class="font-mono no-underline text-blue-300 group-hover:text-blue-400">
       PostgreSQL
     </span>
-    <code class="text-gray-500 group-hover:text-blue-400">9.1.4</code>
-  </div>
-</a>
-
-      
-        
-        
-        
-
-
-<a class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-blue-600 group hover:text-blue-400" href="https://getfedora.org"><span class="logo w-12 h-12 fill-current">
-      <svg role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-  <title>Fedora</title>
-  <path d="M12.005.001C7.29-.064 2.744 2.962.957 7.317c-.885 1.953-1 4.116-.946 6.225.01 2.666-.02 5.335.015 7.999.113 1.542 1.654 2.614 3.134 2.44 3.257-.02 6.514.044 9.77-.034 4.79-.303 9.155-3.796 10.527-8.39 1.4-4.345.03-9.413-3.39-12.443A11.968 11.967 0 0012.005.001zm3.52 2.842c.406-.01.807.032 1.197.117.557.286.945.826.902 1.383-.058.75-.587 1.247-1.38 1.246a2.95 2.95 0 00-.72-.09c-1.725-.053-3.167 1.61-2.97 3.305.024.796-.044 1.601.033 2.392.333.457.987.18 1.475.256.276 0 .562.007.85.008a.134.134 0 00.042.008 1.29 1.29 0 011.29 1.295 1.29 1.29 0 01-1.298 1.295.14.14 0 00-.06.013c-.777.003-1.553 0-2.33.002-.066 1.616.197 3.276-.31 4.84-.865 2.706-3.97 4.337-6.685 3.62-.537-.284-.91-.79-.868-1.334.062-.796.656-1.308 1.532-1.24.075.006.113.012.168.02.716.14 1.477.034 2.107-.391 1.127-.645 1.502-1.977 1.396-3.193-.02-.687.043-1.384-.033-2.066-.333-.456-.984-.18-1.472-.256h-.8a.137.137 0 00-.066-.015 1.29 1.29 0 01-1.298-1.295c0-.72.574-1.29 1.29-1.295a.136.136 0 00.063-.016h2.316c.06-1.507-.159-3.046.213-4.523.648-2.376 2.952-4.12 5.415-4.086zm.705.052l.13.024zm1.224.28c1.444.543 2.636 1.706 3.25 3.12a81.141 81.136 0 01-2.903-2.592 1.762 1.762 0 00-.346-.527zm.45.935a86.96 86.954 0 002.966 2.596c-.014-.044-.033-.087-.049-.13.166.448.265.918.301 1.402a77.847 77.842 0 01-3.39-2.975l.015-.033c.088-.182.143-.386.16-.606a1.393 1.393 0 000-.197c0-.019-.002-.038-.004-.057zm.02.196c-.058.516-.058.516 0 0zm-.314.894a85.347 85.341 0 003.53 3.06c0 .071.015.14.013.21a4.94 4.94 0 01-.06.814A78.528 78.523 0 0117.011 5.7a1.56 1.56 0 00.6-.5zm.526 1.83c.898.8 1.856 1.623 2.918 2.485a5.215 5.215 0 01-.242.863 74.032 74.027 0 01-2.307-1.963l.002.055c0 .076-.004.152-.01.226.703.612 1.44 1.237 2.24 1.885-.109.26-.234.512-.38.752a73.605 73.6 0 01-2.06-1.752 3.13 3.13 0 00-.16-2.55zm.068 2.758c.644.56 1.32 1.131 2.043 1.72a5.868 5.867 0 01-.5.651 74.24 74.235 0 01-1.99-1.705c.185-.2.332-.425.447-.666zm-.603.816a82.545 82.54 0 002.005 1.71c-.19.2-.392.385-.607.556a75.858 75.853 0 01-2.043-1.77c.203-.108.396-.247.572-.425.027-.022.047-.047.073-.07zm-.86.594a84.37 84.365 0 002.088 1.8c-.23.17-.48.311-.734.444a79.06 79.054 0 01-2.256-2.005c-.024.002-.05.001-.074.003l-.026-.015a3.506 3.506 0 001.002-.227zm-10.046.248l-.02.014h-.013l.004.004a1.573 1.573 0 00-.51.55l-.45-.427a5.38 5.38 0 01.99-.14zm-.994.14l-.127.032.127-.03zm-.27.075l.622.592a1.55 1.55 0 00.008 1.045c-.468-.444-.94-.893-1.432-1.348.26-.118.529-.21.803-.289zm-1.03.4c.72.674 1.425 1.347 2.134 2.03a2.68 2.68 0 00-.826.242c-.64-.61-1.3-1.23-1.998-1.865a5.98 5.98 0 01.69-.406zm12.022.204c.473.42.958.846 1.474 1.285a5.37 5.37 0 01-.908.342l-.617-.498a1.55 1.55 0 00.05-1.13zm-12.901.345a140.01 140.01 0 011.958 1.844 3.158 3.158 0 00-1.527 2.332A98.329 98.323 0 001.777 14.8a5.574 5.573 0 00-.091.22c.777.698 1.522 1.391 2.252 2.087.002.284.042.57.14.848.053.19.13.366.22.533a107.243 107.236 0 00-2.86-2.635c.027-.108.04-.217.074-.323.137-.518.366-.998.65-1.44.69.621 1.35 1.241 2.002 1.86a2.98 2.98 0 01.107-.232 99.457 99.45 0 00-1.986-1.819c.15-.214.31-.42.49-.613A109.76 109.76 0 014.7 15.088c.054-.06.11-.122.168-.178a98.104 98.104 0 00-1.94-1.79 5.82 5.82 0 01.592-.509zm12.719.153l-.027.265zm1.733.754l-.05.023.05-.023zm-1.72.091l.44.354c-.287.06-.582.096-.88.103h-.016a1.56 1.56 0 00.457-.457zM1.386 16.101c1.32 1.189 2.532 2.357 3.78 3.559l.175.166c-.237.107-.44.266-.594.465A125.942 125.935 0 001.3 17.076a5.176 5.176 0 01.086-.976zm-.07 1.29A154.286 154.276 0 014.61 20.5c-.11.2-.18.428-.2.677a1.406 1.406 0 000 .166c-.92-.884-1.856-1.78-2.88-2.71a5.65 5.65 0 01-.215-1.243zm.378 1.714c.943.876 1.852 1.748 2.778 2.64l.02.02c.07.195.186.372.327.532-1.445-.56-2.562-1.767-3.125-3.192zm3.352.264c.179.14.374.26.58.358l-.025.005-.018-.015a3.014 3.014 0 01-.537-.348zm1.047 3.252l.15.025zm.228.04s.09.007.274.025a33.671 33.669 0 00-.274-.026z"></path>
-</svg>
-
-    </span><div class="flex flex-col">
-    <span class="font-mono no-underline text-blue-600 group-hover:text-blue-400">
-      Fedora
-    </span>
-    <code class="text-gray-500 group-hover:text-blue-400">17</code>
+    <code class="text-gray-500 group-hover:text-blue-400">13.1</code>
   </div>
 </a>
 
       
     </div>
-<a class="u-url" href="/2012/08/postgresql-with-peer-authentication/" hidden></a>
+<a class="u-url" href="/2021/02/how-to-export-postgresql-data-to-a-json-file/" hidden></a>
 </article>
 
       </main><footer class="max-w-prose mt-24 mb-12 mx-auto p-4 font-body text-gray-500 text-sm">
