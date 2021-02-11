@@ -12,9 +12,11 @@ versions:
   postgresql: 13.x
 ---
 
-[Travis CI][travis-ci] is a continuous integration platform for open source.
-Read about the [core concepts][travis-ci-core-concepts] and [the
-tutorial][travis-ci-tutorial] if you want to know more.
+[Travis CI][travis-ci] is a continuous integration platform for open source. I
+use it for all my open source projects that have an automated test suite (here's
+[an example][gitload-builds]). Read about the [core
+concepts][travis-ci-core-concepts] and [the tutorial][travis-ci-tutorial] if you
+want to know more.
 
 It supports [PostgreSQL][postgresql] as a database for your tests.
 Unfortunately, according to the documentation at the time of writing, the
@@ -63,8 +65,16 @@ env:
 ```
 
 The documentation states that you can use the `postgres` user with a blank
-password to access the PostgreSQL database. However, when you're not using the
-default PostgreSQL version, [you have to update the configuration
+password to access the PostgreSQL database. However when you're not using the
+default PostgreSQL version, that's a lie (like the cake). You might get the
+following error:
+
+```
+psql: error: FATAL:
+Peer authentication failed for user "postgres"
+```
+
+[You have to update the configuration
 yourself][travis-ci-postgresql-password-auth-failed]. For example, you can
 modify [the `pg_hba.conf` file][postgresql-pg-hba] to use the `trust`
 authentication method for local connections. That way you won't have to supply a
@@ -136,6 +146,7 @@ before_script:
 ```
 
 [error]: https://travis-ci.community/t/services-for-postgresql-11-and-12-fail-to-start-assertion-failed-on-job-for-postgresql-11-main-service/7069
+[gitload-builds]: https://travis-ci.org/github/AlphaHydrae/gitload/builds
 [postgresql]: https://www.postgresql.org
 [postgresql-pg-hba]: https://www.postgresql.org/docs/13/auth-pg-hba-conf.html
 [travis-ci]: https://travis-ci.org
