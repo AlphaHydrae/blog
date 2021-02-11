@@ -228,6 +228,12 @@ tailwind-css:
   website: https://tailwindcss.com
   color_class: text-green-400
 
+travis-ci:
+  type: tool
+  title: Travis CI
+  website: https://travis-ci.org
+  color_class: text-yellow-200
+
 unicorn:
   type: tool
   title: Unicorn
