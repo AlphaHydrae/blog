@@ -1,4 +1,130 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-02-10T22:12:48+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">How to export PostgreSQL data to a JSON file</title><link href="https://alphahydrae.com/2021/02/how-to-export-postgresql-data-to-a-json-file/" rel="alternate" type="text/html" title="How to export PostgreSQL data to a JSON file" /><published>2021-02-10T20:00:15+01:00</published><updated>2021-02-10T20:00:15+01:00</updated><id>https://alphahydrae.com/2021/02/how-to-export-postgresql-data-to-a-json-file</id><content type="html" xml:base="https://alphahydrae.com/2021/02/how-to-export-postgresql-data-to-a-json-file/">&lt;p&gt;You know this data sitting in a PostgreSQL database that you have always wanted
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-02-11T22:22:40+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">How to run PostgreSQL 13 on Travis CI</title><link href="https://alphahydrae.com/2021/02/how-to-run-postgresql-13-on-travis-ci/" rel="alternate" type="text/html" title="How to run PostgreSQL 13 on Travis CI" /><published>2021-02-11T21:51:47+01:00</published><updated>2021-02-11T21:51:47+01:00</updated><id>https://alphahydrae.com/2021/02/how-to-run-postgresql-13-on-travis-ci</id><content type="html" xml:base="https://alphahydrae.com/2021/02/how-to-run-postgresql-13-on-travis-ci/">&lt;p&gt;&lt;a href=&quot;https://travis-ci.org&quot;&gt;Travis CI&lt;/a&gt; is a continuous integration platform for open source. I
+use it for all my open source projects that have an automated test suite (here’s
+&lt;a href=&quot;https://travis-ci.org/github/AlphaHydrae/gitload/builds&quot;&gt;an example&lt;/a&gt;). Read about the &lt;a href=&quot;https://docs.travis-ci.com/user/for-beginners&quot;&gt;core
+concepts&lt;/a&gt; and &lt;a href=&quot;https://docs.travis-ci.com/user/tutorial/&quot;&gt;the tutorial&lt;/a&gt; if you
+want to know more.&lt;/p&gt;
+
+&lt;p&gt;It supports &lt;a href=&quot;https://www.postgresql.org&quot;&gt;PostgreSQL&lt;/a&gt; as a database for your tests.
+Unfortunately, according to the documentation at the time of writing, the
+default integration is with PostgreSQL 9.2, a version that is no longer under
+active development since November 2017. Versions 10 and later are also not as
+well supported in that they require additional configuration to avoid &lt;a href=&quot;https://travis-ci.community/t/services-for-postgresql-11-and-12-fail-to-start-assertion-failed-on-job-for-postgresql-11-main-service/7069&quot;&gt;this
+error&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;travis_setup_postgresql 13
+Starting PostgreSQL v13
+Assertion failed on job &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;postgresql@13-main.service.
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl start postgresql@13-main
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Let’s see about fixing that.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;The default PostgreSQL integration is enabled by adding the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;postgresql&lt;/code&gt; service
+to your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.travis-ci.yml&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgresql&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The documentation indicates what to do if you want to &lt;a href=&quot;https://docs.travis-ci.com/user/database-setup/#using-a-different-postgresql-version&quot;&gt;use a different
+version&lt;/a&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Specify the version of the PostgreSQL addon.&lt;/li&gt;
+  &lt;li&gt;Install the appropriate APT package.&lt;/li&gt;
+  &lt;li&gt;Set the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PGPORT&lt;/code&gt; environment variable to use a different port.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Here’s the configuration fragment for PostgreSQL 13:&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;addons&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;postgresql&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;13&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;apt&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;packages&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgresql-13&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;PGPORT=5433&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The documentation states that you can use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;postgres&lt;/code&gt; user with a blank
+password to access the PostgreSQL database. However when you’re not using the
+default PostgreSQL version, that’s a lie (like the cake). You might get the
+following error:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;psql: error: FATAL:
+Peer authentication failed for user &quot;postgres&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/travis-ci/travis-ci/issues/9624&quot;&gt;You have to update the configuration
+yourself&lt;/a&gt;. For example, you can
+modify &lt;a href=&quot;https://www.postgresql.org/docs/13/auth-pg-hba-conf.html&quot;&gt;the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pg_hba.conf&lt;/code&gt; file&lt;/a&gt; to use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;trust&lt;/code&gt;
+authentication method for local connections. That way you won’t have to supply a
+password at all:&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;before_install&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Use trust instead of peer authentication:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;&amp;gt;-&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;sudo sed -i&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;-e &apos;/local.*peer/s/postgres/all/&apos;&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;-e &apos;s/peer\|md5/trust/g&apos;&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;/etc/postgresql/13/main/pg_hba.conf&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Restart the PostgreSQL service:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sudo service postgresql@13-main restart&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Finally, you can create your test database like you would with the default
+PostgreSQL integration. You just have to specify the same custom port as the
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PGPORT&lt;/code&gt; environment variable:&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;before_script&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sudo psql -p 5433 -U postgres -c &apos;create database my-app;&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here’s a full sample configuration for a hypothetical Node.js application:&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;language&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;node_js&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;node_js&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;10&apos;&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;12&apos;&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;14&apos;&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;addons&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Use a different PostgreSQL version than the default:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;postgresql&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;13&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;apt&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;packages&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgresql-13&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgresql-13-postgis-3&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgresql&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# A different port must be used when not using the&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# default PostgreSQL:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;PGPORT=5433&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;NODE_ENV=test DB_PORT=5433 DB_USERNAME=postgres&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;before_install&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Use trust instead of peer authentication:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;&amp;gt;-&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;sudo sed -i&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;-e &apos;/local.*peer/s/postgres/all/&apos;&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;-e &apos;s/peer\|md5/trust/g&apos;&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;/etc/postgresql/13/main/pg_hba.conf&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Restart the PostgreSQL service:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sudo service postgresql@13-main restart&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;before_script&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Create the test database:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sudo psql -p 5433 -U postgres -c &apos;create database my-app;&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="programming" /><category term="testing" /><category term="travis-ci" /><category term="postgresql" /><summary type="html">Travis CI is a continuous integration platform for open source. I use it for all my open source projects that have an automated test suite (here’s an example). Read about the core concepts and the tutorial if you want to know more.</summary></entry><entry><title type="html">How to export PostgreSQL data to a JSON file</title><link href="https://alphahydrae.com/2021/02/how-to-export-postgresql-data-to-a-json-file/" rel="alternate" type="text/html" title="How to export PostgreSQL data to a JSON file" /><published>2021-02-10T20:00:15+01:00</published><updated>2021-02-10T20:00:15+01:00</updated><id>https://alphahydrae.com/2021/02/how-to-export-postgresql-data-to-a-json-file</id><content type="html" xml:base="https://alphahydrae.com/2021/02/how-to-export-postgresql-data-to-a-json-file/">&lt;p&gt;You know this data sitting in a PostgreSQL database that you have always wanted
 to export to a JSON file?&lt;/p&gt;
 
 &lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
