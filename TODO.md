@@ -1,5 +1,6 @@
 # TODO
 
+* Fix programming/sysadmin category
 * Validate front matter with json schema
 * Attribute emojis
 * Support today items in the past (a while ago)
