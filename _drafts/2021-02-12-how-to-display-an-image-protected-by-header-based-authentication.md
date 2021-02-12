@@ -57,9 +57,9 @@ function arrayBufferToBase64(buffer: ArrayBuffer) {
 ```
 
 You can use [the `arrayBuffer` method][fetch-api-array-buffer] of the [fetch
-`Response`][fetch-api-response] to get the data to pass to the Base64 conversion
-function, then build a properly formatted data URL and use it as the source of
-the image:
+`Response`][fetch-api-response] to get the array buffer to pass to the Base64
+conversion function, then build a properly formatted data URL and use it as the
+source of the image:
 
 ```js
 async function displayProtectedImage(
@@ -101,10 +101,12 @@ Base64 will slow down your UI.
 This is because JavaScript in the browser runs on a [single-threaded event
 loop][event-loop]. Since your JavaScript runs in the same thread as the UI, any
 sufficiently heavy calculation will temporary block everything, making your site
-feel unresponsive.
+feel unresponsive. (I recommend Philip Roberts' excellent video [*What the heck
+is an event loop anyway?*][event-loop-video] if you want to learn more about
+this topic.)
 
 Maybe a [web worker][web-workers] could be a solution to make sure this work is
-done in a separate thread, but I did not have time to investigate.
+done in a separate thread, but I did not try going down that path.
 
 ## Use an object URL
 
@@ -121,8 +123,9 @@ URL.createObjectURL(blob);
 If your blob contains image data, you can use this new URL as the source of an
 `<img>` tag. The advantage of this technique compared to constructing a data URL
 is that you do not have to process the image data at all. This blob URL is
-simply a point to the existing data in memory, stored in the [blob URL
-store][blob-url-store], with no extra computation required.
+simply a pointer to the existing data in memory, with no extra computation
+required. The data is stored in the [blob URL store][blob-url-store], a feature
+of the [File API][file-api].
 
 You can get the data of a fetch `Response` as a blob by using [its `blob`
 function][fetch-api-blob]. Let's rewrite the `displayProtectedImage` function to
@@ -159,10 +162,10 @@ displayProtectedImage(imageId, imageUrl, authToken);
 ## Collect the garbage
 
 The memory referenced by object URLs is released automatically when the document
-is unloaded. However, if you're writing a single page application or generally
-care about memory consumption and performance, you should let the browser know
-when this memory can be released by calling [the `revokeObjectURL`
-function][url-api-revoke-object-url]:
+is unloaded. However, if you're writing a single page application with no page
+refresh or if you generally care about memory consumption and performance, you
+should let the browser know when this memory can be released by calling [the
+`revokeObjectURL` function][url-api-revoke-object-url]:
 
 ```js
 URL.revokeObjectURL(someObjectUrl);
@@ -209,10 +212,12 @@ May your UI remain swift.
 [data-url]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
 [data-url-image]: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#embedding_an_image_via_data_url
 [event-loop]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
+[event-loop-video]: https://youtu.be/8aGhZQkoFbQ
 [fetch-api]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
 [fetch-api-array-buffer]: https://developer.mozilla.org/en-US/docs/Web/API/Body/arrayBuffer
 [fetch-api-blob]: https://developer.mozilla.org/en-US/docs/Web/API/Body/blob
 [fetch-api-response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
+[file-api]: https://developer.mozilla.org/en-US/docs/Web/API/File
 [http-401]: https://httpstatuses.com/401
 [url-api]: https://developer.mozilla.org/en-US/docs/Web/API/URL
 [url-api-create-object-url]: https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
