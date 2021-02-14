@@ -5,7 +5,8 @@ date: '2021-02-14 15:42:39 +0100'
 comments: true
 today:
   type: learned
-categories: programming
+categories: tooling
+tags: cli
 versions:
   git: 2.30.1
 ---

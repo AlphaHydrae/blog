@@ -4,8 +4,8 @@ title: "Summoning is complete"
 date: 2012-08-15 09:14
 comments: true
 permalink: /:year/:month/:title/
-categories: programming
-tags: cli shell workflow
+categories: tooling
+tags: cli shell
 ---
 
 I'm a lazy developer and an even lazier sysadmin. This is my history search

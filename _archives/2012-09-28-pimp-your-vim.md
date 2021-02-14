@@ -4,7 +4,7 @@ title: "Pimp your Vim"
 date: 2012-09-28 09:46
 comments: true
 permalink: /:year/:month/:title/
-categories: programming
+categories: tooling
 tags: tools
 versions:
   vim: 7.x

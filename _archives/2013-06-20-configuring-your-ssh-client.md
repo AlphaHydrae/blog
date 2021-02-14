@@ -5,7 +5,7 @@ date: 2013-06-20 20:46
 comments: true
 permalink: /:year/:month/:title/
 categories: sysadmin
-tags: ssh workflow
+tags: ssh
 ---
 
 I'm pretty bad at remembering IP addresses, and I'm too lazy to type the same

@@ -4,8 +4,7 @@ title: "Git: how to commit often and still push"
 date: 2012-08-14 09:03
 comments: true
 permalink: /:year/:month/:title/
-categories: programming
-tags: workflow
+categories: tooling
 versions:
   git: 1.x
 ---
