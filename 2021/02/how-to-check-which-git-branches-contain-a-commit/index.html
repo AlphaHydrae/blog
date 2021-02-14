@@ -3,21 +3,21 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Singletons in Ruby | AlphaHydrae</title>
+<title>How to check which Git branches contain a commit | AlphaHydrae</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Singletons in Ruby" />
+<meta property="og:title" content="How to check which Git branches contain a commit" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="```ruby require ‘singleton’" />
-<meta property="og:description" content="```ruby require ‘singleton’" />
-<link rel="canonical" href="https://alphahydrae.com/2012/09/singletons-in-ruby/" />
-<meta property="og:url" content="https://alphahydrae.com/2012/09/singletons-in-ruby/" />
+<meta name="description" content="The --contains option of the git branch command will list branches which contain the specified commit, in the same format as when running git branch or git branch --list:" />
+<meta property="og:description" content="The --contains option of the git branch command will list branches which contain the specified commit, in the same format as when running git branch or git branch --list:" />
+<link rel="canonical" href="https://alphahydrae.com/2021/02/how-to-check-which-git-branches-contain-a-commit/" />
+<meta property="og:url" content="https://alphahydrae.com/2021/02/how-to-check-which-git-branches-contain-a-commit/" />
 <meta property="og:site_name" content="AlphaHydrae" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2012-09-13T09:29:00+02:00" />
+<meta property="article:published_time" content="2021-02-14T15:42:39+01:00" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Singletons in Ruby" />
+<meta property="twitter:title" content="How to check which Git branches contain a commit" />
 <script type="application/ld+json">
-{"url":"https://alphahydrae.com/2012/09/singletons-in-ruby/","headline":"Singletons in Ruby","dateModified":"2012-09-13T09:29:00+02:00","datePublished":"2012-09-13T09:29:00+02:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://alphahydrae.com/2012/09/singletons-in-ruby/"},"description":"```ruby require ‘singleton’","@context":"https://schema.org"}</script>
+{"url":"https://alphahydrae.com/2021/02/how-to-check-which-git-branches-contain-a-commit/","headline":"How to check which Git branches contain a commit","dateModified":"2021-02-14T15:42:39+01:00","datePublished":"2021-02-14T15:42:39+01:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://alphahydrae.com/2021/02/how-to-check-which-git-branches-contain-a-commit/"},"description":"The --contains option of the git branch command will list branches which contain the specified commit, in the same format as when running git branch or git branch --list:","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet"> 
@@ -79,8 +79,10 @@
 
 <article class="max-w-prose mx-auto" itemscope itemtype="https://schema.org/BlogPosting">
   <header class="mt-24 mb-20">
-    <!-- Category --><!-- Title -->
-    <h1 itemprop="name headline">Singletons in Ruby</h1>
+    <!-- Category --><em class="block font-body mb-3 text-3xl text-center text-white">
+        <img class="emoji" title=":books:" alt=":books:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4da.png" height="20" width="20">
+         Today I Learned</em><!-- Title -->
+    <h1 itemprop="name headline">How to check which Git branches contain a commit</h1>
 
     <!-- Metadata -->
     <p class="flex flex-wrap justify-center space-x-5 text-gray-400">
@@ -88,17 +90,17 @@
       <!-- Publication date -->
       
 
-<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="2012-09-13T09:29:00+02:00" itemprop="datePublished">
-  <svg width="16" height="16" class="octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 0a.75.75 0 01.75.75V2h5V.75a.75.75 0 011.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 16H2.75A1.75 1.75 0 011 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 014.75 0zm0 3.5h8.5a.25.25 0 01.25.25V6h-11V3.75a.25.25 0 01.25-.25h2zm-2.25 4v6.75c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V7.5h-11z"></path></svg>
-  <span class="font-mono whitespace-nowrap">2012-09-13</span>
+<span class="flex items-center justify-center space-x-2 mb-2 text-gray-500" datetime="2021-02-14T15:42:39+01:00" itemprop="datePublished">
+  <svg width="16" height="16" class="octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar octicon octicon-calendar align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 0a.75.75 0 01.75.75V2h5V.75a.75.75 0 011.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 16H2.75A1.75 1.75 0 011 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 014.75 0zm0 3.5h8.5a.25.25 0 01.25.25V6h-11V3.75a.25.25 0 01.25-.25h2zm-2.25 4v6.75c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V7.5h-11z"></path></svg>
+  <span class="font-mono whitespace-nowrap">2021-02-14</span>
 </span>
 
 
       <!-- Last modification date (if available) --><!-- Categories -->
       
         <span class="flex items-center space-x-2 mb-2 text-gray-500">
-          <svg width="16" height="16" class="octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z"></path></svg>
-          <span class="font-mono">programming</span>
+          <svg width="16" height="16" class="octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory octicon octicon-file-directory align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z"></path></svg>
+          <span class="font-mono">tooling</span>
         </span>
       
 
@@ -107,16 +109,16 @@
         
 
 
-<a class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:text-red-700 hover:underline" href="https://www.ruby-lang.org">
+<a class="flex items-center space-x-2 mb-2 cursor-pointer text-gray-500 hover:text-red-500 hover:underline" href="https://git-scm.com">
   <span class="w-4 h-4   fill-current">
   <svg role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-  <title>Ruby</title>
-  <path d="M20.156.083c3.033.525 3.893 2.598 3.829 4.77L24 4.822 22.635 22.71 4.89 23.926h.016C3.433 23.864.15 23.729 0 19.139l1.645-3 2.819 6.586.503 1.172 2.805-9.144-.03.007.016-.03 9.255 2.956-1.396-5.431-.99-3.9 8.82-.569-.615-.51L16.5 2.114 20.159.073l-.003.01zM0 19.089v.026-.029.003zM5.13 5.073c3.561-3.533 8.157-5.621 9.922-3.84 1.762 1.777-.105 6.105-3.673 9.636-3.563 3.532-8.103 5.734-9.864 3.957-1.766-1.777.045-6.217 3.612-9.75l.003-.003z"></path>
+  <title>Git</title>
+  <path d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.658 2.66c.645-.223 1.387-.078 1.9.435.721.72.721 1.884 0 2.604-.719.719-1.881.719-2.6 0-.539-.541-.674-1.337-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348.713.721.713 1.883 0 2.6-.719.721-1.889.721-2.609 0-.719-.719-.719-1.879 0-2.598.182-.18.387-.316.605-.406V8.835c-.217-.091-.424-.222-.6-.401-.545-.545-.676-1.342-.396-2.009L7.636 3.7.45 10.881c-.6.605-.6 1.584 0 2.189l10.48 10.477c.604.604 1.582.604 2.186 0l10.43-10.43c.605-.603.605-1.582 0-2.187"></path>
 </svg>
 
 </span>
 
-  <span class="font-mono">ruby</span>
+  <span class="font-mono">git</span>
 </a>
 
       
@@ -124,14 +126,8 @@
       <!-- Tags -->
       
         <span class="flex items-center space-x-2 mb-2 text-gray-500">
-  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
-  <span class="font-mono">singleton</span>
-</span>
-
-      
-        <span class="flex items-center space-x-2 mb-2 text-gray-500">
-  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
-  <span class="font-mono">patterns</span>
+  <svg width="16" height="16" class="octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag octicon octicon-tag align-middle inline fill-current" viewbox="0 0 16 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+  <span class="font-mono">cli</span>
 </span>
 
       
@@ -140,19 +136,23 @@
 
   <!-- Post content -->
   <div class="text-lg" itemprop="articleBody">
-    <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'singleton'</span>
+    <p>The <a href="https://git-scm.com/docs/git-branch#Documentation/git-branch.txt---containsltcommitgt"><code class="language-plaintext highlighter-rouge">--contains</code> option of the <code class="language-plaintext highlighter-rouge">git branch</code> command</a> will
+list branches which contain the specified commit, in the same format as when
+running <code class="language-plaintext highlighter-rouge">git branch</code> or <code class="language-plaintext highlighter-rouge">git branch --list</code>:</p>
 
-<span class="k">class</span> <span class="nc">MySingletonClass</span>
-  <span class="kp">include</span> <span class="no">Singleton</span>
-<span class="k">end</span>
-
-<span class="no">MySingletonClass</span><span class="p">.</span><span class="nf">instance</span>   <span class="c1">#=&gt; the singleton instance</span>
-<span class="no">MySingletonClass</span><span class="p">.</span><span class="nf">new</span>        <span class="c1">#=&gt; NoMethodError</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> git branch <span class="nt">--contains</span> aa82193
+<span class="k">*</span> some-branch
+  master
 </code></pre></div></div>
 
-<p>I love dynamic languages.</p>
+<p>This output indicates that both the <code class="language-plaintext highlighter-rouge">some-branch</code> branch and the <code class="language-plaintext highlighter-rouge">master</code> branch
+contain commit <code class="language-plaintext highlighter-rouge">aa82193</code> (and that <code class="language-plaintext highlighter-rouge">some-branch</code> is the current branch).</p>
 
-<p>See <a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/singleton/rdoc/Singleton.html">Ruby’s <code class="language-plaintext highlighter-rouge">Singleton</code> module</a> for more information.</p>
+<blockquote>
+  <p>There is an inverse option, <a href="https://git-scm.com/docs/git-branch#Documentation/git-branch.txt---no-containsltcommitgt">the <code class="language-plaintext highlighter-rouge">--no-contains</code>
+option</a>, which will only list branches that don’t
+contain the specified commit.</p>
+</blockquote>
 
 
   </div>
@@ -164,23 +164,23 @@
         
 
 
-<a class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-red-700 group hover:text-blue-400" href="https://www.ruby-lang.org"><span class="logo w-12 h-12 fill-current">
+<a class="flex items-center justify-center space-x-2 mb-4 cursor-pointer no-underline text-red-500 group hover:text-blue-400" href="https://git-scm.com"><span class="logo w-12 h-12 fill-current">
       <svg role="img" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-  <title>Ruby</title>
-  <path d="M20.156.083c3.033.525 3.893 2.598 3.829 4.77L24 4.822 22.635 22.71 4.89 23.926h.016C3.433 23.864.15 23.729 0 19.139l1.645-3 2.819 6.586.503 1.172 2.805-9.144-.03.007.016-.03 9.255 2.956-1.396-5.431-.99-3.9 8.82-.569-.615-.51L16.5 2.114 20.159.073l-.003.01zM0 19.089v.026-.029.003zM5.13 5.073c3.561-3.533 8.157-5.621 9.922-3.84 1.762 1.777-.105 6.105-3.673 9.636-3.563 3.532-8.103 5.734-9.864 3.957-1.766-1.777.045-6.217 3.612-9.75l.003-.003z"></path>
+  <title>Git</title>
+  <path d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.658 2.66c.645-.223 1.387-.078 1.9.435.721.72.721 1.884 0 2.604-.719.719-1.881.719-2.6 0-.539-.541-.674-1.337-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348.713.721.713 1.883 0 2.6-.719.721-1.889.721-2.609 0-.719-.719-.719-1.879 0-2.598.182-.18.387-.316.605-.406V8.835c-.217-.091-.424-.222-.6-.401-.545-.545-.676-1.342-.396-2.009L7.636 3.7.45 10.881c-.6.605-.6 1.584 0 2.189l10.48 10.477c.604.604 1.582.604 2.186 0l10.43-10.43c.605-.603.605-1.582 0-2.187"></path>
 </svg>
 
     </span><div class="flex flex-col">
-    <span class="font-mono no-underline text-red-700 group-hover:text-blue-400">
-      Ruby
+    <span class="font-mono no-underline text-red-500 group-hover:text-blue-400">
+      Git
     </span>
-    <code class="text-gray-500 group-hover:text-blue-400">1.9.3</code>
+    <code class="text-gray-500 group-hover:text-blue-400">2.30.1</code>
   </div>
 </a>
 
       
     </div>
-<a class="u-url" href="/2012/09/singletons-in-ruby/" hidden></a>
+<a class="u-url" href="/2021/02/how-to-check-which-git-branches-contain-a-commit/" hidden></a>
 </article>
 
       </main><footer class="max-w-prose mt-24 mb-12 mx-auto p-4 font-body text-gray-500 text-sm">

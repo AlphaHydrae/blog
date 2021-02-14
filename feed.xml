@@ -1,4 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-02-12T23:13:10+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">How to display an image protected by header-based authentication</title><link href="https://alphahydrae.com/2021/02/how-to-display-an-image-protected-by-header-based-authentication/" rel="alternate" type="text/html" title="How to display an image protected by header-based authentication" /><published>2021-02-12T20:02:36+01:00</published><updated>2021-02-12T20:02:36+01:00</updated><id>https://alphahydrae.com/2021/02/how-to-display-an-image-protected-by-header-based-authentication</id><content type="html" xml:base="https://alphahydrae.com/2021/02/how-to-display-an-image-protected-by-header-based-authentication/">&lt;p&gt;I recently had to work with an API that serves images protected by header-based
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-02-14T16:47:58+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">How to check which Git branches contain a commit</title><link href="https://alphahydrae.com/2021/02/how-to-check-which-git-branches-contain-a-commit/" rel="alternate" type="text/html" title="How to check which Git branches contain a commit" /><published>2021-02-14T15:42:39+01:00</published><updated>2021-02-14T15:42:39+01:00</updated><id>https://alphahydrae.com/2021/02/how-to-check-which-git-branches-contain-a-commit</id><content type="html" xml:base="https://alphahydrae.com/2021/02/how-to-check-which-git-branches-contain-a-commit/">&lt;p&gt;The &lt;a href=&quot;https://git-scm.com/docs/git-branch#Documentation/git-branch.txt---containsltcommitgt&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--contains&lt;/code&gt; option of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git branch&lt;/code&gt; command&lt;/a&gt; will
+list branches which contain the specified commit, in the same format as when
+running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git branch&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git branch --list&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$&amp;gt;&lt;/span&gt; git branch &lt;span class=&quot;nt&quot;&gt;--contains&lt;/span&gt; aa82193
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; some-branch
+  master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This output indicates that both the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;some-branch&lt;/code&gt; branch and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;master&lt;/code&gt; branch
+contain commit &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aa82193&lt;/code&gt; (and that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;some-branch&lt;/code&gt; is the current branch).&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;There is an inverse option, &lt;a href=&quot;https://git-scm.com/docs/git-branch#Documentation/git-branch.txt---no-containsltcommitgt&quot;&gt;the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--no-contains&lt;/code&gt;
+option&lt;/a&gt;, which will only list branches that don’t
+contain the specified commit.&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><category term="tooling" /><category term="cli" /><category term="git" /><summary type="html">The --contains option of the git branch command will list branches which contain the specified commit, in the same format as when running git branch or git branch --list:</summary></entry><entry><title type="html">How to display an image protected by header-based authentication</title><link href="https://alphahydrae.com/2021/02/how-to-display-an-image-protected-by-header-based-authentication/" rel="alternate" type="text/html" title="How to display an image protected by header-based authentication" /><published>2021-02-12T20:02:36+01:00</published><updated>2021-02-12T20:02:36+01:00</updated><id>https://alphahydrae.com/2021/02/how-to-display-an-image-protected-by-header-based-authentication</id><content type="html" xml:base="https://alphahydrae.com/2021/02/how-to-display-an-image-protected-by-header-based-authentication/">&lt;p&gt;I recently had to work with an API that serves images protected by header-based
 authentication. You have to send a &lt;a href=&quot;https://tools.ietf.org/html/rfc6750&quot;&gt;bearer token&lt;/a&gt; in the
 &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Authorization&lt;/code&gt; header&lt;/a&gt; for all requests, including
 images. How do you display such an image in a web page?&lt;/p&gt;
@@ -968,136 +984,4 @@ plugins like &lt;a href=&quot;https://github.com/postcss/autoprefixer&quot;&gt;t
 &lt;p&gt;This blog is made with &lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt;. Integrating Tailwind CSS is easy with
 the &lt;a href=&quot;https://github.com/mhanberg/jekyll-postcss&quot;&gt;Jekyll PostCSS plugin&lt;/a&gt;. It takes one line, as you can see
 in &lt;a href=&quot;https://github.com/AlphaHydrae/blog/blob/92e6262ba1098df47fe25b3a137efda1d9e8fce4/postcss.config.js#L6&quot;&gt;this blog’s PostCSS configuration
-file&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="programming" /><category term="css" /><category term="tailwind-css" /><category term="post-css" /><summary type="html">Tailwind CSS is a utility-first CSS framework packed with classes like flex, pt-4, text-center and rotate-90 that can be composed to build any design, directly in your markup.</summary></entry><entry><title type="html">You should refactor all the time</title><link href="https://alphahydrae.com/2021/01/you-should-refactor-all-the-time/" rel="alternate" type="text/html" title="You should refactor all the time" /><published>2021-01-22T20:00:00+01:00</published><updated>2021-01-22T20:00:00+01:00</updated><id>https://alphahydrae.com/2021/01/you-should-refactor-all-the-time</id><content type="html" xml:base="https://alphahydrae.com/2021/01/you-should-refactor-all-the-time/">&lt;p&gt;Have you seen code rot? I have. A lot of it was my own code.&lt;/p&gt;
-
-&lt;p&gt;The more I learn about programming, the more I realize that &lt;a href=&quot;https://en.wikipedia.org/wiki/Code_refactoring&quot;&gt;refactoring&lt;/a&gt; must
-be an ongoing activity that you perform every day if you want to maintain the
-quality of your code and your architecture. It should never be a task that you
-schedule at the end of an iteration or a project–something that will be dropped
-at the first sign of an impending deadline.&lt;/p&gt;
-
-&lt;p&gt;I’m not the first to think this. I seem to be in good company.&lt;/p&gt;
-
-&lt;!-- more --&gt;
-
-&lt;h2 id=&quot;the-equation-of-software-design&quot;&gt;The Equation of Software Design&lt;/h2&gt;
-
-&lt;p&gt;By Max Kanat-Alexander in &lt;a href=&quot;https://www.oreilly.com/library/view/code-simplicity/9781449314750/&quot;&gt;&lt;em&gt;Code Simplicity&lt;/em&gt;&lt;/a&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.oreilly.com/library/view/code-simplicity/9781449314750/&quot;&gt;&lt;img class=&quot;right&quot; src=&quot;/assets/books/code-simplicity.jpg&quot; width=&quot;150&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;The desirability of a change is directly proportional to the value now plus
-the future value, and inversely proportional to the effort of implementation
-plus the effort of maintenance.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;When you’re in it for the long haul, the effort of implementation will
-eventually be insignificant compared to the cumulated effort of maintenance.
-Therefore:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;It is more important to reduce the effort of maintenance than it is to reduce
-the effort of implementation.&lt;/p&gt;
-
-  &lt;p&gt;The quality level of your design should be proportional to the length of
-future time in which your system will continue to help people.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;You can’t afford to skip refactoring and let a significant amount of cruft
-accumulate. It &lt;em&gt;will&lt;/em&gt; come back to haunt you.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-cycles-of-tdd&quot;&gt;The Cycles of TDD&lt;/h2&gt;
-
-&lt;p&gt;By Robert C. Martin, a.k.a. &lt;em&gt;Uncle Bob&lt;/em&gt;, in &lt;a href=&quot;https://blog.cleancoder.com/uncle-bob/2014/12/17/TheCyclesOfTDD.html&quot;&gt;&lt;em&gt;The Cycles of
-TDD&lt;/em&gt;&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;h3 id=&quot;micro-cycle-red-green-refactor&quot;&gt;Micro cycle: Red-Green-Refactor&lt;/h3&gt;
-
-  &lt;p&gt;The micro-cycle that experienced TDDers follow. The Red/Green/Refactor
-cycle. […]&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;Create a unit tests that fails&lt;/li&gt;
-    &lt;li&gt;Write production code that makes that test pass.&lt;/li&gt;
-    &lt;li&gt;Clean up the mess you just made.&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;The philosophy is based on the idea that our limited minds are not capable of
-pursuing the two simultaneous goals of all software systems: &lt;strong&gt;1. Correct
-behavior&lt;/strong&gt;. &lt;strong&gt;2. Correct structure&lt;/strong&gt;. So the RGR cycle tells us to first focus
-on making the software work correctly; and then, and only then, to focus on
-giving that working software a long-term survivable structure.&lt;/p&gt;
-
-  &lt;p&gt;Again, many people have written about this cycle. Indeed the idea derives from
-Kent Beck’s original injunction:&lt;/p&gt;
-
-  &lt;blockquote&gt;
-    &lt;p&gt;&lt;em&gt;Make it work. Make it right. Make it fast.&lt;/em&gt;&lt;/p&gt;
-  &lt;/blockquote&gt;
-
-  &lt;p&gt;Another way to think about this idea is:&lt;/p&gt;
-
-  &lt;blockquote&gt;
-    &lt;p&gt;&lt;em&gt;Getting software to work is only half of the job.&lt;/em&gt;&lt;/p&gt;
-  &lt;/blockquote&gt;
-
-  &lt;p&gt;Customers value two things about software. The way it makes a machine behave;
-and the ease with which it can be changed. Compromise either of those two
-values and the software will diminish in real value to the customer.&lt;/p&gt;
-
-  &lt;p&gt;Executing the Red/Green/Refactor cycle takes on the order of a minute or so.
-This is the granularity of refactoring. Refactoring is not something you do at
-the end of the project; it’s something you do on a minute-by-minute basis.
-There is no task on the project plan that says: Refactor. There is no time
-reserved at the end of the project, or the iteration, or the day, for
-refactoring. Refactoring is a continuous in-process activity, not something
-that is done late (and therefore optionally).&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;a-design-for-developers&quot;&gt;A Design for Developers&lt;/h2&gt;
-
-&lt;p&gt;By Eric Evans in &lt;a href=&quot;https://www.oreilly.com/library/view/domain-driven-design-tackling/0321125215/&quot;&gt;&lt;em&gt;Domain-Driven Design: Tackling Complexity in the Heart of
-Software&lt;/em&gt;&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;a href=&quot;https://www.oreilly.com/library/view/domain-driven-design-tackling/0321125215/&quot;&gt;&lt;img class=&quot;right&quot; src=&quot;/assets/books/domain-driven-design.jpg&quot; width=&quot;150&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-  &lt;p&gt;Software isn’t just for users. It’s also for developers. Developers have to
-integrate code with other parts of the system. In an iterative process,
-developers change the code again and again. Refactoring towards deeper insight
-both leads to and benefits from a supple design. […]&lt;/p&gt;
-
-  &lt;p&gt;If you wait until you can make a complete justification for a change, you’ve
-waited too long. Your project is already incurring heavy costs, and the
-postponed changes will be harder to make because the target code will have
-been more elaborated and more embedded in other code.&lt;/p&gt;
-
-  &lt;p&gt;Continuous refactoring has come to be considered a “best practice”, but most
-project teams are still too cautious about it. They see the risk of changing
-code and the cost of developer time to make a change; but what’s harder to see
-is the risk of keeping an awkward design and the cost of working around that
-design. Developers who want to refactor are often asked to justify the
-decision. Although this seems reasonable, it makes an already difficult thing
-impossibly difficult, and tends to squelch refactoring (or drive it
-underground). Software development is not such a predictable process that the
-benefits of a change or the costs of not making a change can be accurately
-calculated.&lt;/p&gt;
-
-  &lt;p&gt;[…] Therefore, refactor when:&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;The design does not express the team’s current understanding of the domain;&lt;/li&gt;
-    &lt;li&gt;Important concepts are implicit in the design (and you see a way to make
-them explicit); or&lt;/li&gt;
-    &lt;li&gt;You see an opportunity to make some important part of the design suppler.&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;This aggressive attitude does not justify any change at any time. Don’t
-refactor the day before a release. Don’t introduce “supple designs” that are
-just demonstrations of technical virtuosity but fail to cut to the core of the
-domain. Don’t introduce a “deeper model” that you couldn’t convince a domain
-expert to use, no matter how elegant it seems. Don’t be absolute about things,
-but push beyond the comfort zone in the direction of favoring refactoring.&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><category term="programming" /><category term="refactoring" /><summary type="html">Have you seen code rot? I have. A lot of it was my own code.</summary></entry></feed>
+file&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="programming" /><category term="css" /><category term="tailwind-css" /><category term="post-css" /><summary type="html">Tailwind CSS is a utility-first CSS framework packed with classes like flex, pt-4, text-center and rotate-90 that can be composed to build any design, directly in your markup.</summary></entry></feed>
