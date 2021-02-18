@@ -9,7 +9,8 @@ TODAY = {
   'tif' => 'found',
   'til' => 'learned',
   'tit' => 'think',
-  'tiw' => 'watched'
+  'tiw' => 'watched',
+  'tiwr' => 'wrote'
 }
 
 TODAY_KEYS = TODAY.keys
