@@ -103,7 +103,7 @@ async function computeAsyncObject() {
 }
 ```
 
-You can even do this with arbitrary nested structures as long as they're only
+You can even do this with arbitrarily nested structures as long as they're only
 arrays and plain objects:
 
 ```js
