@@ -92,6 +92,12 @@ typescript:
 
 # Tools
 
+asdf:
+  type: tool
+  title: asdf
+  website: https://asdf-vm.com
+  color_class: text-purple-500
+
 backbone:
   type: tool
   title: Backbone.js
