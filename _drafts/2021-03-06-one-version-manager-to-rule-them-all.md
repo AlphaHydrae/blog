@@ -7,9 +7,10 @@ today:
   type: found
   past: true
 categories: tooling
-tags: cli
+tags: cli asdf
 versions:
   asdf: 0.8.0
+  asdf-nodejs: 5a46614
 ---
 
 [asdf][asdf] is an extendable version manager with support for [Ruby][ruby],

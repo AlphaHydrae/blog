@@ -98,6 +98,11 @@ asdf:
   website: https://asdf-vm.com
   color_class: text-purple-500
 
+asdf-nodejs:
+  type: tool
+  title: asdf-nodejs
+  website: https://github.com/asdf-vm/asdf-nodejs
+
 backbone:
   type: tool
   title: Backbone.js
