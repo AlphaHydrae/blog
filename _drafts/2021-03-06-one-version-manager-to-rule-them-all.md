@@ -29,10 +29,11 @@ was doing a lot of [Ruby on Rails][rails]. Then I switched to [rbenv][rbenv]
 because it seemed simpler and used less dark shell magic. [nvm][nvm] and
 [nodenv][nodenv] are similar tools for Node.js. I have also used the latter.
 
-When I started playing with [Elixir][elixir], I discovered [asdf][asdf], a
-version manager capable of installing and managing multiple versions of both
-Elixir and [Erlang][erlang]. Not only that, it's a plugin-based version manager
-with plugins for practically every programming language.
+When I started playing with Elixir, I discovered [asdf][asdf], a version manager
+capable of installing and managing multiple versions of both [Elixir][elixir]
+and [Erlang][erlang], but also Ruby and Node.js which I am still using
+regularly. Not only that, it's a plugin-based version manager with plugins for
+practically every programming language.
 
 ## I need to get me some of that!
 
@@ -45,6 +46,8 @@ $> brew install coreutils curl git
 # Install asdf itself
 $> brew install asdf
 ```
+
+> On Windows, it should work in the [Windows Subsystem for Linux (WSL)][wsl].
 
 You also need to add it to your shell by adding this line to your shell
 configuration file, for example `.zshrc` or `.bash_profile`:
@@ -61,7 +64,12 @@ language, for example [the Node.js plugin][asdf-nodejs]:
 $> asdf plugin add nodejs
 ```
 
-The plugin allows you to list the available versions for the language:
+> A plugin might require additional setup. For example, this plugin requires you
+> to [import the Node.js release team's OpenPGP keys][asdf-nodejs-install] to
+> ensure the authenticity of downloaded Node.js releases.
+
+Once installed, the plugin allows you to list the available versions for the
+language:
 
 ```bash
 $> asdf list all nodejs
@@ -74,7 +82,7 @@ $> asdf list all nodejs
 15.11.0
 ```
 
-Now you can install whatever versions you want:
+You can install whatever versions you want:
 
 ```
 $> asdf install nodejs 14.16.0
@@ -107,27 +115,80 @@ $> cat ~/.tool-versions
 nodejs 14.16.0
 ```
 
-## What sorcery is this?
-
-If you check your PATH, you
-will notice that the `~/.asdf/shims` directory has been added to it. Shims is
-how most programming language version managers work: asdf will put a `node` executable
-in there for Node.js, for example. This executable isn't actually Node.js
+You can put a similar file in one of your projects if it uses a different
+version than the others:
 
 ```bash
-$> cat ~/.asdf/shims/node
-exec /usr/local/bin/asdf exec "node" "$@"
+$> node --version
+v14.16.0
+
+$> echo "nodejs 15.11.0" > ~/path/to/project/.tool-versions
+$> cd ~/path/to/project
+$> node --version
+v15.11.0
 ```
+
+> As another example, you can check [the `.tool-versions` file in this blog's
+> repository](https://github.com/AlphaHydrae/blog/blob/main/.tool-versions).
+
+You can also use an environment variable to set the current version. The name of
+the variable depends on which plugin you're using. For example, the variable for
+the Node.js plugin is `ASDF_NODEJS_VERSION`:
+
+```bash
+$> node --version
+v14.16.0
+
+$> ASDF_NODEJS_VERSION=15.11.0 node --version
+v15.11.0
+```
+
+## What sorcery is this?
+
+If you check your PATH, you will notice that the `~/.asdf/shims` directory has
+been added to it:
 
 ```bash
 $> echo $PATH
 /Users/alice/.asdf/shims:...
 ```
 
+When you install a Node.js version with asdf, it will put a `node` executable
+for Node.js in [the shims directory][asdf-shims]. This executable isn't actually
+Node.js. You can see this by displaying its contents:
+
+```bash
+$> cat ~/.asdf/shims/node
+exec /usr/local/bin/asdf exec "node" "$@"
+```
+
+The shim is here to "intercept" the execution of Node.js (since the shims
+directory should be the first thing in your [PATH][path]), and to instead call
+asdf with the language used and any additional arguments. asdf will select the
+correct version of Node.js to run depending on your various `.tool-versions`
+file and the `ASDF_NODEJS_VERSION` environment variable, and call the
+corresponding Node.js executable somewhere in the `~/.asdf/installs` directory
+(for example, the executable for version 14.16.0 of Node.js is at
+`~/.asdf/installs/nodejs/14.16.0/bin/node`).
+
+> Other related commands such as `npm` and any global Node.js package you might
+> install will also have corresponding scripts in the shims directory.
+
+Shims is how many programming language version managers work. The previously
+mentionned rbenv and nodenv [work the same way][rbenv-shims].
+
+This mechanism makes it easy to use asdf-installed versions of programming
+languages from a script. Simply put the shims directory in the PATH and set the
+correct environment variable to the desired version.
+
+Go forth and install all the versions.
+
 [asdf]: https://asdf-vm.com
 [asdf-install]: https://asdf-vm.com/#/core-manage-asdf
 [asdf-nodejs]: https://github.com/asdf-vm/asdf-nodejs
+[asdf-nodejs-install]: https://github.com/asdf-vm/asdf-nodejs#install
 [asdf-plugins]: https://asdf-vm.com/#/plugins-all?id=plugin-list
+[asdf-shims]: https://asdf-vm.com/#/core-manage-versions?id=shims
 [brew]: https://brew.sh
 [elixir]: https://elixir-lang.org
 [erlang]: https://www.erlang.org
@@ -137,5 +198,7 @@ $> echo $PATH
 [path]: https://en.wikipedia.org/wiki/PATH_(variable)
 [rails]: https://rubyonrails.org
 [rbenv]: https://github.com/rbenv/rbenv
+[rbenv-shims]: https://github.com/rbenv/rbenv#understanding-shims
 [ruby]: https://www.ruby-lang.org
 [rvm]: https://rvm.io
+[wsl]: https://docs.microsoft.com/en-us/windows/wsl/about
