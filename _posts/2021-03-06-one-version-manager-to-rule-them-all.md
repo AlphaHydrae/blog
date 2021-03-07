@@ -14,7 +14,8 @@ versions:
 ---
 
 [asdf][asdf] is an extendable version manager with support for [Ruby][ruby],
-[Node.js][node], [Elixir][elixir], [Erlang][erlang], [and more][asdf-plugins].
+[Node.js][node], [Elixir][elixir], [Erlang][erlang], [Python][python],
+[Rust][rust], [and more][asdf-plugins].
 
 When you regularly work on multiple projects using the same programming
 language, Node.js for example, you might need different versions of the language
@@ -197,9 +198,11 @@ Go forth and install all the versions.
 [nodenv]: https://github.com/nodenv/nodenv
 [nvm]: https://github.com/nvm-sh/nvm
 [path]: https://en.wikipedia.org/wiki/PATH_(variable)
+[python]: https://www.python.org
 [rails]: https://rubyonrails.org
 [rbenv]: https://github.com/rbenv/rbenv
 [rbenv-shims]: https://github.com/rbenv/rbenv#understanding-shims
 [ruby]: https://www.ruby-lang.org
+[rust]: https://www.rust-lang.org
 [rvm]: https://rvm.io
 [wsl]: https://docs.microsoft.com/en-us/windows/wsl/about
