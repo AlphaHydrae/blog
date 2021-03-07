@@ -58,9 +58,11 @@ configuration file, for example `.zshrc` or `.bash_profile`:
 . $(brew --prefix asdf)/asdf.sh
 ```
 
-Restart your shell for this change to take effect. You can now use asdf. The
-first thing you need to do is install a plugin for your favorite programming
-language, for example [the Node.js plugin][asdf-nodejs]:
+Restart your shell for this change to take effect.
+
+You can now use asdf. The first thing you need to do is install a plugin for
+your favorite programming language, for example [the Node.js
+plugin][asdf-nodejs]:
 
 ```bash
 $> asdf plugin add nodejs
@@ -147,8 +149,8 @@ v15.11.0
 
 ## What sorcery is this?
 
-If you check your PATH, you will notice that the `~/.asdf/shims` directory has
-been added to it:
+Check your [PATH][path] and notice that the `~/.asdf/shims` directory has been
+prepended to it:
 
 ```bash
 $> echo $PATH
@@ -165,12 +167,13 @@ exec /usr/local/bin/asdf exec "node" "$@"
 ```
 
 The shim is here to "intercept" the execution of Node.js (since the shims
-directory should be the first thing in your [PATH][path]), and to instead call
-asdf with the language used and any additional arguments. asdf will select the
-correct version of Node.js to run depending on your various `.tool-versions`
-file and the `ASDF_NODEJS_VERSION` environment variable, and call the
-corresponding Node.js executable somewhere in the `~/.asdf/installs` directory
-(for example, the executable for version 14.16.0 of Node.js is at
+directory should be the first thing in your PATH), and to instead call asdf with
+the language used and any additional arguments.
+
+asdf will select the correct version of Node.js to run depending on your various
+`.tool-versions` file and the `ASDF_NODEJS_VERSION` environment variable, and
+call the corresponding Node.js executable somewhere in the `~/.asdf/installs`
+directory (for example, the executable for version 14.16.0 of Node.js is at
 `~/.asdf/installs/nodejs/14.16.0/bin/node`).
 
 > Other related commands such as `npm` and any global Node.js package you might
@@ -179,12 +182,30 @@ corresponding Node.js executable somewhere in the `~/.asdf/installs` directory
 Shims is how many programming language version managers work. The previously
 mentionned rbenv and nodenv [work the same way][rbenv-shims].
 
-This mechanism makes it easy to use asdf-installed versions of programming
-languages from a script. Simply put the shims directory in the PATH and set the
-correct environment variable to the desired version.
+This simple PATH-based mechanism makes it easy to programmaticaly use
+asdf-managed versions of languages from a script. Simply put the shims directory
+in the PATH and set the correct environment variable to the desired version.
+Here's an example from an [Ansible][ansible] playbook:
+
+```yml
+- name: >-
+    Execute a script with an asdf-managed
+    version of Node.js
+  # Switch to a user who has asdf installed.
+  become: true
+  become_user: alice
+  # Run the script.
+  command: "node /path/to/script.js"
+  environment:
+    # Use a specific version of Node.js.
+    ANSIBLE_NODEJS_VERSION: 14.16.0
+    # Put the shims directory in the PATH.
+    PATH: "/home/alice/.asdf/shims:{% raw %}{{ ansible_env.PATH }}{% endraw %}"
+```
 
 Go forth and install all the versions.
 
+[ansible]: https://www.ansible.com
 [asdf]: https://asdf-vm.com
 [asdf-install]: https://asdf-vm.com/#/core-manage-asdf
 [asdf-nodejs]: https://github.com/asdf-vm/asdf-nodejs
