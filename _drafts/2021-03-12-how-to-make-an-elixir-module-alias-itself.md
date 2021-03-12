@@ -31,9 +31,9 @@ Atom.to_string(List)  # "Elixir.List"
 Atom.to_string(MyProject.Thing)  # "Elixir.MyProject.Thing"
 ```
 
-If your module is an [Elixir struct][elixir-struct] and you define functions to
-manipulate it, you can reference it by its full name but that's rather verbose
-and repetitive:
+You can reference an Elixir module by its full name but that's rather verbose
+and repetitive, especially in its own implementation. Here's an example with an
+[Elixir struct][elixir-struct] and a function that manipulate it:
 
 ```elixir
 defmodule MyProject.Thing do
@@ -63,8 +63,8 @@ defmodule MyProject.Thing do
 end
 ```
 
-Although the module name is no longer repeated, it may not be the most readable
-version.
+Although the module name is no longer repeated, this may not be the most
+readable version.
 
 ## Using an alias
 
