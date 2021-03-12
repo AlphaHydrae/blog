@@ -1,4 +1,110 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-03-07T15:57:10+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">asdf, one version manager to rule them all</title><link href="https://alphahydrae.com/2021/03/one-version-manager-to-rule-them-all/" rel="alternate" type="text/html" title="asdf, one version manager to rule them all" /><published>2021-03-06T21:32:17+01:00</published><updated>2021-03-06T21:32:17+01:00</updated><id>https://alphahydrae.com/2021/03/one-version-manager-to-rule-them-all</id><content type="html" xml:base="https://alphahydrae.com/2021/03/one-version-manager-to-rule-them-all/">&lt;p&gt;&lt;a href=&quot;https://asdf-vm.com&quot;&gt;asdf&lt;/a&gt; is an extendable version manager with support for &lt;a href=&quot;https://www.ruby-lang.org&quot;&gt;Ruby&lt;/a&gt;,
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://alphahydrae.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://alphahydrae.com/" rel="alternate" type="text/html" /><updated>2021-03-12T22:26:21+01:00</updated><id>https://alphahydrae.com/feed.xml</id><title type="html">AlphaHydrae</title><subtitle>Tales of a programmer</subtitle><entry><title type="html">How to make an Elixir module alias itself</title><link href="https://alphahydrae.com/2021/03/how-to-make-an-elixir-module-alias-itself/" rel="alternate" type="text/html" title="How to make an Elixir module alias itself" /><published>2021-03-12T20:40:21+01:00</published><updated>2021-03-12T20:40:21+01:00</updated><id>https://alphahydrae.com/2021/03/how-to-make-an-elixir-module-alias-itself</id><content type="html" xml:base="https://alphahydrae.com/2021/03/how-to-make-an-elixir-module-alias-itself/">&lt;p&gt;Elixir modules are generally named with a hierarchical structure separated by
+dots:&lt;/p&gt;
+
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;MyProject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This is just a convention and provides no special functionality. Like &lt;a href=&quot;http://erlang.org/doc/reference_manual/modules.html&quot;&gt;Erlang
+modules&lt;/a&gt;, &lt;a href=&quot;https://elixir-lang.org/getting-started/modules-and-functions.html&quot;&gt;Elixir modules&lt;/a&gt; are just atoms,
+prefixed with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;Elixir.&quot;&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Atom&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# &quot;Elixir.List&quot;&lt;/span&gt;
+&lt;span class=&quot;ss&quot;&gt;:&quot;Elixir.List&quot;&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;# List&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Atom&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;MyProject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# &quot;Elixir.MyProject.Thing&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can reference an Elixir module by its full name but that’s rather verbose
+and repetitive, especially in its own implementation. Here’s an example with an
+&lt;a href=&quot;https://elixir-lang.org/getting-started/structs.html&quot;&gt;Elixir struct&lt;/a&gt; and a function that manipulate it:&lt;/p&gt;
+
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;MyProject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;defstruct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;value:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;awesome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(%&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;MyProject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;MyProject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thing&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Awesome &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;using-__module__&quot;&gt;Using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;__MODULE__&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;One way to avoid the repetition of the module name is to use &lt;a href=&quot;https://hexdocs.pm/elixir/Kernel.SpecialForms.html#__MODULE__/0&quot;&gt;the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;__MODULE__/0&lt;/code&gt;
+macro from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Kernel.SpecialForms&lt;/code&gt;&lt;/a&gt;. It returns the current
+module name as an atom:&lt;/p&gt;
+
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;MyProject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;defstruct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;value:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;awesome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(%&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;__MODULE__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;__MODULE__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thing&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Awesome &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Although the module name is no longer repeated, this may not be the most
+readable version.&lt;/p&gt;
+
+&lt;h2 id=&quot;using-an-alias&quot;&gt;Using an alias&lt;/h2&gt;
+
+&lt;p&gt;Another way to avoid too much repetition is to use &lt;a href=&quot;https://elixir-lang.org/getting-started/alias-require-and-import.html#alias&quot;&gt;an alias&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;MyProject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;defstruct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;value:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;MyProject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;awesome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(%&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thing&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Awesome &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This is a bit more readable.&lt;/p&gt;
+
+&lt;p&gt;Since aliases are often used as shortcuts for the last part of the module name
+like this, it is the default behavior if you don’t specify a name:&lt;/p&gt;
+
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# These two aliases are equivalent:&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;MyProject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;MyProject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can also alias an Elixir module to whatever name you want if you prefer:&lt;/p&gt;
+
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;MyProject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Foo&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;making-a-module-alias-itself&quot;&gt;Making a module alias itself&lt;/h2&gt;
+
+&lt;p&gt;Ok, so an alias is good, but the solution above still makes you repeat the full
+module name twice. However, you can combine it with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;__MODULE__&lt;/code&gt; and get the
+best of both worlds:&lt;/p&gt;
+
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;MyProject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;defstruct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;value:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;__MODULE__&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;awesome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(%&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thing&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Awesome &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This way you both avoid the repetition of the full name &lt;em&gt;and&lt;/em&gt; can use the more
+readable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Thing&lt;/code&gt; instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;__MODULE__&lt;/code&gt; in the rest of the code.&lt;/p&gt;
+
+&lt;h2 id=&quot;credits&quot;&gt;Credits&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://pragprog.com/titles/lhelph/functional-web-development-with-elixir-otp-and-phoenix/&quot;&gt;&lt;img class=&quot;float-right w-full ml-3 mb-3 sm:w-1/2 sm:-mt-12&quot; src=&quot;/assets/books/functional-web-development-with-elixir-otp-and-phoenix.jpg&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;I learned this while reading chapter 2 of &lt;a href=&quot;https://pragprog.com/titles/lhelph/functional-web-development-with-elixir-otp-and-phoenix/&quot;&gt;&lt;em&gt;Functional Web Development with
+Elixir, OTP, and Phoenix, Rethink the Modern Web App&lt;/em&gt; by Lance Halvorsen&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="programming" /><category term="elixir" /><category term="erlang" /><summary type="html">Elixir modules are generally named with a hierarchical structure separated by dots:</summary></entry><entry><title type="html">asdf, one version manager to rule them all</title><link href="https://alphahydrae.com/2021/03/one-version-manager-to-rule-them-all/" rel="alternate" type="text/html" title="asdf, one version manager to rule them all" /><published>2021-03-06T21:32:17+01:00</published><updated>2021-03-06T21:32:17+01:00</updated><id>https://alphahydrae.com/2021/03/one-version-manager-to-rule-them-all</id><content type="html" xml:base="https://alphahydrae.com/2021/03/one-version-manager-to-rule-them-all/">&lt;p&gt;&lt;a href=&quot;https://asdf-vm.com&quot;&gt;asdf&lt;/a&gt; is an extendable version manager with support for &lt;a href=&quot;https://www.ruby-lang.org&quot;&gt;Ruby&lt;/a&gt;,
 &lt;a href=&quot;https://nodejs.org&quot;&gt;Node.js&lt;/a&gt;, &lt;a href=&quot;https://elixir-lang.org&quot;&gt;Elixir&lt;/a&gt;, &lt;a href=&quot;https://www.erlang.org&quot;&gt;Erlang&lt;/a&gt;, &lt;a href=&quot;https://www.python.org&quot;&gt;Python&lt;/a&gt;,
 &lt;a href=&quot;https://www.rust-lang.org&quot;&gt;Rust&lt;/a&gt;, &lt;a href=&quot;https://asdf-vm.com/#/plugins-all?id=plugin-list&quot;&gt;and more&lt;/a&gt;.&lt;/p&gt;
 
@@ -990,31 +1096,4 @@ psychiatry-related videos&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;It was interesting to make because unlike your usual Jekyll site, it does not
 contain a single Markdown file. All pages are &lt;a href=&quot;https://github.com/MediaComem/hhpp/blob/6d79ba9e39360527bae423a0fdb458261d049313/_plugins/hhpp_plugin.rb&quot;&gt;generated by this
 plugin&lt;/a&gt; using &lt;a href=&quot;https://github.com/MediaComem/hhpp/blob/6d79ba9e39360527bae423a0fdb458261d049313/_data/hhpp.yml&quot;&gt;this YAML data file&lt;/a&gt;, making this a good
-example of a truly custom Jekyll site.&lt;/p&gt;</content><author><name></name></author><category term="programming" /><category term="jekyll" /><category term="ruby" /><summary type="html">This site is made with Jekyll, a blog-aware static site generator written in Ruby.</summary></entry><entry><title type="html">How to get the default values out of an Elixir struct</title><link href="https://alphahydrae.com/2021/01/how-to-get-the-default-values-out-of-an-elixir-struct/" rel="alternate" type="text/html" title="How to get the default values out of an Elixir struct" /><published>2021-01-27T21:31:02+01:00</published><updated>2021-01-27T21:31:02+01:00</updated><id>https://alphahydrae.com/2021/01/how-to-get-the-default-values-out-of-an-elixir-struct</id><content type="html" xml:base="https://alphahydrae.com/2021/01/how-to-get-the-default-values-out-of-an-elixir-struct/">&lt;p&gt;Define a struct with some default values:&lt;/p&gt;
-
-&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Person&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;defstruct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;age:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://hexdocs.pm/elixir/Kernel.html#defstruct/1&quot;&gt;Structs have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;__struct__/0&lt;/code&gt; function&lt;/a&gt; that returns the
-struct with its defaults values:&lt;/p&gt;
-
-&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__struct__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# %Person{age: 18, name: nil}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Since &lt;a href=&quot;https://elixir-lang.org/getting-started/structs.html#structs-are-bare-maps-underneath&quot;&gt;structs are maps&lt;/a&gt;, you can extract each default value
-with &lt;a href=&quot;https://hexdocs.pm/elixir/Map.html#get/3&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Map.get/3&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;defaults&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__struct__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:age&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# 18&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# nil&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;You can also use the static access operator (see &lt;em&gt;Map/struct access&lt;/em&gt; in
-&lt;a href=&quot;https://dashbit.co/blog/writing-assertive-code-with-elixir&quot;&gt;&lt;em&gt;Writing assertive code with Elixir&lt;/em&gt;&lt;/a&gt;):&lt;/p&gt;
-
-&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;defaults&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__struct__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;age&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# 18&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# nil&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="programming" /><category term="elixir" /><summary type="html">Define a struct with some default values:</summary></entry></feed>
+example of a truly custom Jekyll site.&lt;/p&gt;</content><author><name></name></author><category term="programming" /><category term="jekyll" /><category term="ruby" /><summary type="html">This site is made with Jekyll, a blog-aware static site generator written in Ruby.</summary></entry></feed>
