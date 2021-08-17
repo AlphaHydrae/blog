@@ -148,14 +148,14 @@
  * https://github.com/material-theme/vsc-material-theme/blob/master/scripts/generator/color-set.ts
  */
 
-.highlight .c     { color: #545454; font-style: italic } /* Comment */
+.highlight .c     { color: #999999; font-style: italic } /* Comment */
 .highlight .err   { color: #f07178; background-color: #e3d2d2 } /* Error */
 .highlight .k     { color: #89DDFF } /* Keyword */
 .highlight .o     { font-weight: bold } /* Operator */
-.highlight .cm    { color: #545454; font-style: italic } /* Comment.Multiline */
-.highlight .cp    { color: #545454; font-weight: bold } /* Comment.Preproc */
-.highlight .c1    { color: #545454; font-style: italic } /* Comment.Single */
-.highlight .cs    { color: #545454; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .cm    { color: #999999; font-style: italic } /* Comment.Multiline */
+.highlight .cp    { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1    { color: #999999; font-style: italic } /* Comment.Single */
+.highlight .cs    { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
 .highlight .gd    { color: #000; background-color: #fdd } /* Generic.Deleted */
 .highlight .gd .x { color: #000; background-color: #faa } /* Generic.Deleted.Specific */
 .highlight .ge    { font-style: italic } /* Generic.Emph */
@@ -164,7 +164,7 @@
 .highlight .gi    { color: #000; background-color: #dfd } /* Generic.Inserted */
 .highlight .gi .x { color: #000; background-color: #afa } /* Generic.Inserted.Specific */
 .highlight .go    { color: #888 } /* Generic.Output */
-.highlight .gp    { color: #555 } /* Generic.Prompt */
+.highlight .gp    { color: #808080 } /* Generic.Prompt */
 .highlight .gs    { font-weight: bold } /* Generic.Strong */
 .highlight .gu    { color: #aaa } /* Generic.Subheading */
 .highlight .gt    { color: #f07178 } /* Generic.Traceback */
@@ -182,7 +182,7 @@
 .highlight .ni    { color: #800080 } /* Name.Entity */
 .highlight .ne    { color: #900; font-weight: bold } /* Name.Exception */
 .highlight .nf    { color: #82AAFF; font-weight: bold } /* Name.Function */
-.highlight .nn    { color: #555 } /* Name.Namespace */
+.highlight .nn    { color: #808080 } /* Name.Namespace */
 .highlight .nt    { color: #FFCB6B } /* Name.Tag */
 .highlight .nv    { color: #EEFFFF } /* Name.Variable */
 .highlight .ow    { font-weight: bold } /* Operator.Word */
