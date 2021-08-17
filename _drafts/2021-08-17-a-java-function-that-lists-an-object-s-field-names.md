@@ -7,7 +7,12 @@ today:
   type: wrote
 categories: programming
 tags: java reflection
+versions:
+  java: 16.0.2
 ---
+
+In order to make some assertions in a Java project's automated test suite, I
+needed to get the list of private, protected and public members of an object.
 
 Using
 [`Class#getDeclaredFieldNames()`](https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html#getDeclaredFields()),

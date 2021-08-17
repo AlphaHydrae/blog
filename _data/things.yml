@@ -54,8 +54,14 @@ erlang:
   website: https://www.erlang.org
   color_class: text-red-500
 
+java:
+  type: language
+  title: Java
+  website: https://www.oracle.com/java/
+  color_class: text-blue-500
+
 javascript:
-  type: javascript
+  type: language
   title: JavaScript
   website: https://www.ecma-international.org/publications-and-standards/standards/ecma-262/
   color_class: text-yellow-200
