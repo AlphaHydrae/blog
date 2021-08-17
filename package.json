@@ -21,7 +21,7 @@
   "homepage": "https://alphahydrae.com",
   "dependencies": {
     "autoprefixer": "^10.2.3",
-    "cssnano": "^4.1.10",
+    "cssnano": "^5.0.7",
     "postcss": "^8.2.4",
     "tailwindcss": "^2.0.2"
   },
