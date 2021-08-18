@@ -99,6 +99,7 @@ PLATFORMS
   x86_64-darwin-19
 
 DEPENDENCIES
+  i18n (~> 1.8.10)
   jekyll (~> 4.2)
   jekyll-email-protect (~> 1.1)
   jekyll-feed (~> 0.15.1)

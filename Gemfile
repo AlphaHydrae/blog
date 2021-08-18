@@ -2,8 +2,10 @@ source "https://rubygems.org"
 
 gem "jekyll", "~> 4.2"
 
-# Development web server
-gem "webrick", "~> 1.7"
+group :development do
+  gem "i18n", "~> 1.8.10"
+  gem "webrick", "~> 1.7"
+end
 
 group :jekyll_plugins do
   gem "jekyll-email-protect", "~> 1.1"
