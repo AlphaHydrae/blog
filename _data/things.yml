@@ -48,6 +48,12 @@ elixir:
   website: https://elixir-lang.org
   color_class: text-purple-400
 
+elm:
+  type: language
+  title: Elm
+  website: https://elm-lang.org
+  color_class: text-blue-400
+
 erlang:
   type: language
   title: Erlang/OTP
