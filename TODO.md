@@ -5,7 +5,6 @@
 * Attribute emojis
 * Support today items in the past (a while ago)
 * Improve theme
-  * Change background color of `<code>` in `<blockquote>`
   * Exact language colors
   * Posts page top margin too big on mobile
   * Not enough right margin in header next to GitHub logo
