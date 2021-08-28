@@ -140,6 +140,10 @@
   }
 }
 
+.max-w-prose {
+  max-width: 85ch;
+}
+
 /*
  * Syntax highlighting styles should be adjusted appropriately for every "skin"
  * List of tokens: https://github.com/rouge-ruby/rouge/wiki/List-of-tokens
