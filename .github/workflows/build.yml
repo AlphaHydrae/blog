@@ -29,9 +29,13 @@ jobs:
           bundler-cache: true
 
       - name: Check site errors
+        env:
+          JEKYLL_ENV: production
         run: |
           bundle exec jekyll doctor
 
       - name: Build site
+        env:
+          JEKYLL_ENV: production
         run: |
           bundle exec jekyll build
