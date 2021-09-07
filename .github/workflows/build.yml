@@ -1,0 +1,37 @@
+name: build
+
+on:
+  push:
+    branches:
+      - "**"
+    tags:
+      - "**"
+  schedule:
+    # Minute (0-59), Hour (0-23), Day of the month (1-31), Month of the Year (1-12), Day of the week (0-6, 0 = Sunday)
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  automated-tests:
+    runs-on: ubuntu-20.04
+    name: Run automated tests
+    steps:
+
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.2
+          bundler-cache: true
+
+      - name: Check site errors
+        run: |
+          bundle exec jekyll doctor
+
+      - name: Build site
+        run: |
+          bundle exec jekyll build
