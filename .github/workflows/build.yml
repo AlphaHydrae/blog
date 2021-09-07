@@ -22,11 +22,20 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install Ruby
+      - name: Install Ruby & gems
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.0.2
           bundler-cache: true
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.8.0
+
+      - name: Install npm packages
+        run: |
+          npm ci
 
       - name: Check site errors
         env:
