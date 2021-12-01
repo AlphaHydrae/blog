@@ -13,3 +13,7 @@ Visit `https://github.com/<your-username>.keys` to see your SSH public keys.
 
 For example, here's [Linus Torvalds's GitHub
 key](https://github.com/torvalds.keys).
+
+> I happened upon this information while reading the documentation of
+> [Ansible](https://www.ansible.com)'s [POSIX authorized key
+> module](https://docs.ansible.com/ansible/latest/collections/ansible/posix/authorized_key_module.html#parameter-key).
