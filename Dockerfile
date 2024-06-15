@@ -1,6 +1,6 @@
 # Builder image
 # =============
-FROM ruby:3.0.0-alpine3.13 as builder
+FROM ruby:3.3.3-alpine3.20 AS builder
 
 LABEL maintainer="docker@alphahydrae.com"
 
@@ -19,7 +19,6 @@ USER blog:blog
 COPY --chown=blog:blog Gemfile Gemfile.lock /usr/src/app/
 
 RUN echo 'gem: --no-rdoc --no-ri' > /home/blog/.gemrc && \
-    gem install bundler:2.2.7 && \
     bundle install
 
 COPY --chown=blog:blog package.json package-lock.json /usr/src/app/
@@ -32,7 +31,7 @@ RUN bundle exec jekyll build
 
 # Production image
 # ================
-FROM nginx:1.19.6-alpine
+FROM nginx:1.27.0-alpine
 
 WORKDIR /usr/share/nginx/html
 
