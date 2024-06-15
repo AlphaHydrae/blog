@@ -48,7 +48,7 @@ module EnrichSite
     def posts
       # The `_archives` directory contains old posts from previous incarnations
       # of this site.
-      @site.collections['archives'].docs + @site.posts.docs
+      @site.collections.values.flat_map(&:docs)
     end
   end
 
@@ -63,16 +63,10 @@ module EnrichSite
     end
 
     def apply
-      add_main_categories
       add_post_things
     end
 
     private
-
-    def add_main_categories
-      @post.data['main_categories'] = @post.data['categories']
-        .reject{ |cat| cat.match(/\Atoday-/) }
-    end
 
     # Things like programming languages, tools, etc are defined in the
     # `_data/things.yml` file and may be associated with a URL and logo for

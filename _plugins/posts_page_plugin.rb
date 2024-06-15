@@ -22,7 +22,7 @@ module PostsPagePlugin
       @ext = '.html'
       @name = 'index.html'
 
-      all_posts = site.posts.docs.reverse
+      all_posts = site.collections.except('archives', 'drafts').values.flat_map(&:docs).sort_by(&:date).reverse
 
       today = all_posts.reduce({}) do |memo,post|
         if today_type = post.data.fetch('today', {})['type']

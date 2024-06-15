@@ -1,26 +1,28 @@
 ---
+lambda:
+  title: Lambda Calculus
 
-found:
+today_i_found:
   title: Today I Found
   past_title: A While Ago I Found
   emoji: satellite
 
-learned:
+today_i_learned:
   title: Today I Learned
   past_title: A While Ago I Learned
   emoji: books
 
-think:
+today_i_think:
   title: Today I'm Thinking
   past_title: A While Ago I Thought
   emoji: thought_balloon
 
-watched:
+today_i_watched:
   title: Today I Watched
   past_title: A While Ago I Watched
   emoji: tv
 
-wrote:
+today_i_wrote:
   title: Today I Wrote
   past_title: A While Ago I Wrote
   emoji: pencil

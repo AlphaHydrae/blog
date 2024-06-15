@@ -28,7 +28,7 @@ raise "Unsupported action #{action.inspect}" if action != 'post'
 tags = ARGV[0].match(/\A[a-z0-9]+(?:-[a-z0-9]+)*(?:,|(?:,[a-z0-9]+(?:-[a-z0-9]+)*)+,?)\z/) ? ARGV.shift.gsub(/,\z/, '').split(/,/) : []
 
 root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-drafts_dir = File.join(root, '_drafts')
+drafts_dir = File.join(root, 'collections', '_drafts')
 
 title = ARGV.join(' ')
 post_file_title = I18n.transliterate(
@@ -43,7 +43,7 @@ now = DateTime.now
 post_file_date = now.strftime('%Y-%m-%d')
 
 post_file = File.join(drafts_dir, "#{post_file_date}-#{post_file_title}.md")
-raise "Post #{post_file} already exists" if File.exists?(post_file)
+raise "Post #{post_file} already exists" if File.exist?(post_file)
 
 frontmatter = {
   'layout' => 'post',

@@ -12,6 +12,17 @@ collections_dir: collections
 collections:
   archives:
     output: true
+  lambda:
+    output: true
+    permalink: /:year/:month/:title
+  today_i_found:
+    output: true
+  today_i_learned:
+    output: true
+  today_i_think:
+    output: true
+  today_i_wrote:
+    output: true
 
 # Build settings
 plugins:

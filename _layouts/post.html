@@ -36,7 +36,7 @@ layout: default
       {%- endif -%}
 
       <!-- Categories -->
-      {% for category in post.main_categories %}
+      {% for category in post.categories %}
         <span class="flex items-center space-x-2 mb-2 text-gray-500">
           {% octicon file-directory width:16 height:16 class:"align-middle inline fill-current" %}
           <span class="font-mono">{{ category }}</span>
