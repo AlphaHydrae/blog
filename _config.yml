@@ -8,6 +8,7 @@ baseurl: "" # Subpath
 github_username: AlphaHydrae
 permalink: /:year/:month/:title/
 
+collections_dir: collections
 collections:
   archives:
     output: true
