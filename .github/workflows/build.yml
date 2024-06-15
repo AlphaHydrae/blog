@@ -18,20 +18,20 @@ jobs:
     steps:
 
       - name: Checkout the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: recursive
 
       - name: Install Ruby & gems
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0.2
+          ruby-version: 3.3.3
           bundler-cache: true
 
       - name: Install Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.8.0
+          node-version: 22.3.0
 
       - name: Install npm packages
         run: |
